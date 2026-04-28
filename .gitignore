@@ -1,0 +1,10 @@
+# Ignore everything by default
+*
+
+# Allow only the website files
+!index.html
+!css/
+!css/**
+!js/
+!js/**
+!.gitignore
