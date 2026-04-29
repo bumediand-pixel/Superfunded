@@ -5,6 +5,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initCursor();
   initCounters();
   initMobileNav();
+  initFAQ();
+  initPayoutsFeed();
 
   if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
     gsap.registerPlugin(ScrollTrigger);
@@ -122,6 +124,133 @@ function initMobileNav() {
   });
 }
 
+// ---- FAQ Accordion ----
+function initFAQ() {
+  const items = document.querySelectorAll('.faq-item');
+  if (!items.length) return;
+
+  items.forEach(item => {
+    const btn = item.querySelector('.faq-question');
+    const answer = item.querySelector('.faq-answer');
+    if (!btn || !answer) return;
+
+    btn.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+
+      // Close all open items
+      items.forEach(i => {
+        i.classList.remove('open');
+        const a = i.querySelector('.faq-answer');
+        if (a) a.style.maxHeight = '0';
+        const b = i.querySelector('.faq-question');
+        if (b) b.setAttribute('aria-expanded', 'false');
+      });
+
+      if (!isOpen) {
+        item.classList.add('open');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        btn.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+}
+
+// ---- Live Payouts Feed ----
+const PAYOUT_POOL = [
+  { initials: 'AK', name: 'Alex K.',    flag: 'US', account: '$100K', amount: 4200  },
+  { initials: 'MR', name: 'Marcus R.',  flag: 'GB', account: '$200K', amount: 11800 },
+  { initials: 'SL', name: 'Sarah L.',   flag: 'AU', account: '$50K',  amount: 2640  },
+  { initials: 'JT', name: 'James T.',   flag: 'CA', account: '$25K',  amount: 1450  },
+  { initials: 'DP', name: 'David P.',   flag: 'DE', account: '$100K', amount: 6900  },
+  { initials: 'NA', name: 'Nina A.',    flag: 'AE', account: '$50K',  amount: 3100  },
+  { initials: 'RB', name: 'Ryan B.',    flag: 'ZA', account: '$200K', amount: 15200 },
+  { initials: 'KM', name: 'Kenji M.',   flag: 'JP', account: '$100K', amount: 5400  },
+  { initials: 'LC', name: 'Luca C.',    flag: 'IT', account: '$50K',  amount: 2950  },
+  { initials: 'FS', name: 'Fatima S.',  flag: 'MA', account: '$25K',  amount: 1320  },
+  { initials: 'OA', name: 'Omar A.',    flag: 'EG', account: '$100K', amount: 7800  },
+  { initials: 'PK', name: 'Pavel K.',   flag: 'PL', account: '$50K',  amount: 4100  },
+  { initials: 'TW', name: 'Tom W.',     flag: 'NZ', account: '$200K', amount: 18600 },
+  { initials: 'YN', name: 'Yui N.',     flag: 'JP', account: '$50K',  amount: 2200  },
+  { initials: 'EM', name: 'Elena M.',   flag: 'RO', account: '$100K', amount: 8300  },
+];
+
+const FLAGS = {
+  US:'🇺🇸', GB:'🇬🇧', AU:'🇦🇺', CA:'🇨🇦', DE:'🇩🇪',
+  AE:'🇦🇪', ZA:'🇿🇦', JP:'🇯🇵', IT:'🇮🇹', MA:'🇲🇦',
+  EG:'🇪🇬', PL:'🇵🇱', NZ:'🇳🇿', RO:'🇷🇴',
+};
+
+function relativeTime(seconds) {
+  if (seconds < 60) return `${seconds}s ago`;
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  return `${Math.floor(seconds / 3600)}h ago`;
+}
+
+function createPayoutCard(data, ageSeconds) {
+  const card = document.createElement('div');
+  card.className = 'payout-card';
+  const flag = FLAGS[data.flag] || '';
+  const amt = '$' + data.amount.toLocaleString();
+  card.innerHTML = `
+    <div class="payout-avatar">${data.initials}</div>
+    <div class="payout-info">
+      <div class="payout-name">${data.name} ${flag}</div>
+      <div class="payout-meta">${data.account} account · ${relativeTime(ageSeconds)}</div>
+    </div>
+    <div class="payout-amount">${amt}</div>
+  `;
+  return card;
+}
+
+function initPayoutsFeed() {
+  const feed = document.getElementById('payouts-feed');
+  if (!feed) return;
+
+  const MAX_CARDS = 9;
+  const shuffled = [...PAYOUT_POOL].sort(() => Math.random() - 0.5);
+  const initial = shuffled.slice(0, MAX_CARDS);
+
+  initial.forEach((data, i) => {
+    const card = createPayoutCard(data, (i + 1) * 43 + Math.floor(Math.random() * 30));
+    feed.appendChild(card);
+  });
+
+  let poolIndex = MAX_CARDS % PAYOUT_POOL.length;
+
+  // Swap a random card every 4-6 seconds
+  function addNewPayout() {
+    const cards = feed.querySelectorAll('.payout-card:not(.removing)');
+    if (!cards.length) return;
+
+    const toRemove = cards[Math.floor(Math.random() * cards.length)];
+    toRemove.classList.add('removing');
+
+    setTimeout(() => {
+      const newData = PAYOUT_POOL[poolIndex % PAYOUT_POOL.length];
+      poolIndex++;
+      const newCard = createPayoutCard(newData, Math.floor(Math.random() * 15) + 1);
+      feed.replaceChild(newCard, toRemove);
+    }, 350);
+  }
+
+  function scheduleNext() {
+    const delay = 4000 + Math.random() * 2500;
+    setTimeout(() => {
+      addNewPayout();
+      scheduleNext();
+    }, delay);
+  }
+
+  // Only start when section is visible
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      scheduleNext();
+      obs.disconnect();
+    }
+  }, { threshold: 0.3 });
+  obs.observe(feed);
+}
+
 // ---- GSAP Scroll Animations ----
 function initGSAP() {
   // Hero entrance
@@ -182,4 +311,25 @@ function initGSAP() {
     scrollTrigger: { trigger: '.cta-section', start: 'top 72%', once: true },
     opacity: 0, scale: 0.96, duration: 0.8, ease: 'power2.out',
   });
+
+  // Comparison table
+  gsap.from('.comparison-table', {
+    scrollTrigger: { trigger: '.comparison-table', start: 'top 80%', once: true },
+    opacity: 0, y: 36, duration: 0.7, ease: 'power2.out',
+  });
+
+  // Payout cards
+  gsap.from('.payouts-header-row', {
+    scrollTrigger: { trigger: '.payouts-header-row', start: 'top 82%', once: true },
+    opacity: 0, y: 20, duration: 0.6, ease: 'power2.out',
+  });
+
+  // FAQ items
+  const faqItems = document.querySelectorAll('.faq-item');
+  if (faqItems.length) {
+    gsap.from(faqItems, {
+      scrollTrigger: { trigger: '.faq-list', start: 'top 78%', once: true },
+      opacity: 0, y: 28, duration: 0.55, stagger: 0.08, ease: 'power2.out',
+    });
+  }
 }
