@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identity Verification | SuperFunded</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/kyc.css" />
+</head>
+<body>
+
+  <nav class="kyc-nav">
+    <div class="kyc-nav-inner">
+      <a href="index.html" class="nav-logo">SUPER<span>FUNDED</span></a>
+      <div class="nav-secure">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L4 6v6c0 5.5 3.8 10.7 8 12 4.2-1.3 8-6.5 8-12V6L12 2z"/></svg>
+        256-bit Encrypted
+      </div>
+    </div>
+  </nav>
+
+  <main class="kyc-main">
+    <div class="kyc-container">
+
+      <!-- Header -->
+      <div class="kyc-header">
+        <h1 class="kyc-title">Identity Verification</h1>
+        <p class="kyc-subtitle">Required by financial regulations. Your data is encrypted and never shared.</p>
+      </div>
+
+      <!-- Step Progress -->
+      <div class="kyc-progress" id="kyc-progress">
+        <div class="kp-step active" id="kp-1">
+          <div class="kp-circle"><span>1</span><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="kp-label">Personal Info</span>
+        </div>
+        <div class="kp-line" id="kp-line-1"></div>
+        <div class="kp-step" id="kp-2">
+          <div class="kp-circle"><span>2</span><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="kp-label">Document Type</span>
+        </div>
+        <div class="kp-line" id="kp-line-2"></div>
+        <div class="kp-step" id="kp-3">
+          <div class="kp-circle"><span>3</span><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="kp-label">Upload Docs</span>
+        </div>
+        <div class="kp-line" id="kp-line-3"></div>
+        <div class="kp-step" id="kp-4">
+          <div class="kp-circle"><span>4</span><svg viewBox="0 0 20 20" fill="none"><path d="M4 10l4.5 4.5L16 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <span class="kp-label">Review</span>
+        </div>
+      </div>
+
+      <!-- ── STEP 1: Personal Information ─────────────────────────────────── -->
+      <div class="kyc-step" id="step-1">
+        <h2 class="step-heading">Personal Information</h2>
+        <p class="step-desc">Enter your details exactly as they appear on your official ID document.</p>
+
+        <form class="kyc-form" id="form-1" novalidate>
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="first-name">First Name <span class="req">*</span></label>
+              <input class="field-input" type="text" id="first-name" placeholder="John" autocomplete="given-name" />
+              <span class="field-error" id="err-first-name"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="last-name">Last Name <span class="req">*</span></label>
+              <input class="field-input" type="text" id="last-name" placeholder="Doe" autocomplete="family-name" />
+              <span class="field-error" id="err-last-name"></span>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="field-group">
+              <label class="field-label" for="dob">Date of Birth <span class="req">*</span></label>
+              <input class="field-input" type="date" id="dob" autocomplete="bday" />
+              <span class="field-error" id="err-dob"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="nationality">Nationality <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select class="field-input field-select" id="nationality">
+                  <option value="">Select nationality</option>
+                  <option>American</option><option>British</option><option>Canadian</option>
+                  <option>Australian</option><option>German</option><option>French</option>
+                  <option>Dutch</option><option>Spanish</option><option>Italian</option>
+                  <option>Portuguese</option><option>Swedish</option><option>Norwegian</option>
+                  <option>Danish</option><option>Finnish</option><option>Swiss</option>
+                  <option>Austrian</option><option>Belgian</option><option>Polish</option>
+                  <option>Romanian</option><option>South African</option><option>Nigerian</option>
+                  <option>Kenyan</option><option>Egyptian</option><option>Emirati</option>
+                  <option>Saudi</option><option>Israeli</option><option>Turkish</option>
+                  <option>Indian</option><option>Japanese</option><option>South Korean</option>
+                  <option>Singaporean</option><option>Malaysian</option><option>Filipino</option>
+                  <option>Indonesian</option><option>Brazilian</option><option>Mexican</option>
+                  <option>Colombian</option><option>Argentine</option><option>New Zealander</option>
+                  <option>Other</option>
+                </select>
+                <svg class="select-chevron" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="field-error" id="err-nationality"></span>
+            </div>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="email-kyc">Email Address <span class="req">*</span></label>
+            <input class="field-input" type="email" id="email-kyc" placeholder="john@example.com" autocomplete="email" />
+            <span class="field-error" id="err-email-kyc"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="phone">Phone Number <span class="req">*</span></label>
+            <div class="phone-wrap">
+              <div class="phone-prefix">+1</div>
+              <input class="field-input phone-input" type="tel" id="phone" placeholder="555 000 0000" autocomplete="tel" />
+            </div>
+            <span class="field-error" id="err-phone"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="address1">Address Line 1 <span class="req">*</span></label>
+            <input class="field-input" type="text" id="address1" placeholder="123 Main Street" autocomplete="address-line1" />
+            <span class="field-error" id="err-address1"></span>
+          </div>
+
+          <div class="field-group">
+            <label class="field-label" for="address2">Address Line 2</label>
+            <input class="field-input" type="text" id="address2" placeholder="Apt, Suite, Unit (optional)" autocomplete="address-line2" />
+          </div>
+
+          <div class="form-grid-3">
+            <div class="field-group">
+              <label class="field-label" for="city">City <span class="req">*</span></label>
+              <input class="field-input" type="text" id="city" placeholder="New York" autocomplete="address-level2" />
+              <span class="field-error" id="err-city"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="postal">Postal Code <span class="req">*</span></label>
+              <input class="field-input" type="text" id="postal" placeholder="10001" autocomplete="postal-code" />
+              <span class="field-error" id="err-postal"></span>
+            </div>
+            <div class="field-group">
+              <label class="field-label" for="country-kyc">Country <span class="req">*</span></label>
+              <div class="select-wrap">
+                <select class="field-input field-select" id="country-kyc">
+                  <option value="">Select country</option>
+                  <option value="US">United States</option><option value="GB">United Kingdom</option>
+                  <option value="CA">Canada</option><option value="AU">Australia</option>
+                  <option value="DE">Germany</option><option value="FR">France</option>
+                  <option value="NL">Netherlands</option><option value="ES">Spain</option>
+                  <option value="IT">Italy</option><option value="SE">Sweden</option>
+                  <option value="NO">Norway</option><option value="DK">Denmark</option>
+                  <option value="FI">Finland</option><option value="CH">Switzerland</option>
+                  <option value="PL">Poland</option><option value="RO">Romania</option>
+                  <option value="ZA">South Africa</option><option value="NG">Nigeria</option>
+                  <option value="KE">Kenya</option><option value="EG">Egypt</option>
+                  <option value="AE">United Arab Emirates</option><option value="IN">India</option>
+                  <option value="JP">Japan</option><option value="SG">Singapore</option>
+                  <option value="BR">Brazil</option><option value="MX">Mexico</option>
+                  <option value="NZ">New Zealand</option><option value="OTHER">Other</option>
+                </select>
+                <svg class="select-chevron" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <span class="field-error" id="err-country-kyc"></span>
+            </div>
+          </div>
+
+          <div class="step-actions">
+            <button type="submit" class="btn-next">
+              Continue
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ── STEP 2: Document Type ────────────────────────────────────────── -->
+      <div class="kyc-step hidden" id="step-2">
+        <h2 class="step-heading">Select ID Document</h2>
+        <p class="step-desc">Choose the type of government-issued document you will upload.</p>
+
+        <div class="doc-grid" id="doc-grid">
+          <button class="doc-card" data-doc="passport" type="button">
+            <div class="doc-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="doc-icon">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="4" y="2" width="16" height="20" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 18s1-2 5-2 5 2 5 2"/><line x1="9" y1="6" x2="15" y2="6" stroke-width="1.2"/></svg>
+            </div>
+            <div class="doc-name">Passport</div>
+            <div class="doc-sub">Most accepted worldwide</div>
+          </button>
+
+          <button class="doc-card" data-doc="license" type="button">
+            <div class="doc-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="doc-icon">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="5" width="20" height="14" rx="2"/><circle cx="8" cy="12" r="2.5"/><line x1="13" y1="10" x2="20" y2="10"/><line x1="13" y1="14" x2="18" y2="14"/></svg>
+            </div>
+            <div class="doc-name">Driver's License</div>
+            <div class="doc-sub">Accepted in most countries</div>
+          </button>
+
+          <button class="doc-card" data-doc="national-id" type="button">
+            <div class="doc-check"><svg viewBox="0 0 16 16" fill="none"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div class="doc-icon">
+              <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="8" y1="9" x2="16" y2="9"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="15" x2="12" y2="15"/></svg>
+            </div>
+            <div class="doc-name">National ID</div>
+            <div class="doc-sub">For EU / EEA residents</div>
+          </button>
+        </div>
+
+        <div class="step-actions two-col">
+          <button class="btn-back" id="back-2" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn-next" id="next-2" type="button" disabled>
+            Continue
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: Upload Documents ───────────────────────────────────────── -->
+      <div class="kyc-step hidden" id="step-3">
+        <h2 class="step-heading">Upload Documents</h2>
+        <p class="step-desc">Upload clear, well-lit photos. All four corners must be visible.</p>
+
+        <div class="upload-list" id="upload-list">
+          <!-- Front -->
+          <div class="upload-zone" id="zone-front" data-zone="front">
+            <input type="file" class="upload-input" id="file-front" accept="image/*,.pdf" />
+            <div class="upload-placeholder">
+              <svg class="upload-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="10" width="32" height="28" rx="3" stroke="currentColor" stroke-width="2"/><path d="M24 20v12M19 25l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="upload-title">Front of Document</div>
+              <div class="upload-hint">Drag & drop or <span class="upload-link">browse files</span></div>
+              <div class="upload-formats">JPG, PNG or PDF · max 10 MB</div>
+            </div>
+            <div class="upload-preview hidden" id="preview-front">
+              <img class="preview-img" id="img-front" src="" alt="Front preview" />
+              <div class="preview-info">
+                <span class="preview-name" id="name-front"></span>
+                <span class="preview-size" id="size-front"></span>
+              </div>
+              <button class="preview-remove" type="button" data-zone="front" aria-label="Remove file">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Back (hidden for passport) -->
+          <div class="upload-zone" id="zone-back" data-zone="back">
+            <input type="file" class="upload-input" id="file-back" accept="image/*,.pdf" />
+            <div class="upload-placeholder">
+              <svg class="upload-icon" viewBox="0 0 48 48" fill="none"><rect x="8" y="10" width="32" height="28" rx="3" stroke="currentColor" stroke-width="2"/><path d="M24 20v12M19 25l5-5 5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              <div class="upload-title">Back of Document</div>
+              <div class="upload-hint">Drag & drop or <span class="upload-link">browse files</span></div>
+              <div class="upload-formats">JPG, PNG or PDF · max 10 MB</div>
+            </div>
+            <div class="upload-preview hidden" id="preview-back">
+              <img class="preview-img" id="img-back" src="" alt="Back preview" />
+              <div class="preview-info">
+                <span class="preview-name" id="name-back"></span>
+                <span class="preview-size" id="size-back"></span>
+              </div>
+              <button class="preview-remove" type="button" data-zone="back" aria-label="Remove file">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Selfie -->
+          <div class="upload-zone" id="zone-selfie" data-zone="selfie">
+            <input type="file" class="upload-input" id="file-selfie" accept="image/*" />
+            <div class="upload-placeholder">
+              <svg class="upload-icon" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="18" r="7" stroke="currentColor" stroke-width="2"/><path d="M8 40c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              <div class="upload-title">Selfie Holding Document</div>
+              <div class="upload-hint">Hold your ID next to your face · <span class="upload-link">browse files</span></div>
+              <div class="upload-formats">JPG or PNG · max 10 MB</div>
+            </div>
+            <div class="upload-preview hidden" id="preview-selfie">
+              <img class="preview-img" id="img-selfie" src="" alt="Selfie preview" />
+              <div class="preview-info">
+                <span class="preview-name" id="name-selfie"></span>
+                <span class="preview-size" id="size-selfie"></span>
+              </div>
+              <button class="preview-remove" type="button" data-zone="selfie" aria-label="Remove file">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="step-actions two-col">
+          <button class="btn-back" id="back-3" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn-next" id="next-3" type="button" disabled>
+            Review &amp; Submit
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M4 9h10M9 4l5 5-5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: Review ─────────────────────────────────────────────────── -->
+      <div class="kyc-step hidden" id="step-4">
+        <h2 class="step-heading">Review &amp; Submit</h2>
+        <p class="step-desc">Check that everything is correct before submitting.</p>
+
+        <div class="review-grid">
+          <div class="review-block">
+            <div class="review-block-header">
+              <h3>Personal Information</h3>
+              <button class="review-edit" data-step="1" type="button">Edit</button>
+            </div>
+            <div class="review-rows" id="review-personal"></div>
+          </div>
+
+          <div class="review-block">
+            <div class="review-block-header">
+              <h3>Document Details</h3>
+              <button class="review-edit" data-step="2" type="button">Edit</button>
+            </div>
+            <div class="review-rows" id="review-doc-type"></div>
+            <div class="review-thumbs" id="review-thumbs"></div>
+          </div>
+        </div>
+
+        <div class="step-actions two-col">
+          <button class="btn-back" id="back-4" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M10 3L5 8l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Back
+          </button>
+          <button class="btn-submit" id="submit-btn" type="button">
+            <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M3 9l5 5 7-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Submit for Verification
+          </button>
+        </div>
+      </div>
+
+      <!-- ── SUCCESS SCREEN ─────────────────────────────────────────────────── -->
+      <div class="kyc-step hidden" id="step-success">
+        <div class="success-screen">
+          <svg class="success-svg" viewBox="0 0 120 120" fill="none">
+            <circle class="s-circle" cx="60" cy="60" r="52" stroke="#22c55e" stroke-width="4" stroke-linecap="round"/>
+            <path class="s-check" d="M36 60l16 16 32-32" stroke="#22c55e" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h2 class="success-title">Verification Submitted!</h2>
+          <p class="success-msg">Your documents are under review. We'll notify you within 24 hours.</p>
+          <div class="success-btns">
+            <a href="dashboard.html" class="btn-next">Go to Dashboard</a>
+            <a href="index.html#challenges" class="btn-back-link">View Challenges</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <script src="js/kyc.js"></script>
+</body>
+</html>

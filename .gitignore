@@ -1,10 +1,21 @@
 # Ignore everything by default
 *
 
-# Allow only the website files
+# Allow website files
 !index.html
+!checkout.html
+!kyc.html
+!dashboard.html
 !css/
 !css/**
 !js/
 !js/**
 !.gitignore
+!.env.example
+!package.json
+!server.js
+!node_modules/
+
+# Never commit real env secrets
+.env
+node_modules

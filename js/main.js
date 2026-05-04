@@ -312,6 +312,30 @@ function initGSAP() {
     opacity: 0, scale: 0.96, duration: 0.8, ease: 'power2.out',
   });
 
+  // Market charts
+  const marketCards = document.querySelectorAll('.market-chart-card');
+  if (marketCards.length) {
+    gsap.from(marketCards, {
+      scrollTrigger: { trigger: '.markets-charts', start: 'top 78%', once: true },
+      opacity: 0, y: 36, duration: 0.65, stagger: 0.12, ease: 'power2.out',
+    });
+  }
+
+  // Leaderboard rows
+  const lbRows = document.querySelectorAll('.leaderboard-row');
+  if (lbRows.length) {
+    gsap.from(lbRows, {
+      scrollTrigger: { trigger: '.leaderboard-wrap', start: 'top 78%', once: true },
+      opacity: 0, x: -28, duration: 0.55, stagger: 0.1, ease: 'power2.out',
+    });
+  }
+
+  // Trust strip
+  gsap.from('.trust-inner', {
+    scrollTrigger: { trigger: '.trust-strip', start: 'top 90%', once: true },
+    opacity: 0, y: 16, duration: 0.6, ease: 'power2.out',
+  });
+
   // Comparison table
   gsap.from('.comparison-table', {
     scrollTrigger: { trigger: '.comparison-table', start: 'top 80%', once: true },

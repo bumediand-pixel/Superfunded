@@ -1,0 +1,839 @@
+/* ============================================================
+   SUPERFUNDED — DASHBOARD STYLESHEET
+   ============================================================ */
+
+/* ---------- Custom Properties ---------- */
+:root {
+  --bg-primary:    #0a0a0a;
+  --bg-secondary:  #0f0f0f;
+  --bg-card:       #141414;
+  --bg-card-hover: #1a1a1a;
+  --red:           #E63946;
+  --red-dark:      #C1121F;
+  --green:         #22c55e;
+  --gold:          #D4AF37;
+  --white:         #ffffff;
+  --text-secondary:#9a9a9a;
+  --text-muted:    #555555;
+  --border-subtle: rgba(255,255,255,0.06);
+  --border:        rgba(230,57,70,0.15);
+  --radius-sm:     8px;
+  --radius-md:     14px;
+  --radius-lg:     20px;
+  --sidebar-w:     260px;
+  --topbar-h:      72px;
+  --transition:    0.22s ease;
+}
+
+/* ---------- Reset & Base ---------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 16px; -webkit-font-smoothing: antialiased; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg-primary);
+  color: var(--white);
+  min-height: 100vh;
+  display: flex;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.03em; }
+
+a { text-decoration: none; color: inherit; }
+
+button { cursor: pointer; border: none; outline: none; font-family: inherit; }
+
+/* ============================================================
+   SIDEBAR
+   ============================================================ */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-subtle);
+  display: flex;
+  flex-direction: column;
+  z-index: 200;
+  padding: 28px 20px 24px;
+  transition: transform var(--transition);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ---------- Logo ---------- */
+.sidebar-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.06em;
+  color: var(--white);
+  margin-bottom: 32px;
+  padding-left: 4px;
+}
+
+.sidebar-logo span { color: var(--red); }
+
+/* ---------- Profile ---------- */
+.sidebar-profile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-subtle);
+  margin-bottom: 28px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.1rem;
+  letter-spacing: 0.04em;
+  color: var(--white);
+  flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(230,57,70,0.4);
+}
+
+.profile-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+.profile-badge {
+  font-size: 0.7rem;
+  color: var(--green);
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+/* ---------- Nav ---------- */
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  transition: background var(--transition), color var(--transition);
+  position: relative;
+}
+
+.nav-link:hover {
+  background: var(--bg-card);
+  color: var(--white);
+}
+
+.nav-link.active {
+  background: rgba(230, 57, 70, 0.15);
+  color: var(--red);
+  border: 1px solid rgba(230,57,70,0.2);
+}
+
+.nav-link.active .nav-icon { color: var(--red); }
+
+.nav-icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  transition: color var(--transition);
+}
+
+/* ---------- Account Card ---------- */
+.sidebar-account-card {
+  margin-top: 24px;
+  background: linear-gradient(135deg, rgba(230,57,70,0.12) 0%, rgba(212,175,55,0.06) 100%);
+  border: 1px solid rgba(230,57,70,0.2);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+}
+
+.account-amount {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  color: var(--white);
+  letter-spacing: 0.04em;
+}
+
+.account-phase {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.78rem;
+  color: var(--green);
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.phase-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px rgba(34,197,94,0.6);
+  animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+/* ---------- Logout ---------- */
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 16px;
+  padding: 10px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.logout-btn:hover {
+  border-color: var(--red);
+  color: var(--red);
+}
+
+/* ---------- Mobile overlay ---------- */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.65);
+  z-index: 150;
+  backdrop-filter: blur(2px);
+}
+
+.sidebar-overlay.active { display: block; }
+
+/* ============================================================
+   MAIN CONTENT
+   ============================================================ */
+.main-content {
+  margin-left: var(--sidebar-w);
+  flex: 1;
+  min-height: 100vh;
+  padding: 0 32px 48px;
+  background: var(--bg-primary);
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--topbar-h);
+  position: sticky;
+  top: 0;
+  background: rgba(10,10,10,0.88);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-subtle);
+  margin: 0 -32px;
+  padding: 0 32px;
+  z-index: 100;
+}
+
+.topbar-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: transparent;
+  padding: 6px;
+}
+
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--white);
+  border-radius: 2px;
+  transition: transform var(--transition), opacity var(--transition);
+}
+
+.hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+.greeting {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  color: var(--white);
+}
+
+.topbar-date {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  margin-top: 1px;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+/* Notification */
+.notif-btn {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 9px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.notif-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.14); }
+
+.notif-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  background: var(--red);
+  color: var(--white);
+  font-size: 0.62rem;
+  font-weight: 700;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--bg-primary);
+}
+
+/* Payout Button */
+.btn-payout {
+  background: linear-gradient(135deg, var(--red), var(--red-dark));
+  color: var(--white);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: opacity var(--transition), transform var(--transition);
+  box-shadow: 0 4px 16px rgba(230,57,70,0.3);
+}
+
+.btn-payout:hover { opacity: 0.88; transform: translateY(-1px); }
+.btn-payout:active { transform: translateY(0); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--border-subtle);
+  transition: color var(--transition), border-color var(--transition);
+}
+
+.btn-ghost:hover { color: var(--white); border-color: rgba(255,255,255,0.18); }
+
+/* ============================================================
+   STATS ROW
+   ============================================================ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  margin-top: 28px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 22px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  transition: background var(--transition), border-color var(--transition), transform var(--transition);
+}
+
+.stat-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(255,255,255,0.1);
+  transform: translateY(-2px);
+}
+
+.stat-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon svg { width: 20px; height: 20px; }
+
+.stat-icon--blue  { background: rgba(59,130,246,0.15); color: #3b82f6; }
+.stat-icon--green { background: rgba(34,197,94,0.12);  color: var(--green); }
+.stat-icon--gold  { background: rgba(212,175,55,0.12); color: var(--gold); }
+.stat-icon--red   { background: rgba(230,57,70,0.12);  color: var(--red); }
+
+.stat-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.9rem;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  color: var(--white);
+}
+
+.stat-value--green { color: var(--green); }
+
+.stat-sub {
+  font-size: 0.73rem;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stat-sub--green { color: var(--green); }
+
+.arrow-up {
+  color: var(--green);
+  font-size: 0.85rem;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot--green {
+  background: var(--green);
+  box-shadow: 0 0 6px rgba(34,197,94,0.5);
+}
+
+/* ============================================================
+   MID ROW (Chart + Challenge)
+   ============================================================ */
+.mid-row {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+/* ---------- Card base ---------- */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.card-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.04em;
+  color: var(--white);
+}
+
+.badge-30d {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--red);
+  background: rgba(230,57,70,0.12);
+  border: 1px solid rgba(230,57,70,0.2);
+  border-radius: 20px;
+  padding: 3px 10px;
+}
+
+/* ---------- Equity Chart ---------- */
+.chart-card { min-height: 340px; }
+
+.chart-wrapper {
+  position: relative;
+  height: 260px;
+}
+
+/* ---------- Challenge Progress ---------- */
+.challenge-card { display: flex; flex-direction: column; }
+
+.ring-wrapper {
+  position: relative;
+  width: 160px;
+  height: 160px;
+  margin: 0 auto 24px;
+}
+
+.progress-ring { transform: rotate(-90deg); }
+
+.ring-track {
+  fill: none;
+  stroke: rgba(255,255,255,0.05);
+  stroke-width: 10;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 10;
+  stroke-linecap: round;
+  /* circumference = 2π × 68 ≈ 427.26 */
+  stroke-dasharray: 427.26;
+  stroke-dashoffset: 427.26; /* animated to target in JS */
+  filter: drop-shadow(0 0 6px rgba(230,57,70,0.6));
+  transition: stroke-dashoffset 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ring-pct {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 2rem;
+  color: var(--white);
+  letter-spacing: 0.03em;
+  line-height: 1;
+}
+
+.ring-label {
+  font-size: 0.68rem;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ---------- Rules ---------- */
+.rules-list { display: flex; flex-direction: column; gap: 14px; }
+
+.rule-item { display: flex; flex-direction: column; gap: 6px; }
+
+.rule-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rule-name {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.rule-value {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.rule-value--green { color: var(--green); }
+.rule-value--gold  { color: var(--gold); }
+.rule-value--red   { color: var(--red); }
+
+.rule-bar-track {
+  height: 6px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.rule-bar {
+  height: 100%;
+  border-radius: 20px;
+  width: 0; /* animated via JS */
+  transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.rule-bar--green { background: var(--green);
+  box-shadow: 0 0 8px rgba(34,197,94,0.4); }
+.rule-bar--gold  { background: var(--gold);
+  box-shadow: 0 0 8px rgba(212,175,55,0.4); }
+.rule-bar--red   { background: linear-gradient(90deg, var(--red-dark), var(--red));
+  box-shadow: 0 0 8px rgba(230,57,70,0.4); }
+
+/* ============================================================
+   TRADES TABLE
+   ============================================================ */
+.trades-card { margin-top: 18px; }
+
+.view-all {
+  font-size: 0.8rem;
+  color: var(--red);
+  font-weight: 500;
+  transition: opacity var(--transition);
+}
+
+.view-all:hover { opacity: 0.7; }
+
+.table-wrapper { overflow-x: auto; }
+
+.trades-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.trades-table th {
+  text-align: left;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  padding: 0 14px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.trades-table td {
+  padding: 13px 14px;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  white-space: nowrap;
+  transition: color var(--transition);
+}
+
+.trades-table tbody tr:last-child td { border-bottom: none; }
+
+.trades-table tbody tr {
+  transition: background var(--transition);
+}
+
+.trades-table tbody tr:hover td {
+  background: var(--bg-card-hover);
+  color: var(--white);
+}
+
+.instrument {
+  font-weight: 600;
+  color: var(--white) !important;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.06em;
+}
+
+.dir {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.dir--long  { background: rgba(34,197,94,0.12);  color: var(--green); border: 1px solid rgba(34,197,94,0.2); }
+.dir--short { background: rgba(230,57,70,0.12);  color: var(--red);   border: 1px solid rgba(230,57,70,0.2); }
+
+.pnl { font-weight: 600; font-size: 0.88rem; }
+.pnl--pos { color: var(--green); }
+.pnl--neg { color: var(--red); }
+
+/* ============================================================
+   QUICK ACTIONS
+   ============================================================ */
+.actions-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin-top: 18px;
+}
+
+.action-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  transition: background var(--transition);
+}
+
+.action-card:hover { background: var(--bg-card-hover); }
+
+.action-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  background: rgba(230,57,70,0.12);
+  border: 1px solid rgba(230,57,70,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--red);
+  flex-shrink: 0;
+}
+
+.action-icon svg { width: 22px; height: 22px; }
+
+.action-icon--ghost {
+  background: rgba(255,255,255,0.04);
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.action-body { flex: 1; min-width: 0; }
+
+.action-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--white);
+}
+
+.action-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+/* ============================================================
+   TOAST
+   ============================================================ */
+.toast {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%) translateY(24px);
+  background: var(--bg-card-hover);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--red);
+  color: var(--white);
+  padding: 13px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 9999;
+  white-space: nowrap;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ============================================================
+   RESPONSIVE — ≤ 1200px
+   ============================================================ */
+@media (max-width: 1200px) {
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .mid-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 900px) {
+  .actions-row { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   RESPONSIVE — ≤ 768px (mobile)
+   ============================================================ */
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: 8px 0 40px rgba(0,0,0,0.6);
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 0 16px 48px;
+  }
+
+  .topbar {
+    margin: 0 -16px;
+    padding: 0 16px;
+  }
+
+  .hamburger { display: flex; }
+
+  .greeting { font-size: 1.2rem; }
+
+  .stats-row { grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .stat-value { font-size: 1.5rem; }
+
+  .mid-row { grid-template-columns: 1fr; }
+
+  .actions-row { grid-template-columns: 1fr; }
+
+  .action-card { flex-wrap: wrap; }
+
+  .btn-payout, .btn-ghost { width: 100%; text-align: center; }
+
+  .card-title { font-size: 1.1rem; }
+}
+
+@media (max-width: 480px) {
+  .stats-row { grid-template-columns: 1fr; }
+
+  .topbar-right .btn-payout { display: none; }
+}
