@@ -1,0 +1,76 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+import { createServerClient } from '@supabase/ssr';
+import { cookies } from 'next/headers';
+import { z } from 'zod';
+import Decimal from 'decimal.js';
+import { rateLimit } from '@/lib/rateLimiter';
+
+const BetSchema = z.object({
+  sport: z.string().min(1).max(50),
+  eveniment: z.string().min(1).max(200),
+  piata: z.string().min(1).max(100),
+  selectie: z.string().min(1).max(100),
+  cota: z.number().positive().max(1000),
+  suma: z.number().positive().max(1_000_000),
+  tipPariu: z.enum(['SIMPLU', 'COMBINAT', 'SISTEM', 'LIVE']).optional(),
+  contId: z.string().min(1),
+});
+
+async function getSupabaseUser() {
+  const cookieStore = await cookies();
+  const supabase = createServerClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { cookies: { getAll: () => cookieStore.getAll() } }
+  );
+  const { data: { user } } = await supabase.auth.getUser();
+  return user;
+}
+
+export async function GET() {
+  const user = await getSupabaseUser();
+  if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
+
+  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
+  if (!utilizator) return NextResponse.json({ pariuri: [] });
+
+  const pariuri = await prisma.pariu.findMany({
+    where: { utilizatorId: utilizator.id },
+    orderBy: { dataPariu: 'desc' },
+    take: 50,
+  });
+  return NextResponse.json({ pariuri });
+}
+
+export async function POST(req: NextRequest) {
+  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
+  if (!rateLimit(`pariuri:${ip}`, 30, 60 * 1000)) {
+    return NextResponse.json({ error: 'Prea multe cereri' }, { status: 429 });
+  }
+
+  const user = await getSupabaseUser();
+  if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
+
+  const parsed = BetSchema.safeParse(await req.json());
+  if (!parsed.success) {
+    return NextResponse.json({ error: 'Date invalide' }, { status: 400 });
+  }
+  const { cota, suma, ...rest } = parsed.data;
+
+  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
+  if (!utilizator) return NextResponse.json({ error: 'Utilizator negăsit' }, { status: 404 });
+
+  // Verify the contTrader belongs to this user
+  const cont = await prisma.contTrader.findFirst({
+    where: { id: rest.contId, utilizatorId: utilizator.id },
+  });
+  if (!cont) return NextResponse.json({ error: 'Cont invalid' }, { status: 403 });
+
+  const potentialCastig = new Decimal(suma).times(new Decimal(cota)).toDecimalPlaces(2).toNumber();
+
+  const pariu = await prisma.pariu.create({
+    data: { ...rest, cota, suma, utilizatorId: utilizator.id, potentialCastig },
+  });
+  return NextResponse.json(pariu);
+}

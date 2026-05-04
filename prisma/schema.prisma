@@ -1,0 +1,150 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum PlanTip {
+  STARTER_500
+  BASIC_1000
+  STANDARD_5000
+  ADVANCED_10000
+  PRO_25000
+  ELITE_50000
+}
+
+enum StatusEvaluare {
+  INACTIV
+  FAZA_1
+  FAZA_2
+  FINANTAT
+  RESPINS
+  SUSPENDAT
+}
+
+enum StatusKYC {
+  NEVERIFICAT
+  IN_ASTEPTARE
+  APROBAT
+  RESPINS
+}
+
+enum TipPariu {
+  SIMPLU
+  COMBINAT
+  SISTEM
+  LIVE
+}
+
+enum StatusPariu {
+  DESCHIS
+  CASTIGAT
+  PIERDUT
+  ANULAT
+  JUMATATE_CASTIG
+}
+
+model Utilizator {
+  id                String       @id @default(cuid())
+  supabaseId        String       @unique
+  email             String       @unique
+  numeComplet       String?
+  telefon           String?
+  tara              String?
+  dataInregistrare  DateTime     @default(now())
+  statusKYC         StatusKYC    @default(NEVERIFICAT)
+  sumsubApplicantId String?
+  stripeCustomerId  String?
+  conturi           ContTrader[]
+  pariuri           Pariu[]
+  retrageri         Retragere[]
+  afiliat           Afiliat?
+}
+
+model ContTrader {
+  id              String         @id @default(cuid())
+  utilizatorId    String
+  utilizator      Utilizator     @relation(fields: [utilizatorId], references: [id])
+  plan            PlanTip
+  capitalInceput  Float
+  capitalCurent   Float
+  statusEvaluare  StatusEvaluare @default(INACTIV)
+  fazaCurenta     Int            @default(1)
+  profitTotal     Float          @default(0)
+  pierdereMaxima  Float          @default(0)
+  tranzactiiTotal Int            @default(0)
+  dataStart       DateTime?
+  dataFinalizare  DateTime?
+  stripeSessionId String?        @unique
+  activ           Boolean        @default(true)
+  createdAt       DateTime       @default(now())
+  pariuri         Pariu[]
+  reguli          RegulaCont[]
+}
+
+model Pariu {
+  id                String      @id @default(cuid())
+  utilizatorId      String
+  utilizator        Utilizator  @relation(fields: [utilizatorId], references: [id])
+  contId            String
+  cont              ContTrader  @relation(fields: [contId], references: [id])
+  sport             String
+  eveniment         String
+  piata             String
+  selectie          String
+  cota              Float
+  suma              Float
+  potentialCastig   Float
+  tipPariu          TipPariu    @default(SIMPLU)
+  statusPariu       StatusPariu @default(DESCHIS)
+  castigSauPierdere Float?
+  dataPariu         DateTime    @default(now())
+  dataRezultat      DateTime?
+  note              String?
+}
+
+model Retragere {
+  id           String     @id @default(cuid())
+  utilizatorId String
+  utilizator   Utilizator @relation(fields: [utilizatorId], references: [id])
+  suma         Float
+  metodaPlata  String
+  detaliiPlata Json
+  status       String     @default("IN_PROCESARE")
+  createdAt    DateTime   @default(now())
+  procesatLa   DateTime?
+}
+
+model RegulaCont {
+  id           String     @id @default(cuid())
+  contId       String
+  cont         ContTrader @relation(fields: [contId], references: [id])
+  numeFaza     String
+  targetProfit Float
+  maxPierdere  Float
+  maxZilnic    Float
+  zileMinime   Int
+  completata   Boolean    @default(false)
+}
+
+model Afiliat {
+  id           String            @id @default(cuid())
+  utilizatorId String            @unique
+  utilizator   Utilizator        @relation(fields: [utilizatorId], references: [id])
+  codReferral  String            @unique
+  comisioane   ComisionAfiliat[]
+  createdAt    DateTime          @default(now())
+}
+
+model ComisionAfiliat {
+  id          String   @id @default(cuid())
+  afiliatId   String
+  afiliat     Afiliat  @relation(fields: [afiliatId], references: [id])
+  suma        Float
+  procent     Float
+  referralId  String
+  status      String   @default("IN_PROCESARE")
+  createdAt   DateTime @default(now())
+}
