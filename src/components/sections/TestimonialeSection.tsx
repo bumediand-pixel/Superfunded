@@ -1,73 +1,93 @@
 'use client';
-import { motion } from 'framer-motion';
+import { Quote } from 'lucide-react';
+import { BlurText } from '@/components/BlurText';
 
 const TESTIMONIALE = [
-  { nume: 'Andrei M.', loc: 'Cluj-Napoca', sport: 'Fotbal', roi: '+24%', text: 'Am trecut evaluarea în 18 zile pariind exclusiv pe Premier League. Retragerea de €800 a ajuns în cont în 24 ore.', initiale: 'AM' },
-  { nume: 'Cristina P.', loc: 'București', sport: 'Tenis', roi: '+31%', text: 'Ca analistă de tenis, platforma mi-a oferit capitalul de care aveam nevoie fără riscul personal. Recomand tuturor!', initiale: 'CP' },
-  { nume: 'Mihai D.', loc: 'Timișoara', sport: 'Baschet', roi: '+19%', text: 'Procesul de KYC a durat 2 zile, apoi am primit contul de €10.000. Suportul răspunde în minute.', initiale: 'MD' },
-  { nume: 'Radu T.', loc: 'Iași', sport: 'MMA', roi: '+42%', text: 'Cel mai bun ROI în luna UFC 300. Am retras €1.680 profit în prima săptămână ca bettor finanțat.', initiale: 'RT' },
-  { nume: 'Elena V.', loc: 'Brașov', sport: 'Fotbal', roi: '+28%', text: 'Regulile sunt clare și corecte. Nu există surprize neplăcute. Exact ce căutam de ani de zile.', initiale: 'EV' },
-  { nume: 'Bogdan L.', loc: 'Constanța', sport: 'Rugby', roi: '+35%', text: 'Am luat planul Elite și a meritat fiecare euro. Capitalul de €50K mi-a permis să aplic strategii noi.', initiale: 'BL' },
+  { quote: 'Am trecut evaluarea în 18 zile pariind exclusiv pe Premier League. Retragerea de €800 a ajuns în cont în 24 ore.', name: 'Andrei M.', role: 'Fotbal · Cluj-Napoca', roi: '+24%' },
+  { quote: 'Ca analistă de tenis, platforma mi-a oferit capitalul de care aveam nevoie fără riscul personal. Recomand tuturor!', name: 'Cristina P.', role: 'Tenis · București', roi: '+31%' },
+  { quote: 'Procesul de KYC a durat 2 zile, apoi am primit contul de €10.000. Suportul răspunde în minute.', name: 'Mihai D.', role: 'Baschet · Timișoara', roi: '+19%' },
+  { quote: 'Cel mai bun ROI în luna UFC 300. Am retras €1.680 profit în prima săptămână ca bettor finanțat.', name: 'Radu T.', role: 'MMA · Iași', roi: '+42%' },
+  { quote: 'Regulile sunt clare și corecte. Nu există surprize neplăcute. Exact ce căutam de ani de zile.', name: 'Elena V.', role: 'Fotbal · Brașov', roi: '+28%' },
+  { quote: 'Am luat planul Elite și a meritat fiecare euro. Capitalul de €50K mi-a permis să aplic strategii noi.', name: 'Bogdan L.', role: 'Rugby · Constanța', roi: '+35%' },
+  { quote: 'Platforma m-a ajutat să îmi structurez strategia. Acum am disciplina unui profesionist.', name: 'Ioana R.', role: 'Tenis · Cluj-Napoca', roi: '+22%' },
+  { quote: 'Prima retragere a inclus și taxa de evaluare rambursată. Exact cum au promis — fără surprize.', name: 'Dan S.', role: 'Fotbal · București', roi: '+27%' },
 ];
+
+type TestimonialCardProps = typeof TESTIMONIALE[0];
+
+function TestimonialCard({ quote, name, role, roi }: TestimonialCardProps) {
+  return (
+    <div className="liquid-glass rounded-2xl p-7 w-[340px] md:w-[400px] shrink-0 flex flex-col gap-5">
+      <Quote className="size-5 text-[hsl(var(--red)/0.65)]" />
+      <p className="font-body text-[hsla(var(--cream)/0.85)] italic leading-relaxed text-[15px] flex-1">
+        &ldquo;{quote}&rdquo;
+      </p>
+      <div className="flex items-center justify-between mt-auto">
+        <div className="flex items-center gap-3">
+          <div className="size-9 rounded-full bg-gradient-to-br from-[hsl(var(--red)/0.55)] to-[hsl(var(--terra)/0.55)] shrink-0" />
+          <div>
+            <div className="font-body font-medium text-sm text-[hsl(var(--cream))]">{name}</div>
+            <div className="font-body text-xs text-[hsla(var(--cream)/0.50)] uppercase tracking-wide">{role}</div>
+          </div>
+        </div>
+        <span className="font-display italic text-xl text-[hsl(var(--green,120,60%,40%))]" style={{ color: '#22c55e' }}>
+          {roi}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+const ROW_A = TESTIMONIALE;
+const ROW_B = [...TESTIMONIALE.slice(4), ...TESTIMONIALE.slice(0, 4)];
 
 export default function TestimonialeSection() {
   return (
-    <section className="py-24 bg-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-14">
-          <span className="inline-block text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
-            style={{ background: '#fff1f2', color: 'var(--red)' }}>
-            Testimoniale
-          </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
-            Bettori finanțați reali
-          </h2>
-          <p className="text-lg" style={{ color: 'var(--text-muted)' }}>
-            Rezultate reale de la comunitatea SuperFunded
-          </p>
+    <section id="testimoniale" className="relative py-28 md:py-40 border-t border-[hsla(var(--cream)/0.08)] bg-[hsl(var(--ink))]">
+      <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)] mb-16 text-center">
+        <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
+          Testimoniale
+        </span>
+        <BlurText
+          text="Ei vorbesc mai bine decât noi."
+          as="h2"
+          className="mt-4 font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[22ch] mx-auto"
+          delay={0.08}
+        />
+      </div>
+
+      {/* Marquee rows */}
+      <div
+        className="flex flex-col gap-5 overflow-hidden"
+        style={{ maskImage: 'linear-gradient(to right, transparent, black 8%, black 92%, transparent)' }}
+      >
+        {/* Row 1 — left */}
+        <div
+          className="flex gap-5 w-max group"
+          style={{ animation: 'marquee 28s linear infinite' }}
+        >
+          {[...ROW_A, ...ROW_A].map((t, i) => (
+            <TestimonialCard key={i} {...t} />
+          ))}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-          {TESTIMONIALE.map((t, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
-              className="rounded-2xl p-6 border transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
-              style={{ background: 'white', borderColor: 'var(--border)' }}>
-
-              {/* Stars */}
-              <div className="flex gap-0.5 mb-4">
-                {[...Array(5)].map((_, j) => (
-                  <svg key={j} className="w-4 h-4" fill="#f59e0b" viewBox="0 0 24 24">
-                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                  </svg>
-                ))}
-              </div>
-
-              <p className="text-sm leading-relaxed mb-6 italic" style={{ color: 'var(--text-muted)' }}>
-                &ldquo;{t.text}&rdquo;
-              </p>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center text-white text-sm font-bold shrink-0"
-                    style={{ background: 'var(--red)' }}>
-                    {t.initiale}
-                  </div>
-                  <div>
-                    <div className="text-sm font-bold" style={{ color: 'var(--text)' }}>{t.nume}</div>
-                    <div className="text-xs" style={{ color: 'var(--text-subtle)' }}>{t.sport} · {t.loc}</div>
-                  </div>
-                </div>
-                <span className="text-lg font-extrabold" style={{ color: '#22c55e' }}>{t.roi}</span>
-              </div>
-            </motion.div>
+        {/* Row 2 — right */}
+        <div
+          className="flex gap-5 w-max group"
+          style={{ animation: 'marquee-rev 32s linear infinite' }}
+        >
+          {[...ROW_B, ...ROW_B].map((t, i) => (
+            <TestimonialCard key={i} {...t} />
           ))}
         </div>
       </div>
+
+      <style>{`
+        @media (prefers-reduced-motion: reduce) {
+          .group { animation-play-state: paused !important; }
+        }
+        .group:hover { animation-play-state: paused; }
+      `}</style>
     </section>
   );
 }
