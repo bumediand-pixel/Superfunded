@@ -11,40 +11,41 @@
 
 /* ─── DESIGN TOKENS ─────────────────────────── */
 :root {
-  --red:       #E63946;
-  --red-hot:   #FF4757;
-  --red-dim:   #7a1b22;
-  --gold:      #C9A84C;
-  --gold-dim:  #8a6e2a;
-  --black-0:   #060606;
-  --black-1:   #0d0d0d;
-  --black-2:   #111111;
-  --black-3:   #181818;
-  --white-hi:  #F8F8F6;
-  --white-mid: #9A9A94;
-  --white-lo:  #3E3E3A;
+  --red:        #E63946;
+  --red-dark:   #c0202d;
+  --red-light:  #fff1f2;
+  --red-muted:  #fecdd3;
+
+  --gold:       #f59e0b;
+  --green:      #22c55e;
+
+  --bg:         #ffffff;
+  --bg-alt:     #f8fafc;
+  --bg-alt2:    #f1f5f9;
+
+  --text:       #0f172a;
+  --text-muted: #64748b;
+  --text-subtle:#94a3b8;
+
+  --border:     #e2e8f0;
+  --border-dark:#cbd5e1;
+
+  /* legacy compat */
+  --black-0:   #0f172a;
+  --black-1:   #1e293b;
+  --white-hi:  #0f172a;
+  --white-mid: #64748b;
+  --white-lo:  #cbd5e1;
 }
 
 /* ─── BASE ───────────────────────────────────── */
 html { scroll-behavior: smooth; }
 
 body {
-  background: var(--black-0);
-  color: var(--white-hi);
+  background: var(--bg);
+  color: var(--text);
   overflow-x: hidden;
   font-family: var(--font-jakarta), sans-serif;
-}
-
-/* Grain overlay — gives cinematic film texture */
-body::after {
-  content: '';
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 9998;
-  opacity: 0.038;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 180px 180px;
 }
 
 /* ─── TYPOGRAPHY UTILITIES ───────────────────── */
@@ -54,54 +55,21 @@ body::after {
 .font-bodoni  { font-family: var(--font-bodoni), Georgia, serif; }
 .font-jost    { font-family: var(--font-jost), sans-serif; }
 
-/* ─── SPOTLIGHT ANIMATION ────────────────────── */
-@keyframes spotlight {
-  0%   { opacity: 0; transform: translate(-72%, -62%) skewX(-23deg); }
-  100% { opacity: 1; transform: translate(-50%, -40%) skewX(-23deg); }
-}
-.animate-spotlight { animation: spotlight 2s ease 0.75s 1 forwards; }
-
 /* ─── SHIMMER ────────────────────────────────── */
 @keyframes shimmer {
   from { background-position: 0 0; }
   to   { background-position: -200% 0; }
 }
 .animate-shimmer {
-  background: linear-gradient(110deg, #0d0d0d 45%, #1f1f1f 55%, #0d0d0d);
+  background: linear-gradient(110deg, #f1f5f9 45%, #e2e8f0 55%, #f1f5f9);
   background-size: 200% 100%;
   animation: shimmer 1.5s linear infinite;
 }
 
 /* ─── CUSTOM SCROLLBAR ───────────────────────── */
-::-webkit-scrollbar        { width: 3px; }
-::-webkit-scrollbar-track  { background: var(--black-0); }
-::-webkit-scrollbar-thumb  { background: var(--red); border-radius: 0; }
-
-/* ─── CUSTOM CURSOR ──────────────────────────── */
-* { cursor: none !important; }
-
-#cursor-dot {
-  position: fixed; top: 0; left: 0; z-index: 99999;
-  width: 6px; height: 6px;
-  background: var(--red);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: transform 0.05s linear;
-}
-#cursor-ring {
-  position: fixed; top: 0; left: 0; z-index: 99998;
-  width: 28px; height: 28px;
-  border: 1px solid rgba(230,57,70,0.5);
-  border-radius: 50%;
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: transform 0.15s ease, width 0.2s ease, height 0.2s ease, border-color 0.2s ease;
-}
-#cursor-ring.hover {
-  width: 44px; height: 44px;
-  border-color: rgba(230,57,70,0.9);
-}
+::-webkit-scrollbar        { width: 4px; }
+::-webkit-scrollbar-track  { background: var(--bg-alt); }
+::-webkit-scrollbar-thumb  { background: var(--red); border-radius: 2px; }
 
 /* ─── TICKER MARQUEE ─────────────────────────── */
 @keyframes ticker-scroll {
@@ -111,25 +79,20 @@ body::after {
 .ticker-inner {
   display: flex;
   width: max-content;
-  animation: ticker-scroll 28s linear infinite;
+  animation: ticker-scroll 30s linear infinite;
 }
 .ticker-inner:hover { animation-play-state: paused; }
 
-/* ─── SCROLL PARALLAX PERF ───────────────────── */
-.will-parallax { will-change: transform; }
-
-/* ─── SPORT SCENE BLEED ──────────────────────── */
-section { position: relative; }
-
-/* ─── PLAN CARD HOVER LINE ───────────────────── */
+/* ─── PLAN CARD ───────────────────────────────── */
 .plan-card::before {
   content: '';
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--red), transparent);
+  height: 3px;
+  background: var(--red);
   opacity: 0;
-  transition: opacity 0.4s;
+  transition: opacity 0.3s;
+  border-radius: 12px 12px 0 0;
 }
 .plan-card:hover::before { opacity: 1; }
 .plan-card-popular::before { opacity: 1 !important; }

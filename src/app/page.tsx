@@ -4,9 +4,8 @@ import HeroSection from '@/components/sections/HeroSection';
 import MarqueeSection from '@/components/sections/MarqueeSection';
 import StatisticiSection from '@/components/sections/StatisticiSection';
 import CumFunctioneazaSection from '@/components/sections/CumFunctioneazaSection';
-import PlatformScrollSection from '@/components/sections/PlatformScrollSection';
+import SportsCinematicSection from '@/components/sections/SportsCinematicSection';
 import PlanuriSection from '@/components/sections/PlanuriSection';
-import SporturiSection from '@/components/sections/SporturiSection';
 import LeaderboardSection from '@/components/sections/LeaderboardSection';
 import TestimonialeSection from '@/components/sections/TestimonialeSection';
 import FAQSection from '@/components/sections/FAQSection';
@@ -21,9 +20,8 @@ export default function Home() {
         <MarqueeSection />
         <StatisticiSection />
         <CumFunctioneazaSection />
-        <PlatformScrollSection />
+        <SportsCinematicSection />
         <PlanuriSection />
-        <SporturiSection />
         <LeaderboardSection />
         <TestimonialeSection />
         <FAQSection />

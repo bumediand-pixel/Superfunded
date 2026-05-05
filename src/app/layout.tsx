@@ -20,13 +20,10 @@ export const metadata: Metadata = {
   },
 };
 
-import CursorFX from '@/components/CursorFX';
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${bebas.variable} ${jakarta.variable} ${mono.variable} ${bodoni.variable} ${jost.variable}`}>
       <body className="min-h-full bg-[#060606] text-white font-jakarta">
-        <CursorFX />
         {children}
       </body>
     </html>

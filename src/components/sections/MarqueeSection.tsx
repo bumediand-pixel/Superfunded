@@ -1,28 +1,24 @@
 const ITEMS = [
-  '⚽ FOTBAL', '€1.2M+ PROFIT PLĂTIT', '🎾 TENIS', 'CAPITAL PÂNĂ LA €50.000',
-  '🏀 BASCHET', '80% SPLIT PROFIT', '🥊 MMA / UFC', '2.400+ BETTORI ACTIVI',
-  '🏉 RUGBY', 'FĂRĂ LIMITĂ DE TIMP', '🏒 HOCHEI', 'RETRAGERI SĂPTĂMÂNALE',
-  '⚽ FOTBAL', '€1.2M+ PROFIT PLĂTIT', '🎾 TENIS', 'CAPITAL PÂNĂ LA €50.000',
-  '🏀 BASCHET', '80% SPLIT PROFIT', '🥊 MMA / UFC', '2.400+ BETTORI ACTIVI',
-  '🏉 RUGBY', 'FĂRĂ LIMITĂ DE TIMP', '🏒 HOCHEI', 'RETRAGERI SĂPTĂMÂNALE',
+  'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
+  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
+  'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
+  'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
+  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
+  'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
 ];
+
+const isHighlight = (item: string) =>
+  item.includes('€') || item.includes('Split') || item.includes('Capital') || item.includes('Retrageri');
 
 export default function MarqueeSection() {
   return (
-    <div className="overflow-hidden border-y py-3" style={{
-      borderColor: 'rgba(230,57,70,0.15)',
-      background: 'linear-gradient(90deg, #0d0d0d, #111111)',
-    }}>
+    <div className="overflow-hidden border-y py-3.5" style={{ borderColor: 'var(--border)', background: 'var(--bg-alt)' }}>
       <div className="ticker-inner">
         {ITEMS.map((item, i) => (
-          <span key={i} className="flex items-center gap-2 px-6 font-bebas tracking-widest whitespace-nowrap" style={{
-            fontSize: '13px',
-            color: item.startsWith('€') || item.includes('PROFIT') || item.includes('SPLIT') || item.includes('CAPITAL') || item.includes('RETRAGERI')
-              ? '#C9A84C'
-              : 'rgba(255,255,255,0.55)',
-          }}>
+          <span key={i} className="flex items-center gap-2 px-5 text-sm font-semibold whitespace-nowrap"
+            style={{ color: isHighlight(item) ? 'var(--red)' : 'var(--text-muted)' }}>
             {item}
-            <span style={{ color: 'rgba(230,57,70,0.4)', marginLeft: '8px' }}>◆</span>
+            <span className="text-xs" style={{ color: 'var(--border-dark)', marginLeft: '6px' }}>·</span>
           </span>
         ))}
       </div>
