@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   if (!utilizator.conturi.length) return NextResponse.json({ error: 'Niciun cont finanțat activ' }, { status: 400 });
 
   // Verify sufficient balance across funded accounts
-  const totalBalance = utilizator.conturi.reduce((acc, c) => acc + c.capitalCurent, 0);
+  const totalBalance = utilizator.conturi.reduce((acc: number, c: { capitalCurent: number }) => acc + c.capitalCurent, 0);
   if (suma > totalBalance) return NextResponse.json({ error: 'Sold insuficient' }, { status: 400 });
 
   const retragere = await prisma.retragere.create({

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { stripe } from '@/lib/stripe';
+import { getStripe } from '@/lib/stripe';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
@@ -17,7 +17,7 @@ export async function POST() {
   const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
   if (!utilizator?.stripeCustomerId) return NextResponse.json({ error: 'No Stripe customer' }, { status: 400 });
 
-  const session = await stripe.billingPortal.sessions.create({
+  const session = await getStripe().billingPortal.sessions.create({
     customer: utilizator.stripeCustomerId,
     return_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard`,
   });

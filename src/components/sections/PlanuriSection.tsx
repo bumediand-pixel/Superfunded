@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle } from 'lucide-react';
+import { BlurText } from '@/components/BlurText';
 
 const PLANURI_1STEP = [
   { id: 'STARTER_500',    capital: '€500',    taxa: '€29',  split: '70%', popular: false, tier: 'Starter' },
@@ -43,48 +44,63 @@ export default function PlanuriSection() {
   };
 
   return (
-    <section id="planuri" className="py-24" style={{ background: 'var(--bg-alt)' }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+    <section id="planuri" className="relative py-28 md:py-40 border-t border-[hsla(var(--cream)/0.08)] bg-[hsl(var(--ink))]">
+      <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)]">
 
         {/* Header */}
         <div className="text-center mb-12">
-          <span className="inline-block text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
-            style={{ background: '#fff1f2', color: 'var(--red)' }}>
+          <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block mb-4">
             Planuri & Prețuri
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
-            Alege challenge-ul tău
-          </h2>
-          <p className="text-lg" style={{ color: 'var(--text-muted)' }}>
+          <BlurText
+            text="Alege challenge-ul tău."
+            as="h2"
+            className="font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[20ch] mx-auto"
+            delay={0.08}
+          />
+          <p className="mt-4 font-body text-base text-[hsla(var(--cream)/0.60)]">
             Taxă unică · Fără abonament · Rambursată la prima retragere
           </p>
         </div>
 
         {/* Toggle */}
         <div className="flex justify-center mb-10">
-          <div className="inline-flex rounded-xl border p-1" style={{ borderColor: 'var(--border)', background: 'white' }}>
+          <div className="liquid-glass rounded-full p-1 inline-flex">
             {(['1step', '2step'] as const).map(m => (
-              <button key={m} onClick={() => setMode(m)}
-                className="relative px-6 py-2.5 rounded-lg text-sm font-bold transition-all duration-200 cursor-pointer"
+              <button
+                key={m}
+                onClick={() => setMode(m)}
+                className="relative px-6 py-2.5 rounded-full text-sm font-semibold transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-[hsl(var(--red))]"
                 style={mode === m
-                  ? { background: 'var(--red)', color: 'white', boxShadow: '0 2px 8px rgba(230,57,70,0.3)' }
-                  : { background: 'transparent', color: 'var(--text-muted)' }}>
+                  ? { background: 'hsl(var(--red))', color: 'white' }
+                  : { background: 'transparent', color: 'hsla(var(--cream)/0.60)' }
+                }
+              >
                 {m === '1step' ? '1-Step Challenge' : '2-Step Challenge'}
-                {m === '2step' && <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full font-semibold"
-                  style={{ background: mode === '2step' ? 'rgba(255,255,255,0.25)' : '#fff1f2', color: mode === '2step' ? 'white' : 'var(--red)' }}>
-                  Recomandat
-                </span>}
+                {m === '2step' && (
+                  <span
+                    className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full font-semibold"
+                    style={{
+                      background: mode === '2step' ? 'rgba(255,255,255,0.20)' : 'hsla(var(--red)/0.15)',
+                      color: mode === '2step' ? 'white' : 'hsl(var(--red))',
+                    }}
+                  >
+                    Recomandat
+                  </span>
+                )}
               </button>
             ))}
           </div>
         </div>
 
-        {/* Features of mode */}
+        {/* Features */}
         <div className="flex flex-wrap justify-center gap-3 mb-10">
           {features.map(f => (
-            <div key={f} className="flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full border"
-              style={{ borderColor: 'var(--border)', background: 'white', color: 'var(--text)' }}>
-              <CheckCircle className="w-3.5 h-3.5" style={{ color: 'var(--red)' }} />
+            <div
+              key={f}
+              className="liquid-glass flex items-center gap-1.5 text-sm font-medium px-3 py-1.5 rounded-full text-[hsla(var(--cream)/0.80)]"
+            >
+              <CheckCircle className="w-3.5 h-3.5 text-[hsl(var(--red))]" />
               {f}
             </div>
           ))}
@@ -93,52 +109,61 @@ export default function PlanuriSection() {
         {/* Plan cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {planuri.map(plan => (
-            <div key={plan.id}
-              className="plan-card relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl cursor-default"
+            <div
+              key={plan.id}
+              className="plan-card liquid-glass relative rounded-2xl overflow-hidden transition-all duration-300 hover:-translate-y-1 cursor-default"
               style={{
-                background: 'white',
-                border: plan.popular ? '2px solid var(--red)' : '1px solid var(--border)',
-                boxShadow: plan.popular ? '0 8px 30px rgba(230,57,70,0.12)' : '0 1px 4px rgba(0,0,0,0.05)',
-              }}>
-
+                border: plan.popular ? '1.5px solid hsl(var(--red)/0.60)' : undefined,
+                boxShadow: plan.popular ? '0 0 40px hsl(var(--red)/0.08)' : undefined,
+              }}
+            >
               {plan.popular && (
-                <div className="text-center py-2 text-xs font-bold tracking-widest text-white"
-                  style={{ background: 'var(--red)' }}>
+                <div
+                  className="text-center py-2 text-xs font-bold tracking-widest text-white"
+                  style={{ background: 'hsl(var(--red))' }}
+                >
                   RECOMANDAT
                 </div>
               )}
 
               <div className="p-6">
-                <div className="text-sm font-bold mb-1" style={{ color: 'var(--text-muted)' }}>{plan.tier}</div>
-                <div className="text-4xl font-extrabold mb-0.5" style={{ color: plan.popular ? 'var(--red)' : 'var(--text)' }}>
+                <div className="text-sm font-semibold mb-1 text-[hsla(var(--cream)/0.55)]">{plan.tier}</div>
+                <div
+                  className="text-4xl font-display leading-none mb-0.5"
+                  style={{ color: plan.popular ? 'hsl(var(--red))' : 'hsl(var(--cream))' }}
+                >
                   {plan.capital}
                 </div>
-                <div className="text-xs mb-5" style={{ color: 'var(--text-subtle)' }}>capital alocat</div>
+                <div className="text-xs mb-5 text-[hsla(var(--cream)/0.40)]">capital alocat</div>
 
-                <div className="flex items-baseline gap-1.5 mb-5 pb-5 border-b" style={{ borderColor: 'var(--border)' }}>
-                  <span className="text-3xl font-extrabold" style={{ color: 'var(--text)' }}>{plan.taxa}</span>
-                  <span className="text-sm" style={{ color: 'var(--text-muted)' }}>taxă unică</span>
+                <div className="flex items-baseline gap-1.5 mb-5 pb-5 border-b border-[hsla(var(--cream)/0.10)]">
+                  <span className="text-3xl font-display text-[hsl(var(--cream))]">{plan.taxa}</span>
+                  <span className="text-sm text-[hsla(var(--cream)/0.55)]">taxă unică</span>
                 </div>
 
-                <div className="flex items-center justify-between px-3 py-2.5 rounded-lg mb-5"
-                  style={{ background: '#fff1f2', border: '1px solid #fecdd3' }}>
-                  <span className="text-xs font-semibold" style={{ color: 'var(--text-muted)' }}>Split Profit</span>
-                  <span className="text-xl font-extrabold" style={{ color: 'var(--red)' }}>{plan.split}</span>
+                <div
+                  className="flex items-center justify-between px-3 py-2.5 rounded-xl mb-5"
+                  style={{ background: 'hsla(var(--red)/0.12)', border: '1px solid hsla(var(--red)/0.25)' }}
+                >
+                  <span className="text-xs font-semibold text-[hsla(var(--cream)/0.60)]">Split Profit</span>
+                  <span className="text-xl font-display text-[hsl(var(--red))]">{plan.split}</span>
                 </div>
 
-                <div className="text-xs mb-6 leading-relaxed" style={{ color: 'var(--text-subtle)' }}>
+                <div className="text-xs mb-6 leading-relaxed text-[hsla(var(--cream)/0.45)]">
                   {mode === '1step'
                     ? 'Target 40% · Limită 30 zile · Retrageri săptămânale'
                     : 'Target 30%+20% · Fără limită de timp · Retrageri săptămânale'}
                 </div>
 
-                <button onClick={() => handleCheckout(plan.id)} disabled={loading === plan.id}
-                  className="w-full font-bold text-sm py-3.5 rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50"
+                <button
+                  onClick={() => handleCheckout(plan.id)}
+                  disabled={loading === plan.id}
+                  className="w-full font-semibold text-sm py-3.5 rounded-full transition-all duration-200 cursor-pointer disabled:opacity-50 focus-visible:ring-2 focus-visible:ring-[hsl(var(--red))]"
                   style={plan.popular
-                    ? { background: 'var(--red)', color: 'white' }
-                    : { background: 'var(--bg-alt)', color: 'var(--text)', border: '1px solid var(--border)' }}
-                  onMouseEnter={e => { const el = e.currentTarget; if (plan.popular) el.style.background = '#c0202d'; else el.style.background = 'var(--border)'; }}
-                  onMouseLeave={e => { const el = e.currentTarget; if (plan.popular) el.style.background = 'var(--red)'; else el.style.background = 'var(--bg-alt)'; }}>
+                    ? { background: 'hsl(var(--red))', color: 'white' }
+                    : { background: 'hsla(var(--cream)/0.08)', color: 'hsl(var(--cream))', border: '1px solid hsla(var(--cream)/0.15)' }
+                  }
+                >
                   {loading === plan.id ? 'Se procesează...' : 'Cumpără Acum'}
                 </button>
               </div>
@@ -146,7 +171,7 @@ export default function PlanuriSection() {
           ))}
         </div>
 
-        <p className="text-center text-xs mt-6" style={{ color: 'var(--text-subtle)' }}>
+        <p className="text-center text-xs mt-6 text-[hsla(var(--cream)/0.40)]">
           Taxă rambursată la prima retragere · Fără abonament · Retrageri în 24-48h
         </p>
       </div>
