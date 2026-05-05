@@ -50,7 +50,7 @@ export default function HeroSection() {
                 Nou
               </span>
               <span className="pr-3 text-sm text-[hsla(var(--cream)/0.85)]">
-                Platforma #1 Betting Prop Firm · România
+                Prima Betting Prop Firm din România
               </span>
             </div>
           </motion.div>
@@ -71,7 +71,7 @@ export default function HeroSection() {
             transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
             className="mt-6 font-body text-base md:text-lg text-[hsla(var(--cream)/0.70)] max-w-xl leading-relaxed"
           >
-            Capital până la <strong className="text-[hsl(var(--cream))]">€50.000</strong>. Tu demonstrezi că știi să pariezi — noi asigurăm fondurile.
+            Până la <strong className="text-[hsl(var(--cream))]">€50.000</strong> capital. Tu pariezi cu skill, noi punem banii. Profitul îl împărțim 80/20.
           </motion.p>
 
           {/* CTA buttons */}
@@ -86,7 +86,7 @@ export default function HeroSection() {
               className="inline-flex items-center gap-1.5 font-semibold text-sm px-7 py-3.5 rounded-full text-white transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[hsl(var(--red))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--ink))]"
               style={{ background: 'hsl(var(--red))' }}
             >
-              Evaluare Gratuită
+              Începe Evaluarea
               <ArrowUpRight className="size-4" />
             </Link>
             <Link
@@ -101,7 +101,7 @@ export default function HeroSection() {
           {/* Partners */}
           <div className="absolute bottom-10 inset-x-0 flex flex-col items-center gap-4 px-6">
             <span className="liquid-glass rounded-full px-4 py-1.5 text-xs font-body text-[hsla(var(--cream)/0.80)]">
-              Pariuri acceptate la
+              Pariem pe
             </span>
             <div className="flex items-center gap-8 md:gap-14 flex-wrap justify-center">
               {PARTNERS.map(p => (

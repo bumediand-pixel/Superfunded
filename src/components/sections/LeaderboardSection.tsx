@@ -41,7 +41,7 @@ export default function LeaderboardSection() {
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
             Leaderboard
           </h2>
-          <p className="text-base" style={{ color: 'var(--text-muted)' }}>Top bettori · ultimele 30 de zile</p>
+          <p className="text-base" style={{ color: 'var(--text-muted)' }}>Top traderi · ultimele 30 de zile</p>
         </div>
 
         <div className="rounded-2xl overflow-hidden border" style={{ background: 'white', borderColor: 'var(--border)' }}>
@@ -68,7 +68,7 @@ export default function LeaderboardSection() {
 
           {!loading && data.length === 0 && (
             <div className="px-6 py-12 text-center text-sm" style={{ color: 'var(--text-muted)' }}>
-              Niciun trader activ momentan. Fii primul!
+              Niciun trader activ momentan. Fii primul.
             </div>
           )}
 
@@ -102,7 +102,7 @@ export default function LeaderboardSection() {
           </Link>
         </div>
         <p className="text-center text-xs mt-3" style={{ color: 'var(--text-subtle)' }}>
-          Date actualizate în timp real · Pseudonime pentru confidențialitate
+          Date live · Pseudonime pentru confidențialitate
         </p>
       </div>
     </section>

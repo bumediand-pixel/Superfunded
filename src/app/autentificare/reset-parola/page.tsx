@@ -62,7 +62,7 @@ export default function ResetParolaPage() {
               <div className="mb-6">
                 <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'var(--red)' }}>Securitate cont</div>
                 <h1 className="font-bebas text-3xl tracking-widest" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>RESETARE PAROLĂ</h1>
-                <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>Introdu emailul și îți trimitem un link de resetare.</p>
+                <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>Lasă-ne emailul, îți trimitem linkul de resetare.</p>
               </div>
               {error && (
                 <div className="mb-4 px-4 py-3 text-sm font-mono" style={{ background: 'rgba(230,57,70,0.08)', border: '1px solid rgba(230,57,70,0.2)', color: 'var(--red)' }}>
@@ -82,7 +82,7 @@ export default function ResetParolaPage() {
                 <button type="submit" disabled={loading}
                   className="w-full font-bold text-xs tracking-[0.14em] uppercase py-3.5 transition-all duration-300 disabled:opacity-40"
                   style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
-                  {loading ? 'Se trimite...' : 'Trimite link resetare'}
+                  {loading ? 'Se trimite…' : 'Trimite linkul'}
                 </button>
               </form>
             </>
@@ -97,10 +97,10 @@ export default function ResetParolaPage() {
               </div>
               <h2 className="font-bebas text-2xl tracking-widest mb-2" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>EMAIL TRIMIS</h2>
               <p className="text-sm" style={{ color: 'rgba(255,255,255,0.4)' }}>
-                Verifică inbox-ul pentru <span style={{ color: 'var(--white-hi)' }}>{email}</span>. Linkul expiră în 1 oră.
+                Verifică inboxul de la <span style={{ color: 'var(--white-hi)' }}>{email}</span>. Linkul e valabil 1 oră.
               </p>
               <button onClick={() => setStep('request')} className="mt-6 font-mono text-[10px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                ← Trimite din nou
+                ← Trimite-l din nou
               </button>
             </div>
           )}
@@ -139,7 +139,7 @@ export default function ResetParolaPage() {
                 <button type="submit" disabled={loading}
                   className="w-full font-bold text-xs tracking-[0.14em] uppercase py-3.5 transition-all duration-300 disabled:opacity-40"
                   style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
-                  {loading ? 'Se salvează...' : 'Salvează parola nouă'}
+                  {loading ? 'Se salvează…' : 'Salvează parola'}
                 </button>
               </form>
             </>
@@ -153,11 +153,11 @@ export default function ResetParolaPage() {
                 <span className="text-2xl" style={{ color: '#22c55e' }}>✓</span>
               </div>
               <h2 className="font-bebas text-2xl tracking-widest mb-2" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>PAROLĂ ACTUALIZATĂ</h2>
-              <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.4)' }}>Te poți autentifica acum cu noua parolă.</p>
+              <p className="text-sm mb-6" style={{ color: 'rgba(255,255,255,0.4)' }}>Poți intra acum în cont cu parola nouă.</p>
               <Link href="/autentificare/login"
                 className="inline-block font-bold text-xs tracking-[0.14em] uppercase px-8 py-3.5 transition-all duration-300"
                 style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
-                Mergi la Login
+                Mergi la autentificare
               </Link>
             </div>
           )}

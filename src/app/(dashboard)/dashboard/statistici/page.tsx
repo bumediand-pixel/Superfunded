@@ -42,12 +42,12 @@ export default function StatisticiPage() {
   const topPiete = (data?.perPiata ?? []).slice(0, 6);
 
   const kpis = [
-    { label: 'Total Pariuri', val: s ? String(s.total) : '—', sub: 'plasate' },
-    { label: 'Rata Câștig', val: s?.rataWin ? `${s.rataWin}%` : '—', sub: '% win rate' },
-    { label: 'Profit Net', val: s ? `${s.profitNet >= 0 ? '+' : ''}${s.profitNet.toFixed(2)}€` : '—', sub: 'EUR total', color: s && s.profitNet >= 0 ? '#22c55e' : 'var(--red)', gold: true },
-    { label: 'ROI Mediu', val: s?.roi ? `${s.roi}%` : '—', sub: '% per pariu' },
-    { label: 'Cotă Medie', val: s?.cotaMedie ?? '—', sub: 'odds medii' },
-    { label: 'Streak Maxim', val: s ? String(s.streakMaxim) : '—', sub: 'win streak' },
+    { label: 'Total pariuri', val: s ? String(s.total) : '—', sub: 'plasate' },
+    { label: 'Rată câștig', val: s?.rataWin ? `${s.rataWin}%` : '—', sub: 'win rate' },
+    { label: 'Profit net', val: s ? `${s.profitNet >= 0 ? '+' : ''}${s.profitNet.toFixed(2)}€` : '—', sub: 'EUR total', color: s && s.profitNet >= 0 ? '#22c55e' : 'var(--red)', gold: true },
+    { label: 'ROI mediu', val: s?.roi ? `${s.roi}%` : '—', sub: 'per pariu' },
+    { label: 'Cotă medie', val: s?.cotaMedie ?? '—', sub: 'odds medii' },
+    { label: 'Streak maxim', val: s ? String(s.streakMaxim) : '—', sub: 'câștiguri la rând' },
   ];
 
   return (
@@ -56,7 +56,7 @@ export default function StatisticiPage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
         <div>
           <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'var(--red)' }}>Dashboard</div>
-          <h1 className="font-bebas text-4xl tracking-widest" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>STATISTICILE MELE</h1>
+          <h1 className="font-bebas text-4xl tracking-widest" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>STATISTICI</h1>
         </div>
         <div className="flex items-center gap-0 border" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
           {(['7d', '30d', 'all'] as const).map((r) => (
@@ -67,7 +67,7 @@ export default function StatisticiPage() {
                 color: range === r ? 'white' : 'rgba(255,255,255,0.4)',
                 borderRight: r !== 'all' ? '1px solid rgba(255,255,255,0.1)' : 'none',
               }}>
-              {r === '7d' ? 'Ult. 7 zile' : r === '30d' ? 'Ult. 30 zile' : 'Tot timpul'}
+              {r === '7d' ? 'Ultimele 7 zile' : r === '30d' ? 'Ultimele 30 zile' : 'Tot timpul'}
             </button>
           ))}
         </div>
@@ -91,7 +91,7 @@ export default function StatisticiPage() {
       {/* Profit evolution chart */}
       <div className="mb-8 p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
         <div className="flex items-center justify-between mb-6">
-          <div className="font-bebas text-xl tracking-wider" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>EVOLUȚIE PROFIT</div>
+          <div className="font-bebas text-xl tracking-wider" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>EVOLUȚIA PROFITULUI</div>
           <div className="font-mono text-[9px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.25)' }}>EUR · {range}</div>
         </div>
         <div className="flex items-end justify-center gap-px h-48" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
@@ -101,7 +101,7 @@ export default function StatisticiPage() {
             ))
           ) : evo.length === 0 ? (
             <div className="flex items-center justify-center w-full font-mono text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>
-              Niciun pariu finalizat în această perioadă
+              Niciun pariu finalizat în perioada asta.
             </div>
           ) : (
             evo.map((e, i) => {
@@ -126,7 +126,7 @@ export default function StatisticiPage() {
       {/* Per sport + per market */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="font-bebas text-xl tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>PE SPORT</div>
+          <div className="font-bebas text-xl tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>DEFALCARE PE SPORT</div>
           {loading ? (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -134,7 +134,7 @@ export default function StatisticiPage() {
               ))}
             </div>
           ) : topSports.length === 0 ? (
-            <p className="font-mono text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>Niciun pariu înregistrat.</p>
+            <p className="font-mono text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>Niciun pariu încă.</p>
           ) : (
             <div className="space-y-3">
               {topSports.map(({ sport, total: t, pct }) => (
@@ -153,7 +153,7 @@ export default function StatisticiPage() {
         </div>
 
         <div className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-          <div className="font-bebas text-xl tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>DISTRIBUȚIE PIEȚE</div>
+          <div className="font-bebas text-xl tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>DISTRIBUȚIE PE PIEȚE</div>
           {loading ? (
             <div className="space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
@@ -161,7 +161,7 @@ export default function StatisticiPage() {
               ))}
             </div>
           ) : topPiete.length === 0 ? (
-            <p className="font-mono text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>Niciun pariu înregistrat.</p>
+            <p className="font-mono text-sm" style={{ color: 'rgba(255,255,255,0.2)' }}>Niciun pariu încă.</p>
           ) : (
             <div className="space-y-3">
               {topPiete.map(({ piata, count, pct }) => (
@@ -177,7 +177,7 @@ export default function StatisticiPage() {
 
       {!loading && !s && (
         <div className="mt-8 px-5 py-4 font-mono text-xs text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.25)' }}>
-          Statisticile se populează automat pe măsură ce plasezi pariuri pe contul tău de evaluare.
+          Statisticile se populează automat pe măsură ce plasezi pariuri.
         </div>
       )}
     </div>

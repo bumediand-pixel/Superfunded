@@ -6,13 +6,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { BlurText } from '@/components/BlurText';
 
 const FAQ = [
-  { q: 'Ce este SuperFunded?', a: 'SuperFunded este o platformă de evaluare a abilităților de betting bazată pe performanță. Utilizatorii care demonstrează abilități constante primesc acces la un cont finanțat și câștigă real din profiturile generate. Nu suntem un cazino — operăm ca platformă de evaluare a skill-ului.' },
-  { q: 'Cum funcționează procesul de evaluare?', a: 'Există două tipuri de challenge: 1-Step (un singur pas, target de 40% profit în 30 de zile) și 2-Step (două faze: 30% în Faza 1, 20% în Faza 2, fără limită de timp). Odată ce atingi targetul respectând regulile de risc, primești contul finanțat.' },
-  { q: 'Care este diferența dintre 1-Step și 2-Step?', a: '1-Step Challenge: un singur target de 40% profit, split de 70%, limită de 30 de zile. 2-Step Challenge: două faze consecutive (30% + 20%), split de până la 80%, fără limită de timp. Mai mult timp, condiții mai blânde și split mai bun.' },
-  { q: 'Care sunt regulile de risc?', a: 'Limita de pierdere zilnică: 5% din soldul contului. Limita de pierdere totală (drawdown maxim): 8% din capitalul inițial. Dacă depășești oricare dintre aceste limite, evaluarea se încheie. Poți reîncerca cu o reducere de 20% la taxa inițială.' },
-  { q: 'Cum și când primesc plățile?', a: 'Retragerile sunt procesate în 24-48 ore lucrătoare. Prima retragere include și rambursarea integrală a taxei de challenge. Plata se face via transfer bancar sau crypto (USDT/BTC).' },
-  { q: 'Este necesar KYC?', a: 'Da. Înainte de prima retragere, toți utilizatorii trebuie să completeze procesul KYC (Know Your Customer). Procesul durează 24-48 ore și necesită un act de identitate valabil și dovadă de rezidență.' },
-  { q: 'SuperFunded este legal în România?', a: 'SuperFunded operează ca platformă de evaluare a abilităților, nu ca operator de pariuri. Nu plasăm pariuri reale și nu deținem licență de gambling. Activitățile noastre se încadrează în categoria evaluărilor de performanță bazate pe skill.' },
+  { q: 'Ce este SuperFunded?', a: 'SuperFunded e o platformă de evaluare a abilităților de betting. Treci evaluarea, primești un cont finanțat și câștigi din profitul real pe care îl generezi. Nu suntem cazinou — operăm ca platformă de skill evaluation.' },
+  { q: 'Cum funcționează evaluarea?', a: 'Ai două opțiuni: 1-Step (o singură fază, țintă 40% profit în 30 de zile) sau 2-Step (două faze — 30% în prima, 20% în a doua, fără limită de timp). Atingi ținta respectând regulile de risc, primești contul finanțat.' },
+  { q: 'Care e diferența dintre 1-Step și 2-Step?', a: '1-Step: o singură țintă de 40%, split 70%, 30 de zile. 2-Step: două faze (30% + 20%), split 80%, fără presiune de timp. 2-Step e mai relaxat și plătește mai bine — de aia îl recomandăm.' },
+  { q: 'Care sunt regulile de risc?', a: 'Pierdere zilnică maximă: 5% din sold. Drawdown total maxim: 8% din capitalul inițial. Depășești o limită, evaluarea se închide. Poți reîncerca cu 20% reducere la taxă.' },
+  { q: 'Când primesc banii?', a: 'Retragerile se procesează în 24–48 de ore lucrătoare. Prima retragere îți rambursează integral taxa de challenge. Plata vine prin transfer bancar sau crypto (USDT/BTC).' },
+  { q: 'E nevoie de KYC?', a: 'Da, o singură dată — înainte de prima retragere. Durează 24–48 de ore și ai nevoie de un act de identitate valid și o dovadă de rezidență.' },
+  { q: 'E legal SuperFunded în România?', a: 'Da. Operăm ca platformă de evaluare a abilităților, nu ca operator de pariuri. Nu plasăm pariuri reale și nu avem licență de gambling — intrăm în categoria evaluărilor de performanță bazate pe skill.' },
 ];
 
 function AccordionItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
@@ -66,13 +66,13 @@ export default function FAQSection() {
             Întrebări frecvente
           </span>
           <BlurText
-            text="Ai întrebări? Avem răspunsuri."
+            text="Întrebări? Răspundem direct."
             as="h2"
             className="mt-4 font-display uppercase text-4xl md:text-5xl leading-[0.9] tracking-tight text-[hsl(var(--cream))]"
             delay={0.08}
           />
           <p className="mt-6 font-body text-sm text-[hsla(var(--cream)/0.60)] leading-relaxed max-w-[32ch]">
-            Nu găsești răspunsul? Echipa noastră răspunde în 24-48h lucrătoare.
+            Nu găsești ce cauți? Scrie-ne — îți răspundem în 24–48h lucrătoare.
           </p>
           <Link
             href="mailto:support@superfunded.ro"

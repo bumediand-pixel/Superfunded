@@ -33,7 +33,7 @@ export default function PariuriPage() {
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-black text-white">Pariuri</h1>
-          <p className="text-white/40 mt-1">Istoricul complet al pariurilor tale</p>
+          <p className="text-white/40 mt-1">Tot istoricul tău de pariuri, într-un singur loc.</p>
         </div>
       </div>
 
@@ -45,7 +45,7 @@ export default function PariuriPage() {
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-16 text-center">
           <div className="text-5xl mb-4">🎯</div>
           <h3 className="text-white font-black text-xl mb-2">Niciun pariu încă</h3>
-          <p className="text-white/40 text-sm">Pariurile înregistrate vor apărea aici.</p>
+          <p className="text-white/40 text-sm">Plasează primul pariu — o să-l vezi aici imediat.</p>
         </div>
       ) : (
         <div className="bg-[#141414] border border-white/10 rounded-2xl overflow-hidden">

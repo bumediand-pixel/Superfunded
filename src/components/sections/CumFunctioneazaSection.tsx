@@ -7,20 +7,20 @@ const STEPS = [
   {
     n: '01',
     Icon: Target,
-    title: 'Alege Challenge-ul',
-    body: 'Selectezi capitalul (€500–€50K) și tipul de challenge. Plătești o taxă unică — fără abonamente, fără surprize ascunse.',
+    title: 'Alegi Challenge-ul',
+    body: 'Capital de la €500 la €50K, 1-Step sau 2-Step. Taxă unică, fără abonamente, fără costuri ascunse.',
   },
   {
     n: '02',
     Icon: TrendingUp,
-    title: 'Demonstrezi Abilitățile',
-    body: 'Atingi targetul de profit respectând regulile de risc. Nicio limită de timp pe planurile 2-Step. Lucrezi în ritmul tău.',
+    title: 'Atingi Targetul',
+    body: 'Pariezi profitabil respectând limitele de risc. La 2-Step nu există presiune de timp — mergi în ritmul tău.',
   },
   {
     n: '03',
     Icon: Wallet,
-    title: 'Primești Capital & Câștigi',
-    body: 'Treci evaluarea și pariezi cu banii noștri. Păstrezi 70–80% din fiecare câștig. Retrageri săptămânale, garantate.',
+    title: 'Câștigi cu Banii Noștri',
+    body: 'Primești cont finanțat și pariezi pe bune. Iei 70–80% din profit, plătit săptămânal, garantat.',
   },
 ];
 
@@ -34,7 +34,7 @@ export default function CumFunctioneazaSection() {
             Cum funcționează
           </span>
           <BlurText
-            text="3 pași spre capital finanțat."
+            text="3 pași până la capital."
             as="h2"
             className="mt-4 font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[18ch]"
             delay={0.08}

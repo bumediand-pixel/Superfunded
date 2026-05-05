@@ -6,23 +6,23 @@ import { BlurText } from '@/components/BlurText';
 const REASONS = [
   {
     Icon: ShieldCheck,
-    title: 'Asigurat Integral',
-    body: 'Capitalul tău de evaluare este asigurat. Regulile clare și fixe — fără modificări unilaterale, fără surprize după înscriere.',
+    title: 'Capital Asigurat',
+    body: 'Reguli fixe, scrise clar. Fără schimbări unilaterale, fără surprize după ce-ai plătit taxa.',
   },
   {
     Icon: Clock,
     title: 'KYC în 48h',
-    body: 'Verificare rapidă de identitate. Odată aprobat, retragerile sunt procesate imediat, fără întârzieri birocratice.',
+    body: 'Verificare rapidă, o singură dată. După aprobare, retragerile se procesează imediat — fără birocrație.',
   },
   {
     Icon: Eye,
     title: 'Transparență 100%',
-    body: 'Dashboard live cu toate statisticile tale. Fiecare pariu, fiecare cifră vizibilă în timp real. Nimic ascuns.',
+    body: 'Vezi fiecare pariu, fiecare cifră, în timp real. Dashboard live pentru tine și pentru noi. Nimic ascuns.',
   },
   {
     Icon: Award,
     title: 'Platformă Certificată',
-    body: 'Operăm legal ca platformă de evaluare a abilităților. Conformitate deplină cu reglementările române și europene.',
+    body: 'Operăm legal ca platformă de evaluare a abilităților, în conformitate cu reglementările UE și românești.',
   },
 ];
 
@@ -42,7 +42,7 @@ export default function PourquoiSection() {
             delay={0.08}
           />
           <p className="mt-4 font-body text-base text-[hsla(var(--cream)/0.60)] max-w-lg mx-auto">
-            Nu suntem un cazino. Suntem partenerii tăi — tu aduci skill-ul, noi furnizăm capitalul.
+            Nu suntem cazinou, suntem partenerul tău. Tu aduci skill-ul, noi punem capitalul.
           </p>
         </div>
 

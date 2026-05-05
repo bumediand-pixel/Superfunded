@@ -1,14 +1,14 @@
 const ITEMS = [
-  'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
-  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
-  'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
-  'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
-  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
-  'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
+  'Fotbal', '€1.2M+ profit plătit', 'Tenis', 'Capital până la €50.000',
+  'Baschet', '80% split profit', 'MMA / UFC', '2.400+ bettori finanțați',
+  'Rugby', 'Fără limită de timp', 'Hochei', 'Retrageri săptămânale',
+  'Fotbal', '€1.2M+ profit plătit', 'Tenis', 'Capital până la €50.000',
+  'Baschet', '80% split profit', 'MMA / UFC', '2.400+ bettori finanțați',
+  'Rugby', 'Fără limită de timp', 'Hochei', 'Retrageri săptămânale',
 ];
 
 const isHighlight = (item: string) =>
-  item.includes('€') || item.includes('Split') || item.includes('Capital') || item.includes('Retrageri');
+  item.includes('€') || item.includes('split') || item.includes('Capital') || item.includes('Retrageri');
 
 export default function MarqueeSection() {
   return (

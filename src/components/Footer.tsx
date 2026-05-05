@@ -41,7 +41,7 @@ export default function Footer() {
               <span className="font-jakarta font-extrabold text-lg text-white">SuperFunded</span>
             </div>
             <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Platforma de betting prop firm #1 din România. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
+              Prima betting prop firm din România. Capitalul nostru, profitul tău — până la €50.000 per cont finanțat.
             </p>
             <div className="flex flex-col gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
               <span>support@superfunded.ro</span>
@@ -96,16 +96,16 @@ export default function Footer() {
         <div className="px-5 py-4 rounded-xl mb-8" style={{ background: 'rgba(230,57,70,0.08)', border: '1px solid rgba(230,57,70,0.15)' }}>
           <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
             <span style={{ color: 'rgba(230,57,70,0.8)', fontWeight: 700 }}>AVERTISMENT:</span>{' '}
-            SuperFunded este o platformă de evaluare a abilităților sportive, nu un operator de pariuri. Nu plasăm pariuri reale.
-            Taxa de evaluare reprezintă accesul la program. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>18 ani</strong>.
-            Joc responsabil: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>jocresponsabil.ro</strong>
+            SuperFunded e o platformă de evaluare a abilităților sportive, nu un operator de pariuri. Nu plasăm pariuri reale —
+            taxa de challenge îți dă acces la programul de evaluare. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>18 ani</strong>.
+            Joacă responsabil: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>jocresponsabil.ro</strong>
           </p>
         </div>
 
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
           <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-            © 2025 SuperFunded SRL · Înregistrat în România · Toate drepturile rezervate
+            © 2026 SuperFunded SRL · Înregistrat în România · Toate drepturile rezervate
           </span>
           <div className="flex items-center gap-4">
             {LINKS_LEGAL.slice(0, 3).map(({ label, href }) => (

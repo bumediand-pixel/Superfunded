@@ -22,8 +22,8 @@ const PLANURI_2STEP = [
   { id: 'ELITE_50000',    capital: '€50.000', taxa: '€449', split: '80%', popular: false, tier: 'Elite' },
 ];
 
-const FEATURES_1 = ['Target profit 40%', 'Limită 30 zile', 'Split 70%', 'Max drawdown 8%', 'Retrageri săptămânale'];
-const FEATURES_2 = ['Target 30% + 20%', 'Fără limită de timp', 'Split 80%', 'Max drawdown 8%', 'Retrageri săptămânale', 'Taxă rambursată'];
+const FEATURES_1 = ['Țintă profit 40%', 'Limită 30 zile', 'Split 70%', 'Drawdown max. 8%', 'Retrageri săptămânale'];
+const FEATURES_2 = ['Țintă 30% + 20%', 'Fără limită de timp', 'Split 80%', 'Drawdown max. 8%', 'Retrageri săptămânale', 'Taxă rambursată'];
 
 export default function PlanuriSection() {
   const router = useRouter();
@@ -53,13 +53,13 @@ export default function PlanuriSection() {
             Planuri & Prețuri
           </span>
           <BlurText
-            text="Alege challenge-ul tău."
+            text="Alege-ți challenge-ul."
             as="h2"
             className="font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[20ch] mx-auto"
             delay={0.08}
           />
           <p className="mt-4 font-body text-base text-[hsla(var(--cream)/0.60)]">
-            Taxă unică · Fără abonament · Rambursată la prima retragere
+            O singură taxă · Zero abonament · Banii înapoi la prima retragere
           </p>
         </div>
 
@@ -151,8 +151,8 @@ export default function PlanuriSection() {
 
                 <div className="text-xs mb-6 leading-relaxed text-[hsla(var(--cream)/0.45)]">
                   {mode === '1step'
-                    ? 'Target 40% · Limită 30 zile · Retrageri săptămânale'
-                    : 'Target 30%+20% · Fără limită de timp · Retrageri săptămânale'}
+                    ? 'Țintă 40% · Limită 30 zile · Retrageri săptămânale'
+                    : 'Țintă 30%+20% · Fără limită de timp · Retrageri săptămânale'}
                 </div>
 
                 <button
@@ -164,7 +164,7 @@ export default function PlanuriSection() {
                     : { background: 'hsla(var(--cream)/0.08)', color: 'hsl(var(--cream))', border: '1px solid hsla(var(--cream)/0.15)' }
                   }
                 >
-                  {loading === plan.id ? 'Se procesează...' : 'Cumpără Acum'}
+                  {loading === plan.id ? 'Se procesează…' : 'Începe Acum'}
                 </button>
               </div>
             </div>
@@ -172,7 +172,7 @@ export default function PlanuriSection() {
         </div>
 
         <p className="text-center text-xs mt-6 text-[hsla(var(--cream)/0.40)]">
-          Taxă rambursată la prima retragere · Fără abonament · Retrageri în 24-48h
+          Taxa ți se întoarce la prima retragere · Fără abonament · Plăți în 24–48h
         </p>
       </div>
     </section>

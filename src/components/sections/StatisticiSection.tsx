@@ -4,10 +4,10 @@ import { useInView } from 'framer-motion';
 import { BlurText } from '@/components/BlurText';
 
 const STATS = [
-  { value: '2.400+', label: 'Bettori Activi',     numeric: 2400, suffix: '+' },
-  { value: '€1.2M+', label: 'Profit Distribuit',  numeric: null, suffix: null },
-  { value: '80%',    label: 'Split Profit Maxim', numeric: 80,   suffix: '%' },
-  { value: '48h',    label: 'Aprobare KYC',        numeric: null, suffix: null },
+  { value: '2.400+', label: 'Bettori Finanțați',  numeric: 2400, suffix: '+' },
+  { value: '€1.2M+', label: 'Profit Plătit',      numeric: null, suffix: null },
+  { value: '80%',    label: 'Split Maxim',        numeric: 80,   suffix: '%' },
+  { value: '48h',    label: 'Aprobare KYC',       numeric: null, suffix: null },
 ];
 
 function CountUp({ target, suffix, once }: { target: number; suffix: string; once: boolean }) {
@@ -77,7 +77,7 @@ export default function StatisticiSection() {
               Rezultate reale
             </span>
             <BlurText
-              text="Numere care vorbesc de la sine."
+              text="Cifre, nu promisiuni."
               as="h2"
               className="mt-4 font-display uppercase text-3xl md:text-5xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[22ch]"
               delay={0.07}

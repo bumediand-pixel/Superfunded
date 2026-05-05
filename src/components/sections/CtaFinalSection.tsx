@@ -36,14 +36,14 @@ export default function CtaFinalSection() {
       {/* CTA content */}
       <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-[var(--gutter)] py-24">
         <BlurText
-          text="Gata să pariezi cu noi?"
+          text="Pariezi cu banii noștri?"
           as="h2"
           className="font-display italic text-[clamp(48px,9vw,160px)] leading-[0.88] tracking-[-0.02em] text-[hsl(var(--cream))] max-w-[16ch]"
           delay={0.09}
         />
 
         <p className="mt-8 font-body text-base md:text-lg text-[hsla(var(--cream)/0.70)] max-w-xl">
-          Un cont. Un capital. Nicio limită de timp.
+          Un singur cont. Capital până la €50K. Zero limită de timp.
         </p>
 
         <div className="mt-10 flex items-center gap-3 flex-wrap justify-center">
@@ -65,7 +65,7 @@ export default function CtaFinalSection() {
 
         {/* Trust badges */}
         <div className="mt-12 flex items-center gap-6 flex-wrap justify-center">
-          {['Taxă rambursată la prima retragere', 'KYC în 48h', 'Retrageri săptămânale'].map(t => (
+          {['Taxa înapoi la prima retragere', 'KYC în 48h', 'Retrageri săptămânale'].map(t => (
             <span key={t} className="font-body text-xs text-[hsla(var(--cream)/0.50)]">{t}</span>
           ))}
         </div>

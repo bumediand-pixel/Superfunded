@@ -15,7 +15,7 @@ async function getUser() {
 }
 
 const NAV = [
-  { href: '/dashboard', label: 'Overview', icon: '📊' },
+  { href: '/dashboard', label: 'Vedere generală', icon: '📊' },
   { href: '/dashboard/pariuri', label: 'Pariuri', icon: '🎯' },
   { href: '/dashboard/retrageri', label: 'Retrageri', icon: '💸' },
   { href: '/dashboard/kyc', label: 'KYC', icon: '🪪' },
@@ -46,7 +46,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
         <div className="p-4 border-t border-white/5">
           <div className="text-white/40 text-xs truncate mb-3">{user.email}</div>
           <form action="/api/auth/logout" method="POST">
-            <button className="w-full text-left text-white/40 hover:text-white text-sm transition-colors">Logout →</button>
+            <button className="w-full text-left text-white/40 hover:text-white text-sm transition-colors">Ieși din cont →</button>
           </form>
         </div>
       </aside>

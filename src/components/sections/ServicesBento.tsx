@@ -7,32 +7,32 @@ const SERVICES = [
   {
     Icon: TrendingUp,
     title: 'Challenge 1-Step',
-    body: 'Demonstrezi abilitățile într-o singură fază. Target de 40% profit, limită de 30 de zile. Split 70% odată finanțat.',
+    body: 'O singură fază. Țintă 40% profit în 30 de zile. Split 70% după finanțare.',
   },
   {
     Icon: Layers,
     title: 'Challenge 2-Step',
-    body: 'Două faze consecutive (30% + 20%). Fără limită de timp. Split până la 80% — condiții mai blânde, câștig mai mare.',
+    body: 'Două faze (30% + 20%), fără limită de timp. Split 80% — condiții mai relaxate, câștig mai mare.',
   },
   {
     Icon: Wallet,
     title: 'Capital până la €50K',
-    body: 'Treci evaluarea, primești contul finanțat. Pariezi cu banii noștri, păstrezi profitul săptămânal.',
+    body: 'Treci evaluarea, primești contul finanțat. Banii sunt ai noștri, profitul îl iei tu — săptămânal.',
   },
   {
     Icon: Globe,
     title: 'Live & Combinate',
-    body: 'Pariaurile live și combinate sunt permise pe toate planurile. 9 sporturi disponibile, fără restricții de piață.',
+    body: 'Live și combinate permise pe toate planurile. 9 sporturi, zero restricții de piață.',
   },
   {
     Icon: BarChart3,
     title: 'Dashboard Complet',
-    body: 'Win rate, ROI, profit pe sport, evoluție zilnică. Statistici complete și transparente în timp real.',
+    body: 'Win rate, ROI, profit pe sport, evoluție zilnică. Toate cifrele tale, în timp real.',
   },
   {
     Icon: Zap,
     title: 'Retrageri Săptămânale',
-    body: 'Procesăm plățile în fiecare săptămână. Transfer bancar sau crypto (USDT/BTC). Prima retragere include taxa rambursată.',
+    body: 'Plăți în fiecare săptămână, prin transfer bancar sau crypto (USDT/BTC). Prima retragere îți rambursează taxa.',
   },
 ];
 
@@ -55,7 +55,7 @@ export default function ServicesBento() {
             Ce oferim
           </span>
           <BlurText
-            text="Tot ce ai nevoie, sub un singur cont."
+            text="Tot ce-ți trebuie. Într-un singur cont."
             as="h2"
             className="mt-4 font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[20ch]"
             delay={0.08}

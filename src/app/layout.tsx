@@ -10,12 +10,12 @@ const bodoni  = Bodoni_Moda({ subsets: ["latin"], variable: "--font-bodoni", wei
 const jost    = Jost({ subsets: ["latin"], variable: "--font-jost", weight: ["300","400","500","600","700"] });
 
 export const metadata: Metadata = {
-  title: "SuperFunded – Pariezi cu banii noștri",
-  description: "Platforma de betting prop firm #1 din România. Capital până la €50.000. Evaluare fără limită de timp. Retrageri săptămânale.",
-  keywords: "prop betting, bettor finanțat, betting firm, capital pariuri, România",
+  title: "SuperFunded – Capital de pariere până la €50.000",
+  description: "Prima betting prop firm din România. Treci evaluarea, primești cont finanțat și păstrezi până la 80% din profit. Fără limită de timp, retrageri săptămânale.",
+  keywords: "prop betting, bettor finanțat, betting firm, capital pariuri, evaluare bettori, România",
   openGraph: {
     title: "SuperFunded – Pariezi cu banii noștri",
-    description: "Capital până la €50.000. Păstrezi 80% din profit.",
+    description: "Capital până la €50.000. Păstrezi 80% din profit. Retrageri săptămânale.",
     type: "website",
     locale: "ro_RO",
   },

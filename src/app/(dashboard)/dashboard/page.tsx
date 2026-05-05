@@ -34,9 +34,9 @@ export default async function DashboardPage() {
 
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
         {[
-          { label: 'Plan Activ', value: cont ? cont.plan : 'Niciun plan', color: 'text-white', sub: cont ? `€${cont.capitalInceput} capital` : 'Cumpără un plan' },
-          { label: 'Status Evaluare', value: cont?.statusEvaluare ?? '—', color: cont?.statusEvaluare === 'FINANTAT' ? 'text-green-400' : 'text-yellow-400', sub: '' },
-          { label: 'Profit Total', value: cont ? `€${cont.profitTotal.toFixed(2)}` : '€0.00', color: 'text-green-400', sub: 'Split inclus' },
+          { label: 'Plan activ', value: cont ? cont.plan : 'Niciun plan', color: 'text-white', sub: cont ? `€${cont.capitalInceput} capital` : 'Alege un plan' },
+          { label: 'Status evaluare', value: cont?.statusEvaluare ?? '—', color: cont?.statusEvaluare === 'FINANTAT' ? 'text-green-400' : 'text-yellow-400', sub: '' },
+          { label: 'Profit total', value: cont ? `€${cont.profitTotal.toFixed(2)}` : '€0.00', color: 'text-green-400', sub: 'Split inclus' },
           { label: 'Status KYC', value: utilizator?.statusKYC ?? 'NESTARTAT', color: utilizator?.statusKYC === 'APROBAT' ? 'text-green-400' : 'text-yellow-400', sub: '' },
         ].map(card => (
           <div key={card.label} className="bg-[#141414] border border-white/10 rounded-2xl p-5">
@@ -50,11 +50,11 @@ export default async function DashboardPage() {
       {!cont && (
         <div className="bg-gradient-to-r from-red-950/30 to-transparent border border-red-500/20 rounded-2xl p-6 mb-8 flex items-center justify-between">
           <div>
-            <h3 className="text-white font-black text-lg mb-1">Activează-ți Contul</h3>
-            <p className="text-white/50 text-sm">Alege un plan de finanțare pentru a accesa toate funcționalitățile.</p>
+            <h3 className="text-white font-black text-lg mb-1">Activează-ți contul</h3>
+            <p className="text-white/50 text-sm">Alege un plan ca să deblochezi evaluarea, statisticile și retragerile.</p>
           </div>
           <Link href="/#planuri" className="bg-red-600 hover:bg-red-500 text-white font-bold px-6 py-3 rounded-xl transition-colors shrink-0">
-            Vezi Planuri →
+            Vezi planurile →
           </Link>
         </div>
       )}
@@ -62,17 +62,17 @@ export default async function DashboardPage() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-6">
           <h2 className="text-white font-black text-lg mb-4 flex items-center justify-between">
-            Live Odds
+            Cote live
             <span className="text-green-400 text-xs font-normal flex items-center gap-1.5">
               <span className="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse" />
-              actualizat la 30s
+              update la 30s
             </span>
           </h2>
           <LiveOddsWidget />
         </div>
 
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-6">
-          <h2 className="text-white font-black text-lg mb-4">Ultimele Pariuri</h2>
+          <h2 className="text-white font-black text-lg mb-4">Ultimele pariuri</h2>
           {utilizator?.pariuri?.length ? (
             <div className="space-y-3">
               {utilizator.pariuri.map((p: any) => (
@@ -89,7 +89,7 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="text-center py-8 text-white/30 text-sm">
-              Niciun pariu înregistrat încă
+              Niciun pariu încă. Începe imediat ce contul e finanțat.
             </div>
           )}
         </div>

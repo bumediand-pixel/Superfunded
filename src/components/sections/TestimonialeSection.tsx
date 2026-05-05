@@ -3,14 +3,14 @@ import { Quote } from 'lucide-react';
 import { BlurText } from '@/components/BlurText';
 
 const TESTIMONIALE = [
-  { quote: 'Am trecut evaluarea în 18 zile pariind exclusiv pe Premier League. Retragerea de €800 a ajuns în cont în 24 ore.', name: 'Andrei M.', role: 'Fotbal · Cluj-Napoca', roi: '+24%' },
-  { quote: 'Ca analistă de tenis, platforma mi-a oferit capitalul de care aveam nevoie fără riscul personal. Recomand tuturor!', name: 'Cristina P.', role: 'Tenis · București', roi: '+31%' },
-  { quote: 'Procesul de KYC a durat 2 zile, apoi am primit contul de €10.000. Suportul răspunde în minute.', name: 'Mihai D.', role: 'Baschet · Timișoara', roi: '+19%' },
-  { quote: 'Cel mai bun ROI în luna UFC 300. Am retras €1.680 profit în prima săptămână ca bettor finanțat.', name: 'Radu T.', role: 'MMA · Iași', roi: '+42%' },
-  { quote: 'Regulile sunt clare și corecte. Nu există surprize neplăcute. Exact ce căutam de ani de zile.', name: 'Elena V.', role: 'Fotbal · Brașov', roi: '+28%' },
-  { quote: 'Am luat planul Elite și a meritat fiecare euro. Capitalul de €50K mi-a permis să aplic strategii noi.', name: 'Bogdan L.', role: 'Rugby · Constanța', roi: '+35%' },
-  { quote: 'Platforma m-a ajutat să îmi structurez strategia. Acum am disciplina unui profesionist.', name: 'Ioana R.', role: 'Tenis · Cluj-Napoca', roi: '+22%' },
-  { quote: 'Prima retragere a inclus și taxa de evaluare rambursată. Exact cum au promis — fără surprize.', name: 'Dan S.', role: 'Fotbal · București', roi: '+27%' },
+  { quote: 'Am trecut evaluarea în 18 zile, doar pe Premier League. Retragerea de €800 mi-a intrat în cont în 24 de ore.', name: 'Andrei M.', role: 'Fotbal · Cluj-Napoca', roi: '+24%' },
+  { quote: 'Ca analistă de tenis, am avut acces la capitalul de care aveam nevoie, fără să-mi risc banii proprii. Recomand!', name: 'Cristina P.', role: 'Tenis · București', roi: '+31%' },
+  { quote: 'KYC-ul a durat 2 zile, apoi am primit contul de €10.000. Suportul îți răspunde în câteva minute.', name: 'Mihai D.', role: 'Baschet · Timișoara', roi: '+19%' },
+  { quote: 'Luna UFC 300 a fost ROI-ul meu cel mai bun. Am retras €1.680 din prima săptămână ca bettor finanțat.', name: 'Radu T.', role: 'MMA · Iași', roi: '+42%' },
+  { quote: 'Reguli clare, fără surprize. Exact ce căutam de ani de zile pe piața românească.', name: 'Elena V.', role: 'Fotbal · Brașov', roi: '+28%' },
+  { quote: 'Am mers direct pe Elite. Cei €50K capital mi-au lăsat loc să încerc strategii pe care nu mi le permiteam altfel.', name: 'Bogdan L.', role: 'Rugby · Constanța', roi: '+35%' },
+  { quote: 'M-au ajutat să-mi structurez strategia. Acum mă comport ca un profesionist, nu ca un parior ocazional.', name: 'Ioana R.', role: 'Tenis · Cluj-Napoca', roi: '+22%' },
+  { quote: 'Prima retragere mi-a inclus și taxa de challenge înapoi. Exact cum au promis, zero surprize.', name: 'Dan S.', role: 'Fotbal · București', roi: '+27%' },
 ];
 
 type TestimonialCardProps = typeof TESTIMONIALE[0];
@@ -49,7 +49,7 @@ export default function TestimonialeSection() {
           Testimoniale
         </span>
         <BlurText
-          text="Ei vorbesc mai bine decât noi."
+          text="Vorbesc bettorii, nu noi."
           as="h2"
           className="mt-4 font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[22ch] mx-auto"
           delay={0.08}

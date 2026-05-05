@@ -23,10 +23,10 @@ export default function SporturiSection() {
             Piețe disponibile
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
-            9 sporturi, infinite oportunități
+            9 sporturi. Zero limite.
           </h2>
           <p className="text-lg" style={{ color: 'var(--text-muted)' }}>
-            Pariuri live și combinate permise pe toate sporturile active
+            Live, combinate, prematch — toate permise pe sporturile active.
           </p>
         </div>
 

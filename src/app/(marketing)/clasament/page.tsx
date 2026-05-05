@@ -43,7 +43,7 @@ export default function ClasamentPage() {
             <div className="font-mono text-[10px] tracking-widest uppercase mb-2" style={{ color: 'var(--red)' }}>Live Rankings</div>
             <h1 className="font-bebas text-5xl md:text-6xl tracking-widest" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>CLASAMENT</h1>
             <p className="text-sm mt-2" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              {loading ? '...' : `${total} traderi activi`} · sortat după profit
+              {loading ? '…' : `${total} traderi activi`} · sortat după profit
             </p>
           </div>
           <div className="flex items-center gap-0 border self-start" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
@@ -55,7 +55,7 @@ export default function ClasamentPage() {
                   color: period === p ? 'white' : 'rgba(255,255,255,0.4)',
                   borderRight: p !== 'all' ? '1px solid rgba(255,255,255,0.1)' : 'none',
                 }}>
-                {p === '7d' ? '7 zile' : p === '30d' ? '30 zile' : 'Toate'}
+                {p === '7d' ? 'Ultimele 7 zile' : p === '30d' ? 'Ultimele 30 zile' : 'Tot timpul'}
               </button>
             ))}
           </div>
@@ -140,7 +140,7 @@ export default function ClasamentPage() {
         </div>
 
         <p className="mt-6 text-center font-mono text-[10px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-          Actualizat în timp real · Afișează primii 50 traderi · Pseudonime pentru confidențialitate
+          Date live · Top 50 traderi · Pseudonime pentru confidențialitate
         </p>
       </div>
     </div>
