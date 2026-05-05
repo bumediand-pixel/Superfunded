@@ -34,8 +34,8 @@ export default function LoginPage() {
             <span className="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-black text-white text-sm">BF</span>
             <span className="font-black text-white text-lg">SuperFunded</span>
           </Link>
-          <h1 className="text-3xl font-black text-white">Bun venit înapoi</h1>
-          <p className="text-white/50 mt-2">Autentifică-te în contul tău</p>
+          <h1 className="text-3xl font-black text-white">Bine ai revenit</h1>
+          <p className="text-white/50 mt-2">Intră în cont și continuă evaluarea.</p>
         </div>
 
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-8">
@@ -67,7 +67,7 @@ export default function LoginPage() {
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
-              {loading ? 'Se autentifică...' : 'Autentifică-te'}
+              {loading ? 'Se autentifică…' : 'Intră în cont'}
             </button>
           </form>
         </div>

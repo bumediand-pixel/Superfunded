@@ -39,8 +39,8 @@ export default function RegisterPage() {
             <span className="w-8 h-8 bg-red-600 rounded flex items-center justify-center font-black text-white text-sm">BF</span>
             <span className="font-black text-white text-lg">SuperFunded</span>
           </Link>
-          <h1 className="text-3xl font-black text-white">Creează cont</h1>
-          <p className="text-white/50 mt-2">Alătură-te celor 2.400+ bettori finanțați</p>
+          <h1 className="text-3xl font-black text-white">Creează-ți contul</h1>
+          <p className="text-white/50 mt-2">Intră în comunitatea celor peste 2.400 de bettori finanțați.</p>
         </div>
 
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-8">
@@ -74,9 +74,9 @@ export default function RegisterPage() {
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
-              {loading ? 'Se creează contul...' : 'Creează Cont Gratuit'}
+              {loading ? 'Se creează contul…' : 'Creează cont gratuit'}
             </button>
-            <p className="text-white/30 text-xs text-center">Prin înregistrare ești de acord cu Termenii & Condițiile</p>
+            <p className="text-white/30 text-xs text-center">Prin înregistrare accepți Termenii & Condițiile.</p>
           </form>
         </div>
 

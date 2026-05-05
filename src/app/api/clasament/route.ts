@@ -29,7 +29,7 @@ export async function GET(req: NextRequest) {
       take: limit,
     });
 
-    const leaderboard = conturi.map((cont, i) => {
+    const leaderboard = conturi.map((cont: typeof conturi[number], i: number) => {
       // Use explicit display name only — never expose email or partial email on a public endpoint
       const displayName = cont.utilizator?.numeComplet ?? `trader_${cont.id.slice(0, 8)}`;
 

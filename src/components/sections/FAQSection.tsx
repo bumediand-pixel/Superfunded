@@ -1,112 +1,98 @@
 'use client';
 import { useState } from 'react';
+import Link from 'next/link';
+import { ChevronDown } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { BlurText } from '@/components/BlurText';
 
 const FAQ = [
-  {
-    q: 'Ce este SuperFunded?',
-    a: 'SuperFunded este o platformă de evaluare a abilităților de betting bazată pe performanță. Nu suntem un cazino, casă de pariuri sau operator de jocuri de noroc și nu plasăm, procesăm sau acceptăm pariuri reale. Platforma noastră folosește puncte virtuale și solduri simulate pentru evaluare. Utilizatorii care demonstrează abilități constante primesc acces la un cont finanțat și câștigă real din profiturile generate.',
-  },
-  {
-    q: 'Cum funcționează procesul de evaluare?',
-    a: 'Există două tipuri de challenge: 1-Step (un singur pas, target de 40% profit) și 2-Step (două faze: 30% în Faza 1, 20% în Faza 2). Odată ce atingi targetul respectând regulile de risc, primești contul finanțat și începi să câștigi real.',
-  },
-  {
-    q: 'Care este diferența dintre 1-Step și 2-Step?',
-    a: '1-Step Challenge: un singur target de 40% profit, split de 70% odată finanțat. Mai rapid, dar target mai mare.\n\n2-Step Challenge: două faze consecutive (30% + 20%), split de până la 80% odată finanțat. Mai mult timp de evaluare, dar condiții mai blânde și split mai bun.',
-  },
-  {
-    q: 'Ce sporturi sunt disponibile?',
-    a: 'Disponibile acum: Fotbal, Baschet, Tenis, MMA/UFC, Rugby, Hochei.\n\nÎn curând: Volei, Cricket, Badminton, Baseball, Esports.',
-  },
-  {
-    q: 'Care sunt regulile de risc?',
-    a: 'Limita de pierdere zilnică: 5% din soldul contului. Limita de pierdere totală (drawdown maxim): 8% din capitalul inițial. Dacă depășești oricare dintre aceste limite, evaluarea se încheie. Poți reîncerca cu o reducere de 20% la taxa inițială.',
-  },
-  {
-    q: 'Există limită de timp pentru evaluare?',
-    a: 'Nu există limită de timp — poți lua atât timp cât ai nevoie pentru a atinge targetul de profit. Singurul termen limită este propria ta strategie. Totuși, conform condițiilor 1-Step, trebuie să atingi targetul în 30 de zile.',
-  },
-  {
-    q: 'Cum și când primesc plățile?',
-    a: 'Retragerile sunt procesate în 24-48 ore lucrătoare. Prima retragere include și rambursarea integrală a taxei de challenge. Plata se face via transfer bancar sau crypto (USDT/BTC). Nu există perioadă minimă de așteptare după prima retragere.',
-  },
-  {
-    q: 'Taxa de challenge este rambursabilă?',
-    a: 'Taxa de challenge nu este rambursabilă în circumstanțe normale — toți banii plătiți sunt finali conform Politicii de Rambursare. Excepție: prima retragere din contul finanțat include automat suma taxei de challenge, deci practic îți recuperezi investiția imediat ce ești finanțat.',
-  },
-  {
-    q: 'Este necesar KYC (verificare identitate)?',
-    a: 'Da. Înainte de prima retragere, toți utilizatorii trebuie să completeze procesul KYC (Know Your Customer) conform reglementărilor anti-spălare bani. Procesul durează 24-48 ore și necesită un act de identitate valabil + dovadă de rezidență.',
-  },
-  {
-    q: 'Pot deține mai multe conturi?',
-    a: 'Nu. Politica SuperFunded permite strict un singur cont per persoană. Deținerea de conturi multiple, partajarea contului sau orice formă de manipulare coordonată duce la suspendare permanentă.',
-  },
-  {
-    q: 'Ce se întâmplă dacă pierd contul finanțat?',
-    a: 'Dacă depășești limitele de drawdown pe un cont finanțat, contul este dezactivat. Poți achiziționa un nou challenge cu o reducere de 20% față de taxa originală. Pierderile din contul finanțat nu te afectează personal — pariezi cu capitalul nostru, nu al tău.',
-  },
-  {
-    q: 'SuperFunded este legal în România?',
-    a: 'SuperFunded operează ca platformă de evaluare a abilităților, nu ca operator de pariuri. Nu plasăm pariuri reale și nu deținem licență de gambling — nu avem nevoie. Activitățile noastre se încadrează în categoria evaluărilor de performanță bazate pe skill. Te sfătuim să verifici legislația locală aplicabilă din jurisdicția ta.',
-  },
+  { q: 'Ce este SuperFunded?', a: 'SuperFunded e o platformă de evaluare a abilităților de betting. Treci evaluarea, primești un cont finanțat și câștigi din profitul real pe care îl generezi. Nu suntem cazinou — operăm ca platformă de skill evaluation.' },
+  { q: 'Cum funcționează evaluarea?', a: 'Ai două opțiuni: 1-Step (o singură fază, țintă 40% profit în 30 de zile) sau 2-Step (două faze — 30% în prima, 20% în a doua, fără limită de timp). Atingi ținta respectând regulile de risc, primești contul finanțat.' },
+  { q: 'Care e diferența dintre 1-Step și 2-Step?', a: '1-Step: o singură țintă de 40%, split 70%, 30 de zile. 2-Step: două faze (30% + 20%), split 80%, fără presiune de timp. 2-Step e mai relaxat și plătește mai bine — de aia îl recomandăm.' },
+  { q: 'Care sunt regulile de risc?', a: 'Pierdere zilnică maximă: 5% din sold. Drawdown total maxim: 8% din capitalul inițial. Depășești o limită, evaluarea se închide. Poți reîncerca cu 20% reducere la taxă.' },
+  { q: 'Când primesc banii?', a: 'Retragerile se procesează în 24–48 de ore lucrătoare. Prima retragere îți rambursează integral taxa de challenge. Plata vine prin transfer bancar sau crypto (USDT/BTC).' },
+  { q: 'E nevoie de KYC?', a: 'Da, o singură dată — înainte de prima retragere. Durează 24–48 de ore și ai nevoie de un act de identitate valid și o dovadă de rezidență.' },
+  { q: 'E legal SuperFunded în România?', a: 'Da. Operăm ca platformă de evaluare a abilităților, nu ca operator de pariuri. Nu plasăm pariuri reale și nu avem licență de gambling — intrăm în categoria evaluărilor de performanță bazate pe skill.' },
 ];
+
+function AccordionItem({ q, a, open, onToggle }: { q: string; a: string; open: boolean; onToggle: () => void }) {
+  return (
+    <div className="border-b border-[hsla(var(--cream)/0.10)]">
+      <button
+        className="w-full text-left py-6 flex items-center justify-between gap-4 cursor-pointer group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[hsl(var(--red))]"
+        onClick={onToggle}
+        aria-expanded={open}
+      >
+        <span
+          className="font-display uppercase text-lg md:text-xl tracking-tight transition-colors"
+          style={{ color: open ? 'hsl(var(--red))' : 'hsl(var(--cream))' }}
+        >
+          {q}
+        </span>
+        <ChevronDown
+          className="size-5 shrink-0 transition-transform duration-300 text-[hsla(var(--cream)/0.50)]"
+          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
+        />
+      </button>
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            key="content"
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <p className="pb-6 font-body text-[15px] leading-relaxed text-[hsla(var(--cream)/0.65)] max-w-[60ch]">
+              {a}
+            </p>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
 
 export default function FAQSection() {
   const [open, setOpen] = useState<number | null>(null);
 
   return (
-    <section id="faq" className="py-32 overflow-hidden" style={{ background: 'var(--black-0)' }}>
-      <div className="max-w-4xl mx-auto px-6">
-        <div className="mb-16">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8" style={{ background: 'var(--red)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--red)' }}>Întrebări Frecvente</span>
-          </div>
-          <h2 className="font-bebas leading-none" style={{ fontSize: 'clamp(52px, 8vw, 100px)', letterSpacing: '0.03em', color: 'var(--white-hi)' }}>
-            TOTUL DESPRE<br/>SUPERFUNDED
-          </h2>
-        </div>
-
-        <div className="space-y-2">
-          {FAQ.map((item, i) => (
-            <div key={i} className="group border transition-all duration-300"
-              style={{
-                borderColor: open === i ? 'rgba(230,57,70,0.35)' : 'rgba(255,255,255,0.06)',
-                background: open === i ? 'rgba(230,57,70,0.04)' : 'var(--black-2)',
-              }}>
-              <button className="w-full text-left px-6 py-5 flex items-center justify-between gap-6"
-                onClick={() => setOpen(open === i ? null : i)}>
-                <span className="font-jakarta font-semibold text-sm md:text-base leading-snug" style={{ color: open === i ? 'var(--white-hi)' : 'rgba(255,255,255,0.75)' }}>
-                  {item.q}
-                </span>
-                <span className="font-mono text-lg shrink-0 transition-transform duration-300"
-                  style={{ color: 'var(--red)', transform: open === i ? 'rotate(45deg)' : 'rotate(0deg)' }}>
-                  +
-                </span>
-              </button>
-              {open === i && (
-                <div className="px-6 pb-6 border-t" style={{ borderColor: 'rgba(230,57,70,0.12)' }}>
-                  <p className="text-sm leading-relaxed pt-4 whitespace-pre-line" style={{ color: 'var(--white-mid)' }}>
-                    {item.a}
-                  </p>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
-
-        <div className="mt-10 px-6 py-5 border flex items-center justify-between flex-wrap gap-4"
-          style={{ borderColor: 'rgba(255,255,255,0.06)', background: 'var(--black-2)' }}>
-          <div>
-            <div className="font-bebas tracking-widest text-lg mb-1" style={{ color: 'var(--white-hi)' }}>MAI AI ÎNTREBĂRI?</div>
-            <div className="font-mono text-xs" style={{ color: 'var(--white-mid)' }}>Răspundem în 24-48h lucrătoare</div>
-          </div>
-          <a href="mailto:support@superfunded.ro"
-            className="font-bold text-xs tracking-[0.14em] uppercase px-6 py-3 transition-all duration-300 hover:shadow-[0_0_20px_rgba(230,57,70,0.4)]"
-            style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
+    <section id="faq" className="relative py-28 md:py-40 border-t border-[hsla(var(--cream)/0.08)] bg-[hsl(var(--ink))]">
+      <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)] grid grid-cols-1 md:grid-cols-[0.9fr_1.1fr] gap-16">
+        {/* Left — sticky title */}
+        <div className="md:sticky md:top-24 md:self-start">
+          <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
+            Întrebări frecvente
+          </span>
+          <BlurText
+            text="Întrebări? Răspundem direct."
+            as="h2"
+            className="mt-4 font-display uppercase text-4xl md:text-5xl leading-[0.9] tracking-tight text-[hsl(var(--cream))]"
+            delay={0.08}
+          />
+          <p className="mt-6 font-body text-sm text-[hsla(var(--cream)/0.60)] leading-relaxed max-w-[32ch]">
+            Nu găsești ce cauți? Scrie-ne — îți răspundem în 24–48h lucrătoare.
+          </p>
+          <Link
+            href="mailto:support@superfunded.ro"
+            className="liquid-glass-strong mt-8 inline-flex items-center gap-1.5 text-sm font-normal text-[hsl(var(--cream))] rounded-full px-7 py-3.5 hover:bg-white/5 transition-colors focus-visible:ring-2 focus-visible:ring-[hsl(var(--cream)/0.40)]"
+          >
             Contactează-ne
-          </a>
+          </Link>
+        </div>
+
+        {/* Right — accordion */}
+        <div>
+          {FAQ.map((item, i) => (
+            <AccordionItem
+              key={i}
+              q={item.q}
+              a={item.a}
+              open={open === i}
+              onToggle={() => setOpen(open === i ? null : i)}
+            />
+          ))}
         </div>
       </div>
     </section>

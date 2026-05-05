@@ -1,8 +1,19 @@
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia' as any,
-});
+let _stripe: Stripe | null = null;
+
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    if (!process.env.STRIPE_SECRET_KEY) {
+      throw new Error('STRIPE_SECRET_KEY is not set');
+    }
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      apiVersion: '2026-04-22.dahlia' as any,
+    });
+  }
+  return _stripe;
+}
 
 export const PLANURI_STRIPE: Record<string, { price: number; name: string; capital: number; split: number }> = {
   STARTER_500:    { price: 3900,  name: 'Starter €500',    capital: 500,   split: 70 },

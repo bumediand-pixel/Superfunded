@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { stripe, PLANURI_STRIPE } from '@/lib/stripe';
+import { getStripe, PLANURI_STRIPE } from '@/lib/stripe';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
@@ -31,7 +31,7 @@ export async function POST(req: NextRequest) {
   const planInfo = PLANURI_STRIPE[plan];
   if (!planInfo) return NextResponse.json({ error: 'Plan invalid' }, { status: 400 });
 
-  const session = await stripe.checkout.sessions.create({
+  const session = await getStripe().checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
     line_items: [{

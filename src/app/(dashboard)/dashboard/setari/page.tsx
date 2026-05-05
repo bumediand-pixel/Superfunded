@@ -43,7 +43,7 @@ export default function SetariPage() {
                   className="w-full px-4 py-3 text-sm outline-none transition-all duration-200"
                   style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--white-mid)' }}
                   disabled />
-                <p className="mt-1 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>Emailul nu poate fi modificat. Contactează suportul.</p>
+                <p className="mt-1 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>Emailul nu se poate schimba. Pentru asta, contactează suportul.</p>
               </div>
               <div>
                 <label className="block font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Telegram handle</label>
@@ -61,10 +61,10 @@ export default function SetariPage() {
             <div className="font-bebas text-lg tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>NOTIFICĂRI</div>
             <div className="space-y-4">
               {([
-                { key: 'email', label: 'Notificări email', desc: 'Actualizări despre cont, retrageri și promoții' },
-                { key: 'telegram', label: 'Notificări Telegram', desc: 'Alerte instant pe Telegram (necesită handle setat)' },
-                { key: 'pariuConfirmat', label: 'Confirmare pariu', desc: 'Notificare când un pariu a fost înregistrat' },
-                { key: 'retragereStatus', label: 'Status retragere', desc: 'Actualizări despre procesarea retragerilor' },
+                { key: 'email', label: 'Notificări email', desc: 'Update-uri despre cont, retrageri și oferte.' },
+                { key: 'telegram', label: 'Notificări Telegram', desc: 'Alerte instant pe Telegram (necesită handle setat).' },
+                { key: 'pariuConfirmat', label: 'Confirmare pariu', desc: 'Te anunțăm imediat ce un pariu a fost înregistrat.' },
+                { key: 'retragereStatus', label: 'Status retragere', desc: 'Update-uri despre procesarea retragerilor tale.' },
               ] as const).map(({ key, label, desc }) => (
                 <div key={key} className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
                   <div>
@@ -114,7 +114,7 @@ export default function SetariPage() {
           <div className="p-6" style={{ background: 'rgba(230,57,70,0.03)', border: '1px solid rgba(230,57,70,0.15)' }}>
             <div className="font-bebas text-lg tracking-wider mb-2" style={{ color: 'var(--red)', letterSpacing: '0.06em' }}>ZONĂ PERICULOASĂ</div>
             <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Ștergerea contului este permanentă și ireversibilă. Toate datele, istoricul pariurilor și conturile active vor fi eliminate.
+              Ștergerea contului e permanentă. Toate datele, istoricul pariurilor și conturile active vor fi pierdute definitiv.
             </p>
             <button className="font-mono text-[10px] uppercase tracking-widest px-5 py-2.5 transition-all duration-200"
               style={{ background: 'transparent', border: '1px solid rgba(230,57,70,0.3)', color: 'rgba(230,57,70,0.6)' }}
@@ -129,9 +129,9 @@ export default function SetariPage() {
             <button onClick={handleSave} disabled={saving}
               className="font-bold text-xs tracking-[0.14em] uppercase px-8 py-3.5 transition-all duration-300 disabled:opacity-40"
               style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
-              {saving ? '⟳ Se salvează...' : 'Salvează modificările'}
+              {saving ? '⟳ Se salvează…' : 'Salvează modificările'}
             </button>
-            {saved && <span className="font-mono text-xs" style={{ color: '#22c55e' }}>✓ Salvat cu succes</span>}
+            {saved && <span className="font-mono text-xs" style={{ color: '#22c55e' }}>✓ Salvat</span>}
           </div>
 
         </div>

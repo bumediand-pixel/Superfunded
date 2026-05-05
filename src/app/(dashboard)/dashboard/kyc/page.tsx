@@ -15,13 +15,13 @@ export default async function KYCPage() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-black text-white">Verificare KYC</h1>
-        <p className="text-white/40 mt-1">Verificare identitate obligatorie pentru retrageri</p>
+        <p className="text-white/40 mt-1">Verificarea identității e obligatorie înainte de prima retragere.</p>
       </div>
 
       <div className="max-w-2xl">
         <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-xl p-4 mb-6">
           <p className="text-yellow-400 text-sm">
-            <strong>De ce este necesar KYC?</strong> Conform reglementărilor anti-spălare bani (AML), toți bettori finanțați trebuie să-și verifice identitatea înainte de prima retragere.
+            <strong>De ce avem nevoie de KYC?</strong> Reglementările AML (anti-spălare de bani) ne obligă să verificăm identitatea fiecărui bettor finanțat înainte să-i trimitem prima plată.
           </p>
         </div>
         <KYCWidget userId={user?.id ?? ''} />

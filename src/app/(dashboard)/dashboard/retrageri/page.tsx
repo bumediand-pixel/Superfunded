@@ -20,7 +20,7 @@ export default function RetrageriPage() {
       });
       const data = await res.json();
       if (data.error) setMsg(`Eroare: ${data.error}`);
-      else { setMsg('Cerere de retragere trimisă! Procesare 24-48h.'); setSuma(''); }
+      else { setMsg('Cererea ta a fost trimisă. O procesăm în 24–48h.'); setSuma(''); }
     } finally {
       setLoading(false);
     }
@@ -30,12 +30,12 @@ export default function RetrageriPage() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-black text-white">Retrageri</h1>
-        <p className="text-white/40 mt-1">Retrage-ți profitul săptămânal</p>
+        <p className="text-white/40 mt-1">Scoate-ți profitul în fiecare săptămână, fără bătăi de cap.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-3xl">
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-6">
-          <h2 className="text-white font-black text-lg mb-6">Cerere Retragere</h2>
+          <h2 className="text-white font-black text-lg mb-6">Cerere de retragere</h2>
           <form onSubmit={handleRetragere} className="space-y-4">
             {msg && <div className={`rounded-xl p-3 text-sm ${msg.startsWith('Eroare') ? 'bg-red-500/10 border border-red-500/20 text-red-400' : 'bg-green-500/10 border border-green-500/20 text-green-400'}`}>{msg}</div>}
             <div>
@@ -53,16 +53,16 @@ export default function RetrageriPage() {
             </div>
             <button type="submit" disabled={loading}
               className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
-              {loading ? 'Se procesează...' : 'Solicită Retragerea'}
+              {loading ? 'Se procesează…' : 'Solicită retragerea'}
             </button>
           </form>
         </div>
 
         <div className="space-y-4">
           {[
-            { icon: '⏱', title: 'Procesare 24-48h', desc: 'Cererile de luni–vineri sunt procesate în aceeași zi lucrătoare.' },
-            { icon: '💰', title: 'Minimum €50', desc: 'Suma minimă per retragere este de €50.' },
-            { icon: '🔄', title: 'Prima retragere = rambursare taxă', desc: 'Prima retragere include automat taxa de evaluare plătită.' },
+            { icon: '⏱', title: 'Procesare 24–48h', desc: 'Cererile depuse luni–vineri se rezolvă în aceeași zi lucrătoare.' },
+            { icon: '💰', title: 'Minim €50', desc: 'Suma minimă per retragere este €50.' },
+            { icon: '🔄', title: 'Taxa înapoi din prima retragere', desc: 'Prima retragere îți rambursează automat taxa de challenge.' },
           ].map(item => (
             <div key={item.title} className="bg-[#141414] border border-white/10 rounded-2xl p-5 flex gap-4">
               <span className="text-2xl shrink-0">{item.icon}</span>
@@ -73,7 +73,7 @@ export default function RetrageriPage() {
             </div>
           ))}
           <div className="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4">
-            <p className="text-yellow-400 text-xs">KYC obligatoriu pentru prima retragere. <Link href="/dashboard/kyc" className="underline">Verifică identitatea →</Link></p>
+            <p className="text-yellow-400 text-xs">Înainte de prima retragere ai nevoie de KYC. <Link href="/dashboard/kyc" className="underline">Verifică-ți identitatea →</Link></p>
           </div>
         </div>
       </div>

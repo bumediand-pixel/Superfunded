@@ -1,50 +1,94 @@
 'use client';
-import { useRef } from 'react';
-import { useCounterAnimation } from '@/components/animations/useScrollAnimations';
+import { useRef, useEffect, useState } from 'react';
+import { useInView } from 'framer-motion';
+import { BlurText } from '@/components/BlurText';
 
 const STATS = [
-  { count: 2400,    suffix: '+',  label: 'Bettori Activi',   sub: 'conturi active',       color: 'var(--white-hi)' },
-  { count: 1200000, suffix: '€', label: 'Profit Plătit',    sub: 'total distribuit',      color: 'var(--gold)' },
-  { count: 9,       suffix: '',  label: 'Sporturi',          sub: 'piețe disponibile',     color: 'var(--white-hi)' },
-  { count: 94,      suffix: '%', label: 'Rată Satisfacție',  sub: 'sondaj intern 2024',    color: 'var(--red)' },
+  { value: '2.400+', label: 'Bettori Finanțați',  numeric: 2400, suffix: '+' },
+  { value: '€1.2M+', label: 'Profit Plătit',      numeric: null, suffix: null },
+  { value: '80%',    label: 'Split Maxim',        numeric: 80,   suffix: '%' },
+  { value: '48h',    label: 'Aprobare KYC',       numeric: null, suffix: null },
 ];
 
-export default function StatisticiSection() {
-  const ref = useRef<HTMLElement>(null);
-  useCounterAnimation(ref);
+function CountUp({ target, suffix, once }: { target: number; suffix: string; once: boolean }) {
+  const [display, setDisplay] = useState(0);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (!once || started.current) return;
+    started.current = true;
+    const duration = 1800;
+    const startTime = performance.now();
+    const tick = (now: number) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setDisplay(Math.round(ease * target));
+      if (progress < 1) requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }, [once, target]);
+
+  return <>{display.toLocaleString('ro-RO')}{suffix}</>;
+}
+
+function StatCard({ value, label, numeric, suffix, delay }: typeof STATS[0] & { delay: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.5 });
 
   return (
-    <section ref={ref} className="relative py-0 overflow-hidden" style={{ background: 'var(--black-1)', borderTop: '1px solid rgba(230,57,70,0.12)', borderBottom: '1px solid rgba(230,57,70,0.12)' }}>
-      {/* Scanline effect */}
-      <div className="absolute inset-0 pointer-events-none" style={{
-        backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,0.15) 3px, rgba(0,0,0,0.15) 4px)',
-        opacity: 0.4,
-      }} />
+    <div ref={ref} className="flex flex-col items-center md:items-start gap-3 px-4 md:px-0">
+      <span className="font-display italic text-5xl md:text-6xl lg:text-7xl leading-none text-[hsl(var(--cream))]">
+        {numeric !== null
+          ? <CountUp target={numeric} suffix={suffix ?? ''} once={inView} />
+          : value}
+      </span>
+      <span className="font-body text-sm text-[hsla(var(--cream)/0.55)] uppercase tracking-wide">
+        {label}
+      </span>
+    </div>
+  );
+}
 
-      <div className="relative max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-2 md:grid-cols-4 divide-x" style={{ divideColor: 'rgba(255,255,255,0.04)' } as React.CSSProperties}>
-          {STATS.map((s, i) => (
-            <div key={i} className="relative px-8 py-10 group"
-              style={{ borderRight: i < 3 ? '1px solid rgba(255,255,255,0.04)' : 'none' }}>
-              {/* Terminal header */}
-              <div className="flex items-center gap-2 mb-3">
-                <span className="font-mono text-[9px] tracking-[0.25em] uppercase" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                  SYS.{String(i + 1).padStart(2, '0')}
-                </span>
-                <span className="w-1 h-1 rounded-full animate-pulse" style={{ background: i === 1 ? 'var(--gold)' : i === 3 ? 'var(--red)' : 'rgba(255,255,255,0.3)' }} />
-              </div>
-              {/* Number */}
-              <div className="font-mono font-bold leading-none mb-2" style={{ fontSize: 'clamp(36px, 4.5vw, 56px)', color: s.color, letterSpacing: '-0.03em' }}>
-                <span data-count={s.count}>0</span>{s.suffix}
-              </div>
-              {/* Label */}
-              <div className="font-bebas tracking-[0.12em] text-lg mb-1" style={{ color: 'var(--white-hi)' }}>{s.label}</div>
-              <div className="font-mono text-[10px] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.2)' }}>{s.sub}</div>
-              {/* Hover accent */}
-              <div className="absolute bottom-0 left-0 right-0 h-px origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500"
-                style={{ background: `linear-gradient(90deg, ${s.color}, transparent)` }} />
-            </div>
-          ))}
+export default function StatisticiSection() {
+  return (
+    <section className="relative py-32 md:py-44 overflow-hidden border-t border-[hsla(var(--cream)/0.08)]">
+      {/* Background video — shows when /public/videos/stats-bg.mp4 exists */}
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover saturate-0 opacity-30 pointer-events-none"
+        aria-hidden="true"
+      >
+        <source src="/videos/stats-bg.mp4" type="video/mp4" />
+      </video>
+
+      {/* Gradient fades */}
+      <div className="absolute top-0 inset-x-0 h-[200px] gradient-fade-t pointer-events-none" />
+      <div className="absolute bottom-0 inset-x-0 h-[200px] gradient-fade-b pointer-events-none" />
+
+      {/* Content card */}
+      <div className="relative z-10 max-w-[var(--max)] mx-auto px-[var(--gutter)]">
+        <div className="liquid-glass rounded-3xl p-10 md:p-14">
+          <div className="mb-10 md:mb-14">
+            <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
+              Rezultate reale
+            </span>
+            <BlurText
+              text="Cifre, nu promisiuni."
+              as="h2"
+              className="mt-4 font-display uppercase text-3xl md:text-5xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[22ch]"
+              delay={0.07}
+            />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-10 md:gap-12">
+            {STATS.map((s, i) => (
+              <StatCard key={i} {...s} delay={i * 0.1} />
+            ))}
+          </div>
         </div>
       </div>
     </section>

@@ -1,5 +1,5 @@
 import { cn } from '@/lib/utils';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 type FeatureType = {
   title: string;
@@ -12,7 +12,8 @@ type FeatureCardProps = React.ComponentProps<'div'> & {
 };
 
 export function FeatureCard({ feature, className, ...props }: FeatureCardProps) {
-  const p = genRandomPattern();
+  const [p, setP] = useState<number[][]>([]);
+  useEffect(() => { setP(genRandomPattern()); }, []);
   return (
     <div className={cn('relative overflow-hidden p-6 cursor-pointer group transition-all duration-300', className)} {...props}>
       <div className="pointer-events-none absolute top-0 left-1/2 -mt-2 -ml-20 h-full w-full [mask-image:linear-gradient(white,transparent)]">
