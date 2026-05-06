@@ -1,7 +1,21 @@
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia' as any,
+let _stripe: Stripe | null = null;
+
+function getStripeClient(): Stripe {
+  if (!_stripe) {
+    const key = process.env.STRIPE_SECRET_KEY;
+    if (!key) throw new Error('STRIPE_SECRET_KEY is not set. See .env.local.example.');
+    _stripe = new Stripe(key, { apiVersion: '2026-04-22.dahlia' as any });
+  }
+  return _stripe;
+}
+
+// Lazy proxy — defers initialization until first use so the build doesn't fail when env vars are absent.
+export const stripe = new Proxy({} as Stripe, {
+  get(_, prop: string | symbol) {
+    return Reflect.get(getStripeClient(), prop);
+  },
 });
 
 export const PLANURI_STRIPE: Record<string, { price: number; name: string; capital: number; split: number }> = {
