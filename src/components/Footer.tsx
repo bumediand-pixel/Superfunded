@@ -2,10 +2,17 @@ import Link from 'next/link';
 
 const LINKS_PLATFORMA = [
   { label: 'Cum Funcționează', href: '/#cum-functioneaza' },
-  { label: 'Planuri & Prețuri', href: '/#planuri' },
-  { label: 'Sporturi', href: '/#sporturi' },
+  { label: 'Planuri & Prețuri', href: '/planuri' },
+  { label: 'Calculatoare', href: '/calculators' },
+  { label: 'Reguli', href: '/regulile' },
   { label: 'Clasament', href: '/clasament' },
   { label: 'FAQ', href: '/faq' },
+];
+
+const LINKS_COMUNITATE = [
+  { label: 'Discord', href: '/discord' },
+  { label: 'Afiliere', href: '/afiliere' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const LINKS_LEGAL = [
@@ -29,7 +36,7 @@ export default function Footer() {
     <footer style={{ background: '#0f172a' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
 
           {/* Brand */}
           <div className="lg:col-span-2">
@@ -68,6 +75,20 @@ export default function Footer() {
             <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Cont</div>
             <ul className="space-y-2.5">
               {LINKS_CONT.map(({ label, href }) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Comunitate */}
+          <div>
+            <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Comunitate</div>
+            <ul className="space-y-2.5">
+              {LINKS_COMUNITATE.map(({ label, href }) => (
                 <li key={href}>
                   <Link href={href} className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.45)' }}>
                     {label}

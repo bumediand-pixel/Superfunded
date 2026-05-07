@@ -82,6 +82,44 @@ export async function sendKYCStatusEmail(to: string, status: 'APROBAT' | 'RESPIN
   });
 }
 
+export async function sendContactInquiry(opts: {
+  fromName: string;
+  fromEmail: string;
+  subject: string;
+  message: string;
+  category?: string;
+}) {
+  const to = process.env.CONTACT_INBOX_EMAIL || 'support@superfunded.ro';
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    replyTo: opts.fromEmail,
+    subject: `[Contact${opts.category ? ` · ${opts.category}` : ''}] ${opts.subject}`,
+    html: emailTemplate({
+      title: 'Mesaj nou de contact',
+      preheader: `${opts.fromName} <${opts.fromEmail}>`,
+      body: `
+        <p><strong>De la:</strong> ${escapeHtml(opts.fromName)} &lt;${escapeHtml(opts.fromEmail)}&gt;</p>
+        ${opts.category ? `<p><strong>Categorie:</strong> ${escapeHtml(opts.category)}</p>` : ''}
+        <p><strong>Subiect:</strong> ${escapeHtml(opts.subject)}</p>
+        <hr style="border:none;border-top:1px solid rgba(255,255,255,0.1);margin:16px 0;" />
+        <p style="white-space:pre-wrap;">${escapeHtml(opts.message)}</p>
+      `,
+      cta: { label: 'Răspunde direct', url: `mailto:${opts.fromEmail}` },
+      footer: 'Mesaj trimis prin formularul de contact SuperFunded.',
+    }),
+  });
+}
+
+function escapeHtml(s: string): string {
+  return s
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 // ─── Template ────────────────────────────────────────────────────────────────
 
 function emailTemplate({ title, preheader, body, cta, footer }: {

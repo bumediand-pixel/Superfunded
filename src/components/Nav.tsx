@@ -5,7 +5,7 @@ import Link from 'next/link';
 const LINKS = [
   ['/#cum-functioneaza', 'Cum Funcționează'],
   ['/planuri', 'Planuri'],
-  ['/regulile', 'Regulile'],
+  ['/calculators', 'Calculatoare'],
   ['/clasament', 'Clasament'],
   ['/afiliere', 'Afiliere'],
   ['/faq', 'FAQ'],
