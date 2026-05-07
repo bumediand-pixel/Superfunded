@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 import { rateLimit } from '@/lib/rateLimiter';
+import { sendRetragereCeruta, sendAdminWithdrawalAlert } from '@/lib/email';
 
 const WithdrawalSchema = z.object({
   suma: z.number().min(50).max(1_000_000),
@@ -65,5 +66,14 @@ export async function POST(req: NextRequest) {
   const retragere = await prisma.retragere.create({
     data: { utilizatorId: utilizator.id, suma, metodaPlata: metoda, detaliiPlata: {}, status: 'IN_PROCESARE' },
   });
+
+  // Fire-and-forget notifications — don't block the response
+  sendRetragereCeruta(utilizator.email, suma, metoda).catch(err =>
+    console.error('[retrageri] user email failed:', err)
+  );
+  sendAdminWithdrawalAlert(suma, metoda, utilizator.email).catch(err =>
+    console.error('[retrageri] admin email failed:', err)
+  );
+
   return NextResponse.json({ retragere });
 }

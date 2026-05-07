@@ -82,6 +82,46 @@ export async function sendKYCStatusEmail(to: string, status: 'APROBAT' | 'RESPIN
   });
 }
 
+export async function sendRetragereCeruta(to: string, suma: number, metoda: string) {
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: `Cerere de retragere de €${suma} primită`,
+    html: emailTemplate({
+      title: 'Cerere de retragere primită',
+      preheader: `€${suma} via ${metoda} — în procesare 24-48h.`,
+      body: `
+        <p>Am primit cererea ta de retragere de <strong>€${suma}</strong> via <strong>${metoda === 'CRYPTO' ? 'Crypto' : 'Transfer bancar'}</strong>.</p>
+        <p>Status curent: <strong>În procesare</strong>. Vei primi un email când fondurile sunt trimise (24-48h în zilele lucrătoare).</p>
+      `,
+      cta: { label: 'Vezi statusul', url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/retrageri` },
+      footer: 'Ai primit acest email pentru că ai solicitat o retragere pe SuperFunded.',
+    }),
+  });
+}
+
+export async function sendAdminWithdrawalAlert(suma: number, metoda: string, userEmail: string) {
+  const adminTo = process.env.ADMIN_EMAIL;
+  if (!adminTo) return;
+  return getResend().emails.send({
+    from: FROM,
+    to: adminTo,
+    subject: `[Retragere] €${suma} via ${metoda} — ${userEmail}`,
+    html: emailTemplate({
+      title: 'Retragere nouă în așteptare',
+      preheader: `${userEmail} solicită €${suma}.`,
+      body: `
+        <p><strong>Utilizator:</strong> ${userEmail}</p>
+        <p><strong>Sumă:</strong> €${suma}</p>
+        <p><strong>Metodă:</strong> ${metoda}</p>
+        <p>Procesează din panoul admin.</p>
+      `,
+      cta: { label: 'Deschide admin', url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard` },
+      footer: 'Notificare automată pentru echipa SuperFunded.',
+    }),
+  });
+}
+
 export async function sendContactInquiry(opts: {
   fromName: string;
   fromEmail: string;
