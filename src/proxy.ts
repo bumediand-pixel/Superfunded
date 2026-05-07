@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Affiliate referral tracking — captures `?ref=CODE` from any landing URL and
  * persists it in a 30-day httpOnly cookie. Read on /register to attribute the signup.
  */
-export function middleware(req: NextRequest) {
+export function proxy(req: NextRequest) {
   const ref = req.nextUrl.searchParams.get('ref');
   if (!ref) return NextResponse.next();
 
