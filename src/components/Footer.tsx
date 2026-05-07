@@ -115,11 +115,17 @@ export default function Footer() {
 
         {/* Disclaimer */}
         <div className="px-5 py-4 rounded-xl mb-8" style={{ background: 'rgba(230,57,70,0.08)', border: '1px solid rgba(230,57,70,0.15)' }}>
-          <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            <span style={{ color: 'rgba(230,57,70,0.8)', fontWeight: 700 }}>AVERTISMENT:</span>{' '}
+          <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <span style={{ color: 'rgba(230,57,70,0.9)', fontWeight: 700 }}>AVERTISMENT:</span>{' '}
             SuperFunded este o platformă de evaluare a abilităților sportive, nu un operator de pariuri. Nu plasăm pariuri reale.
-            Taxa de evaluare reprezintă accesul la program. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>18 ani</strong>.
-            Joc responsabil: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>jocresponsabil.ro</strong>
+            Taxa de evaluare reprezintă accesul la program. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.7)' }}>18 ani</strong>.
+            {' '}Joc responsabil:{' '}
+            <a href="https://www.jocresponsabil.ro" target="_blank" rel="noopener" className="underline font-bold transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              jocresponsabil.ro
+            </a>{' · '}
+            <a href="tel:0800800099" className="underline font-bold transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              Tel-Verde 0800 800 099
+            </a>
           </p>
         </div>
 
