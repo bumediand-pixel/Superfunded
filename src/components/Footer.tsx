@@ -11,6 +11,7 @@ const LINKS_PLATFORMA = [
 
 const LINKS_COMUNITATE = [
   { label: 'Discord', href: '/discord' },
+  { label: 'Blog & Strategie', href: '/blog' },
   { label: 'Afiliere', href: '/afiliere' },
   { label: 'Contact', href: '/contact' },
 ];

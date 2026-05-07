@@ -7,6 +7,7 @@ const LINKS = [
   ['/planuri', 'Planuri'],
   ['/calculators', 'Calculatoare'],
   ['/clasament', 'Clasament'],
+  ['/blog', 'Blog'],
   ['/afiliere', 'Afiliere'],
   ['/faq', 'FAQ'],
 ];
