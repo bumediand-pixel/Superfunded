@@ -3,6 +3,7 @@ import { Bebas_Neue, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google"
 import "./globals.css";
 import CookieBanner from "@/components/CookieBanner";
 import AgeGate from "@/components/AgeGate";
+import Analytics from "@/components/Analytics";
 
 // Reduced from 5 fonts to 3 — saves ~280KB of font payload + ~200ms LCP.
 // Bodoni / Jost weren't used in the rendered output.
@@ -74,6 +75,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         {children}
         <AgeGate />
         <CookieBanner />
+        <Analytics />
       </body>
     </html>
   );
