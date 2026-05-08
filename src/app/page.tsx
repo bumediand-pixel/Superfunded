@@ -1,6 +1,8 @@
 import Nav from '@/components/Nav';
 import Footer from '@/components/Footer';
 import PayoutTicker from '@/components/PayoutTicker';
+import TrustBadges from '@/components/TrustBadges';
+import ReviewsWidget from '@/components/ReviewsWidget';
 import HeroSection from '@/components/sections/HeroSection';
 import MarqueeSection from '@/components/sections/MarqueeSection';
 import StatisticiSection from '@/components/sections/StatisticiSection';
@@ -47,7 +49,9 @@ export default function Home() {
         <CumFunctioneazaSection />
         <SportsCinematicSection />
         <PlanuriSection />
+        <TrustBadges />
         <LeaderboardSection />
+        <ReviewsWidget />
         <TestimonialeSection />
         <FAQSection />
         <CtaFinalSection />

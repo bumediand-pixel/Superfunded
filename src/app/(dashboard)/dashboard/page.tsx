@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import LiveOddsWidget from '@/components/LiveOddsWidget';
+import WelcomeTour from '@/components/dashboard/WelcomeTour';
 
 async function getData(userId: string) {
   try {
@@ -27,6 +28,7 @@ export default async function DashboardPage() {
 
   return (
     <div className="p-8">
+      <WelcomeTour />
       <div className="mb-8">
         <h1 className="text-3xl font-black text-white">Overview</h1>
         <p className="text-white/40 mt-1">{new Date().toLocaleDateString('ro-RO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
