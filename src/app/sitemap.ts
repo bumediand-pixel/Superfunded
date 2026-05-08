@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { POSTS } from './(marketing)/blog/_data';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://superfunded.ro';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://thesuperfunded.com';
 
 const ROUTES = [
   '/',

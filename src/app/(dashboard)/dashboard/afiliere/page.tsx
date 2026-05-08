@@ -27,7 +27,7 @@ export default function AfiliereDashboard() {
     } finally { setCreating(false); }
   };
 
-  const link = afiliat ? `${typeof window !== 'undefined' ? window.location.origin : 'https://superfunded.ro'}/?ref=${afiliat.codReferral}` : '';
+  const link = afiliat ? `${typeof window !== 'undefined' ? window.location.origin : 'https://thesuperfunded.com'}/?ref=${afiliat.codReferral}` : '';
 
   const copyLink = () => {
     navigator.clipboard.writeText(link);

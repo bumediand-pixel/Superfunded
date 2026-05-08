@@ -67,7 +67,7 @@ export default function FAQSection() {
             <div className="text-base font-bold mb-1" style={{ color: 'var(--text)' }}>Mai ai întrebări?</div>
             <div className="text-sm" style={{ color: 'var(--text-muted)' }}>Răspundem în 24-48h lucrătoare</div>
           </div>
-          <a href="mailto:support@superfunded.ro"
+          <a href="mailto:support@thesuperfunded.com"
             className="font-bold text-sm px-6 py-3 rounded-xl text-white transition-all duration-200 cursor-pointer"
             style={{ background: 'var(--red)' }}
             onMouseEnter={e => (e.currentTarget as HTMLElement).style.background = '#c0202d'}

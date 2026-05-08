@@ -9,10 +9,14 @@ export const ENTITY_COUNTRY   = 'România';
 export const ENTITY_CUI       = 'RO00000000'; // TODO: replace with real CUI after registration
 export const ENTITY_REG_NO    = 'J40/0/0000'; // TODO: replace with Reg. Com.
 export const ENTITY_ADDRESS   = 'București, România';
-export const SUPPORT_EMAIL    = 'support@superfunded.ro';
-export const GDPR_EMAIL       = 'gdpr@superfunded.ro';
+export const SITE_URL         = 'https://thesuperfunded.com';
+export const SUPPORT_EMAIL    = 'support@thesuperfunded.com';
+export const GDPR_EMAIL       = 'gdpr@thesuperfunded.com';
+export const AFFILIATE_EMAIL  = 'afiliere@thesuperfunded.com';
 export const RESPONSIBLE_GAMBLING_URL = 'https://www.jocresponsabil.ro';
 export const TEL_VERDE        = '0800 800 099';
+/** Discord invite — replaced with real one once user creates server */
+export const DISCORD_INVITE   = process.env.NEXT_PUBLIC_DISCORD_INVITE || 'https://discord.gg/superfunded';
 
 export const SKILL_EVAL_DISCLAIMER = {
   short:

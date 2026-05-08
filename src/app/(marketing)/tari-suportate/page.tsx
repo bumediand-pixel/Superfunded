@@ -96,7 +96,7 @@ export default function TariSuportatePage() {
             <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>ÎNTREBĂRI</h2>
             <p>Dacă țara ta nu apare în lista de mai sus sau ai întrebări despre eligibilitate, contactează echipa noastră.</p>
             <div className="mt-4 p-4 font-mono text-xs space-y-1" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>
-              <div>Email: support@superfunded.ro</div>
+              <div>Email: support@thesuperfunded.com</div>
               <div>Timp răspuns: 24-48 ore lucrătoare</div>
             </div>
           </section>

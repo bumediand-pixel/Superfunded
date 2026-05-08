@@ -7,7 +7,7 @@ function getResend() {
   if (!_resend) _resend = new Resend(process.env.RESEND_API_KEY ?? 'placeholder');
   return _resend;
 }
-const FROM = 'SuperFunded <noreply@superfunded.ro>';
+const FROM = 'SuperFunded <noreply@thesuperfunded.com>';
 
 export async function sendWelcomeEmail(to: string, numeComplet?: string) {
   const name = numeComplet ?? to.split('@')[0];
@@ -130,7 +130,7 @@ export async function sendContactInquiry(opts: {
   message: string;
   category?: string;
 }) {
-  const to = process.env.CONTACT_INBOX_EMAIL || 'support@superfunded.ro';
+  const to = process.env.CONTACT_INBOX_EMAIL || 'support@thesuperfunded.com';
   return getResend().emails.send({
     from: FROM,
     to,
@@ -170,7 +170,7 @@ function emailTemplate({ title, preheader, body, cta, footer }: {
   cta: { label: string; url: string };
   footer: string;
 }) {
-  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://superfunded.ro';
+  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://thesuperfunded.com';
   return `<!DOCTYPE html>
 <html lang="ro">
 <head>

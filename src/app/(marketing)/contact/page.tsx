@@ -5,10 +5,10 @@ import { Mail, Users, Handshake, MapPin, Clock, Send } from 'lucide-react';
 type Category = 'support' | 'affiliates' | 'partnerships' | 'general';
 
 const CATEGORIES: { id: Category; label: string; icon: typeof Mail; email: string; desc: string }[] = [
-  { id: 'support',      label: 'Suport general',  icon: Mail,     email: 'support@superfunded.ro',      desc: 'Întrebări despre cont, picks, retrageri, KYC.' },
-  { id: 'affiliates',   label: 'Afiliere',        icon: Users,    email: 'afiliere@superfunded.ro',     desc: 'Înrolare în program, comisioane, materiale.' },
-  { id: 'partnerships', label: 'Parteneriate',    icon: Handshake,email: 'parteneriate@superfunded.ro',desc: 'Colaborări, content, brand deals.' },
-  { id: 'general',      label: 'Altceva',         icon: Mail,     email: 'hello@superfunded.ro',        desc: 'Orice nu intră în categoriile de mai sus.' },
+  { id: 'support',      label: 'Suport general',  icon: Mail,     email: 'support@thesuperfunded.com',      desc: 'Întrebări despre cont, picks, retrageri, KYC.' },
+  { id: 'affiliates',   label: 'Afiliere',        icon: Users,    email: 'afiliere@thesuperfunded.com',     desc: 'Înrolare în program, comisioane, materiale.' },
+  { id: 'partnerships', label: 'Parteneriate',    icon: Handshake,email: 'parteneriate@thesuperfunded.com',desc: 'Colaborări, content, brand deals.' },
+  { id: 'general',      label: 'Altceva',         icon: Mail,     email: 'hello@thesuperfunded.com',        desc: 'Orice nu intră în categoriile de mai sus.' },
 ];
 
 export default function ContactPage() {

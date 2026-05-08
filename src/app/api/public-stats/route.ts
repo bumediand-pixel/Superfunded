@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+import { isDemoMode, DEMO_PUBLIC_STATS } from '@/lib/demoMode';
 
 /**
  * Public, anonymous, cached marketing-stats endpoint.
@@ -16,6 +17,8 @@ function roundDown(n: number, step: number) {
 }
 
 export async function GET() {
+  if (isDemoMode()) return NextResponse.json(DEMO_PUBLIC_STATS);
+
   try {
     const [users, funded, payoutAgg] = await Promise.all([
       prisma.utilizator.count(),

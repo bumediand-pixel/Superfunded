@@ -37,7 +37,7 @@ export async function GET() {
     operator: {
       name: 'SuperFunded SRL',
       country: 'România',
-      contact: 'gdpr@superfunded.ro',
+      contact: 'gdpr@thesuperfunded.com',
     },
     profile: {
       id: utilizator.id,
@@ -58,7 +58,7 @@ export async function GET() {
     retrageri: utilizator.retrageri,
     afiliat: utilizator.afiliat,
     note:
-      'Documentele KYC (acte de identitate, selfie) sunt stocate la Sumsub conform AML și pot fi cerute prin gdpr@superfunded.ro. ' +
+      'Documentele KYC (acte de identitate, selfie) sunt stocate la Sumsub conform AML și pot fi cerute prin gdpr@thesuperfunded.com. ' +
       'Logurile de plată complete sunt deținute de Stripe și disponibile la cerere.',
   };
 

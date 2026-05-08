@@ -14,11 +14,11 @@ async function main() {
 
   // 1. Demo users
   const users = await Promise.all([
-    upsertUser('demo-funded@superfunded.ro',  'Andrei Demo',     'APROBAT'),
-    upsertUser('demo-faza1@superfunded.ro',   'Maria Faza1',     'APROBAT'),
-    upsertUser('demo-respins@superfunded.ro', 'Tom Respins',     'NEVERIFICAT'),
-    upsertUser('demo-affiliate@superfunded.ro','Cristina Affiliate','APROBAT'),
-    upsertUser('admin@superfunded.ro',        'Admin Demo',      'APROBAT'),
+    upsertUser('demo-funded@thesuperfunded.com',  'Andrei Demo',     'APROBAT'),
+    upsertUser('demo-faza1@thesuperfunded.com',   'Maria Faza1',     'APROBAT'),
+    upsertUser('demo-respins@thesuperfunded.com', 'Tom Respins',     'NEVERIFICAT'),
+    upsertUser('demo-affiliate@thesuperfunded.com','Cristina Affiliate','APROBAT'),
+    upsertUser('admin@thesuperfunded.com',        'Admin Demo',      'APROBAT'),
   ]);
   console.log(`✓ ${users.length} users`);
 

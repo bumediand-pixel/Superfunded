@@ -11,7 +11,7 @@ const bebas = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-
 const jakarta = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-jakarta", weight: ["400","500","600","700","800"], display: "swap" });
 const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono", weight: ["400","600","700"], display: "swap" });
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://superfunded.ro";
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || "https://thesuperfunded.com";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),
@@ -70,7 +70,7 @@ const orgJsonLd = {
     "https://twitter.com/superfunded",
   ],
   contactPoint: [
-    { "@type": "ContactPoint", contactType: "customer support", email: "support@superfunded.ro", areaServed: "RO", availableLanguage: ["Romanian", "English"] },
+    { "@type": "ContactPoint", contactType: "customer support", email: "support@thesuperfunded.com", areaServed: "RO", availableLanguage: ["Romanian", "English"] },
   ],
 };
 

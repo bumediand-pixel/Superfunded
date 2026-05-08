@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://superfunded.ro';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://thesuperfunded.com';
 
 export default function robots(): MetadataRoute.Robots {
   return {

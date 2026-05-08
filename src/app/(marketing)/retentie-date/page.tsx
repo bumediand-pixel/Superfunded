@@ -60,7 +60,7 @@ export default function DataRetention() {
         </ul>
 
         <p className="text-xs mt-10" style={{ color: 'var(--text-subtle)' }}>
-          Operator de date: SuperFunded SRL · Ultima actualizare: 2026-05-08 · Întrebări: <a href="mailto:gdpr@superfunded.ro" className="text-[var(--red)] font-semibold">gdpr@superfunded.ro</a>
+          Operator de date: SuperFunded SRL · Ultima actualizare: 2026-05-08 · Întrebări: <a href="mailto:gdpr@thesuperfunded.com" className="text-[var(--red)] font-semibold">gdpr@thesuperfunded.com</a>
         </p>
       </div>
     </main>

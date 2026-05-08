@@ -54,7 +54,7 @@ export default function Footer() {
               Platforma de betting prop firm #1 din România. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
             </p>
             <div className="flex flex-col gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              <span>support@superfunded.ro</span>
+              <span>support@thesuperfunded.com</span>
               <span>Discord: discord.gg/superfunded</span>
             </div>
           </div>

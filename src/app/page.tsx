@@ -15,7 +15,7 @@ import TestimonialeSection from '@/components/sections/TestimonialeSection';
 import FAQSection from '@/components/sections/FAQSection';
 import CtaFinalSection from '@/components/sections/CtaFinalSection';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://superfunded.ro';
+const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://thesuperfunded.com';
 
 const productJsonLd = [
   { id: 'STARTER_500',    name: 'Starter €500',     price: 19,  capital: 500   },
