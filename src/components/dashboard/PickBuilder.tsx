@@ -1,8 +1,15 @@
 'use client';
 import { useState, useEffect, useMemo } from 'react';
-import { X, Calculator, AlertCircle } from 'lucide-react';
+import { X, Calculator, AlertCircle, Zap } from 'lucide-react';
 
 type Cont = { id: string; plan: string; capitalCurent: number; capitalInceput: number; statusEvaluare: string };
+type LiveEvent = {
+  id: string;
+  home_team: string;
+  away_team: string;
+  commence_time: string;
+  bookmakers?: { markets?: { key: string; outcomes: { name: string; price: number }[] }[] }[];
+};
 
 const SPORTS = [
   { key: 'soccer_epl',                label: '⚽ Premier League' },
@@ -14,6 +21,12 @@ const SPORTS = [
 ];
 
 const MARKETS = ['Moneyline (1X2)', 'Over/Under', 'Spread', 'Both Teams to Score', 'Prop Player', 'Half/Full Time'];
+const TIPURI = [
+  { val: 'SIMPLU',   label: 'Simplu' },
+  { val: 'COMBINAT', label: 'Combinat (acca)' },
+  { val: 'SISTEM',   label: 'Sistem' },
+  { val: 'LIVE',     label: 'Live' },
+];
 
 export default function PickBuilder({ onClose, onCreated }: { onClose: () => void; onCreated: () => void }) {
   const [conturi, setConturi] = useState<Cont[]>([]);
@@ -29,7 +42,12 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
     selectie: '',
     cota: '1.95',
     suma: '50',
+    tipPariu: 'SIMPLU' as 'SIMPLU'|'COMBINAT'|'SISTEM'|'LIVE',
   });
+
+  // Live odds for the selected sport (autofill source)
+  const [events, setEvents] = useState<LiveEvent[]>([]);
+  const [loadingEvents, setLoadingEvents] = useState(false);
 
   useEffect(() => {
     fetch('/api/conturi').then(r => r.json()).then(d => {
@@ -39,6 +57,27 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
       setLoadingAcc(false);
     });
   }, []);
+
+  useEffect(() => {
+    setLoadingEvents(true);
+    fetch(`/api/odds/live?sport=${encodeURIComponent(form.sport)}`)
+      .then(r => r.json())
+      .then(d => setEvents(Array.isArray(d) ? d.slice(0, 6) : []))
+      .catch(() => setEvents([]))
+      .finally(() => setLoadingEvents(false));
+  }, [form.sport]);
+
+  const useLiveEvent = (ev: LiveEvent, side: 'home' | 'away' | 'draw') => {
+    const h2h = ev.bookmakers?.[0]?.markets?.find(m => m.key === 'h2h')?.outcomes ?? [];
+    const teamName = side === 'home' ? ev.home_team : side === 'away' ? ev.away_team : 'Draw';
+    const odd = h2h.find(o => o.name === teamName)?.price;
+    setForm(f => ({
+      ...f,
+      eveniment: `${ev.home_team} vs ${ev.away_team}`,
+      selectie: side === 'draw' ? 'X' : (side === 'home' ? '1' : '2'),
+      cota: odd ? odd.toFixed(2) : f.cota,
+    }));
+  };
 
   const cont = conturi.find(c => c.id === form.contId);
   const cota = parseFloat(form.cota) || 0;
@@ -65,7 +104,7 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
           selectie: form.selectie,
           cota,
           suma,
-          tipPariu: 'SIMPLU',
+          tipPariu: form.tipPariu,
         }),
       });
       const data = await res.json();
@@ -128,13 +167,66 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
                     {SPORTS.map(s => <option key={s.key} value={s.key} className="bg-[#141414]">{s.label}</option>)}
                   </select>
                 </DarkField>
-                <DarkField label="Piață">
-                  <select value={form.piata} onChange={e => setForm({ ...form, piata: e.target.value })}
+                <DarkField label="Tip pariu">
+                  <select value={form.tipPariu} onChange={e => setForm({ ...form, tipPariu: e.target.value as typeof form.tipPariu })}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
-                    {MARKETS.map(m => <option key={m} value={m} className="bg-[#141414]">{m}</option>)}
+                    {TIPURI.map(t => <option key={t.val} value={t.val} className="bg-[#141414]">{t.label}</option>)}
                   </select>
                 </DarkField>
               </div>
+
+              <DarkField label="Piață">
+                <select value={form.piata} onChange={e => setForm({ ...form, piata: e.target.value })}
+                  className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
+                  {MARKETS.map(m => <option key={m} value={m} className="bg-[#141414]">{m}</option>)}
+                </select>
+              </DarkField>
+
+              {/* Live events autofill */}
+              {events.length > 0 && (
+                <div className="rounded-xl p-3" style={{ background: 'rgba(230,57,70,0.05)', border: '1px solid rgba(230,57,70,0.2)' }}>
+                  <div className="flex items-center gap-2 text-[10px] font-bold tracking-widest uppercase mb-2" style={{ color: 'var(--red)' }}>
+                    <Zap className="w-3 h-3" />
+                    Live odds — apasă să auto-completezi
+                  </div>
+                  <div className="space-y-1.5 max-h-44 overflow-y-auto">
+                    {events.map(ev => {
+                      const h2h = ev.bookmakers?.[0]?.markets?.find(m => m.key === 'h2h')?.outcomes ?? [];
+                      const homeOdd = h2h.find(o => o.name === ev.home_team)?.price;
+                      const drawOdd = h2h.find(o => o.name === 'Draw')?.price;
+                      const awayOdd = h2h.find(o => o.name === ev.away_team)?.price;
+                      return (
+                        <div key={ev.id} className="flex items-center gap-1.5 text-xs">
+                          <div className="flex-1 min-w-0 text-white truncate" title={`${ev.home_team} vs ${ev.away_team}`}>
+                            {ev.home_team} <span className="text-white/40">vs</span> {ev.away_team}
+                          </div>
+                          {homeOdd && (
+                            <button type="button" onClick={() => useLiveEvent(ev, 'home')}
+                              className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
+                              1 · {homeOdd.toFixed(2)}
+                            </button>
+                          )}
+                          {drawOdd && (
+                            <button type="button" onClick={() => useLiveEvent(ev, 'draw')}
+                              className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
+                              X · {drawOdd.toFixed(2)}
+                            </button>
+                          )}
+                          {awayOdd && (
+                            <button type="button" onClick={() => useLiveEvent(ev, 'away')}
+                              className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
+                              2 · {awayOdd.toFixed(2)}
+                            </button>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+              {loadingEvents && (
+                <div className="text-xs text-white/40">Se încarcă cote live...</div>
+              )}
 
               <DarkField label="Eveniment" hint="Format: 'Echipa Acasă vs Echipa Oaspete'">
                 <input required value={form.eveniment} onChange={e => setForm({ ...form, eveniment: e.target.value })}

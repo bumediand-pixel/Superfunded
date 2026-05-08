@@ -6,6 +6,30 @@ export default function SetariPage() {
   const [notif, setNotif] = useState({ email: true, telegram: false, pariuConfirmat: true, retragereStatus: true });
   const [saving, setSaving] = useState(false);
 
+  const [deleteOpen, setDeleteOpen] = useState(false);
+  const [deleteConfirm, setDeleteConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
+
+  const handleDelete = async () => {
+    if (deleteConfirm !== 'STERGE') return;
+    setDeleting(true);
+    setDeleteError(null);
+    try {
+      const res = await fetch('/api/user/delete', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ confirm: 'STERGE' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Ștergere eșuată');
+      window.location.href = '/?account_deleted=1';
+    } catch (err) {
+      setDeleteError(err instanceof Error ? err.message : 'Eroare');
+      setDeleting(false);
+    }
+  };
+
   const handleSave = async () => {
     setSaving(true);
     await new Promise(r => setTimeout(r, 800));
@@ -116,12 +140,51 @@ export default function SetariPage() {
             <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
               Ștergerea contului este permanentă și ireversibilă. Toate datele, istoricul pariurilor și conturile active vor fi eliminate.
             </p>
-            <button className="font-mono text-[10px] uppercase tracking-widest px-5 py-2.5 transition-all duration-200"
+            <button onClick={() => setDeleteOpen(true)}
+              className="font-mono text-[10px] uppercase tracking-widest px-5 py-2.5 transition-all duration-200 cursor-pointer"
               style={{ background: 'transparent', border: '1px solid rgba(230,57,70,0.3)', color: 'rgba(230,57,70,0.6)' }}
               onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(230,57,70,0.1)'; (e.currentTarget as HTMLElement).style.color = 'var(--red)'; }}
               onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'rgba(230,57,70,0.6)'; }}>
               Șterge contul
             </button>
+
+            {deleteOpen && (
+              <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+                style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)' }}
+                onClick={() => !deleting && setDeleteOpen(false)}>
+                <div className="rounded-2xl max-w-md w-full p-6"
+                  style={{ background: '#141414', border: '1px solid rgba(230,57,70,0.3)' }}
+                  onClick={e => e.stopPropagation()}>
+                  <h3 className="font-bebas text-2xl tracking-wider text-white mb-3">Confirmare ștergere cont</h3>
+                  <p className="text-sm text-white/70 leading-relaxed mb-2">
+                    Datele tale personale vor fi anonimizate ireversibil. Înregistrările financiare (plăți, retrageri procesate) sunt păstrate conform legii române timp de 5–10 ani, dar fără identificarea ta.
+                  </p>
+                  <p className="text-sm text-white/70 leading-relaxed mb-4">
+                    Conturile active vor fi suspendate. Tipează <span className="font-mono font-bold text-red-400">STERGE</span> pentru confirmare:
+                  </p>
+                  <input type="text" value={deleteConfirm} onChange={e => setDeleteConfirm(e.target.value)}
+                    placeholder="STERGE"
+                    autoFocus
+                    className="w-full mb-4 px-4 py-3 rounded-lg outline-none font-mono text-white"
+                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
+                  {deleteError && (
+                    <p className="text-xs text-red-400 mb-3">{deleteError}</p>
+                  )}
+                  <div className="flex gap-3">
+                    <button onClick={() => setDeleteOpen(false)} disabled={deleting}
+                      className="flex-1 py-3 text-sm font-bold rounded-lg cursor-pointer text-white"
+                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      Anulează
+                    </button>
+                    <button onClick={handleDelete} disabled={deleteConfirm !== 'STERGE' || deleting}
+                      className="flex-1 py-3 text-sm font-bold rounded-lg cursor-pointer text-white disabled:opacity-30"
+                      style={{ background: 'var(--red)' }}>
+                      {deleting ? 'Se șterge...' : 'Șterge contul definitiv'}
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Save button */}
