@@ -21,7 +21,8 @@ export default function LiveOddsWidget({ sport = 'soccer_epl' }: { sport?: strin
         const res = await fetch(`/api/odds/live?sport=${sport}`);
         const data = await res.json();
         if (data.error) { setError(data.error); return; }
-        setOdds(data.slice(0, 6));
+        const list = Array.isArray(data) ? data : (Array.isArray(data?.events) ? data.events : []);
+        setOdds(list.slice(0, 6));
       } catch {
         setError('Eroare la încărcare');
       } finally {

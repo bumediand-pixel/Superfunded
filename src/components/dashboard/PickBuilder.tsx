@@ -62,7 +62,11 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
     setLoadingEvents(true);
     fetch(`/api/odds/live?sport=${encodeURIComponent(form.sport)}`)
       .then(r => r.json())
-      .then(d => setEvents(Array.isArray(d) ? d.slice(0, 6) : []))
+      .then(d => {
+        // Endpoint returns { events, status } now; tolerate the legacy bare-array shape too.
+        const list = Array.isArray(d) ? d : (Array.isArray(d?.events) ? d.events : []);
+        setEvents(list.slice(0, 6));
+      })
       .catch(() => setEvents([]))
       .finally(() => setLoadingEvents(false));
   }, [form.sport]);

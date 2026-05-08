@@ -53,6 +53,7 @@ const STATUS_COLOR: Record<string, string> = {
 export default function PariuriPage() {
   const [sport, setSport] = useState('soccer_epl');
   const [events, setEvents] = useState<OddsEvent[]>([]);
+  const [oddsStatus, setOddsStatus] = useState<'ok' | 'empty' | 'unconfigured' | 'upstream_error'>('ok');
   const [loadingEvents, setLoadingEvents] = useState(true);
 
   const [picks, setPicks] = useState<Pick[]>([]);
@@ -67,10 +68,12 @@ export default function PariuriPage() {
     setLoadingEvents(true);
     try {
       const res = await fetch(`/api/odds/live?sport=${s}`, { cache: 'no-store' });
-      const data: OddsEvent[] = await res.json();
-      setEvents(Array.isArray(data) ? data : []);
+      const data: { events: OddsEvent[]; status: typeof oddsStatus } = await res.json();
+      setEvents(Array.isArray(data.events) ? data.events : []);
+      setOddsStatus(data.status ?? 'ok');
     } catch {
       setEvents([]);
+      setOddsStatus('upstream_error');
     } finally {
       setLoadingEvents(false);
     }
@@ -179,9 +182,23 @@ export default function PariuriPage() {
           ) : events.length === 0 ? (
             <div className="rounded-2xl p-12 text-center"
               style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
-              <div className="text-4xl mb-3">📭</div>
-              <h3 className="text-white font-extrabold text-lg mb-1">Niciun meci disponibil</h3>
-              <p className="text-white/40 text-sm">Încearcă alt sport sau revino mai târziu.</p>
+              <div className="text-4xl mb-3">
+                {oddsStatus === 'unconfigured' ? '🔌'
+                  : oddsStatus === 'upstream_error' ? '⚠️'
+                  : '📭'}
+              </div>
+              <h3 className="text-white font-extrabold text-lg mb-1">
+                {oddsStatus === 'unconfigured' ? 'Cotele live nu sunt încă configurate'
+                  : oddsStatus === 'upstream_error' ? 'Furnizorul de cote nu răspunde'
+                  : 'Niciun meci disponibil'}
+              </h3>
+              <p className="text-white/40 text-sm">
+                {oddsStatus === 'unconfigured'
+                  ? 'Setează ODDS_API_KEY în mediul Vercel pentru a porni feed-ul.'
+                  : oddsStatus === 'upstream_error'
+                  ? 'Reîncearcă în câteva minute.'
+                  : 'Încearcă alt sport sau revino mai târziu.'}
+              </p>
             </div>
           ) : (
             events.map(ev => (

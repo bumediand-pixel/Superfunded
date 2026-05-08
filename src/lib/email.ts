@@ -152,6 +152,73 @@ export async function sendContactInquiry(opts: {
   });
 }
 
+/**
+ * Triggered by the settle-bets cron whenever an account transitions phase
+ * (FAZA_1 → FAZA_2, FAZA_2 → FINANTAT, or → RESPINS on max-drawdown breach).
+ */
+export async function sendPhaseChangeEmail(to: string, opts: {
+  plan: string;
+  fromPhase: string;
+  toPhase: string;
+  capital: number;
+}) {
+  const { plan, fromPhase, toPhase, capital } = opts;
+  const isWin = toPhase === 'FAZA_2' || toPhase === 'FINANTAT';
+  const subject = isWin
+    ? toPhase === 'FINANTAT'
+      ? `🎉 Cont FINANȚAT — ${plan}`
+      : `Felicitări — ai trecut în FAZA 2 (${plan})`
+    : `Cont ${plan} — evaluare oprită`;
+
+  const body = isWin
+    ? toPhase === 'FINANTAT'
+      ? `<p>Felicitări! Contul tău <strong>${plan}</strong> (€${capital.toLocaleString('ro-RO')}) este oficial <strong>FINANȚAT</strong>.</p>
+         <p>De acum poți cere retrageri săptămânal pe profiturile generate. Verifică KYC-ul în dashboard pentru a debloca retragerile.</p>`
+      : `<p>Ai trecut cu succes din <strong>${fromPhase}</strong> în <strong>${toPhase}</strong> pe contul ${plan}.</p>
+         <p>Țintă următoare: încă 20% profit fără să spargi drawdown-ul de 8%. Mult succes.</p>`
+    : `<p>Contul tău <strong>${plan}</strong> a fost oprit din evaluare deoarece a depășit pragul de drawdown.</p>
+       <p>Poți reseta contul cu o taxă redusă sau să cumperi un challenge nou.</p>`;
+
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject,
+    html: emailTemplate({
+      title: subject,
+      preheader: isWin ? 'Felicitări!' : 'Evaluare oprită — opțiuni de continuare',
+      body,
+      cta: { label: 'Mergi la Dashboard', url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard` },
+      footer: 'Ai primit acest email pentru schimbarea de status pe un cont SuperFunded.',
+    }),
+  });
+}
+
+/**
+ * Triggered when a referred user generates a commission for the affiliate.
+ */
+export async function sendComisionAfiliatEmail(to: string, opts: {
+  suma: number;
+  procent: number;
+  emailReferit?: string;
+}) {
+  const { suma, procent, emailReferit } = opts;
+  return getResend().emails.send({
+    from: FROM,
+    to,
+    subject: `+€${suma.toFixed(2)} comision afiliat`,
+    html: emailTemplate({
+      title: 'Comision nou pe contul tău de afiliat',
+      preheader: `+€${suma.toFixed(2)} (${procent}%) tocmai a intrat.`,
+      body: `
+        <p>Un picker referit ${emailReferit ? `(${escapeHtml(emailReferit)}) ` : ''}tocmai a cumpărat un challenge.</p>
+        <p>Comision generat: <strong>€${suma.toFixed(2)}</strong> (${procent}%). Va fi virat la următoarea plată lunară.</p>
+      `,
+      cta: { label: 'Vezi statusul', url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard/afiliere` },
+      footer: 'Ai primit acest email pentru o comision nouă pe contul tău de afiliat.',
+    }),
+  });
+}
+
 function escapeHtml(s: string): string {
   return s
     .replace(/&/g, '&amp;')

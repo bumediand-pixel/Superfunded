@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { getScores, SPORTURI_DISPONIBILE, type ScoreEvent } from '@/lib/odds-api';
 import { Decimal } from 'decimal.js';
+import { sendPhaseChangeEmail } from '@/lib/email';
 
 /**
  * Settles open bets for all known sports.
@@ -14,6 +15,11 @@ import { Decimal } from 'decimal.js';
  *   - draw on h2h non-3way → returned as void (PUSH)
  * Phase rules are evaluated after balance updates: profit target hit → advance / fund;
  * max drawdown breached → reject account.
+ */
+/**
+ * Settlement entry point. The original file already exports `GET = POST` at
+ * the bottom of this file (Vercel Cron only sends GET). We keep POST as the
+ * canonical handler for manual curl/test invocations.
  */
 export async function POST(req: NextRequest) {
   // Auth: cron-only secret. Vercel Cron sends `Authorization: Bearer $CRON_SECRET`.
@@ -141,6 +147,21 @@ export async function POST(req: NextRequest) {
     const profit = cont.capitalCurent - startCap;
     const drawdown = startCap - cont.capitalCurent;
 
+    // Pre-load owner email so we can fire the phase-change notification once.
+    const owner = await prisma.utilizator.findUnique({
+      where: { id: cont.utilizatorId },
+      select: { email: true },
+    });
+    const fireEmail = (toPhase: string) => {
+      if (!owner?.email) return;
+      sendPhaseChangeEmail(owner.email, {
+        plan: cont.plan,
+        fromPhase: cont.statusEvaluare,
+        toPhase,
+        capital: cont.capitalCurent,
+      }).catch(err => console.error('[cron/settle-bets] phase email failed:', err));
+    };
+
     // Drawdown breach → reject
     const maxAllowed = cont.reguli[0]?.maxPierdere ?? startCap * 0.08;
     if (drawdown > maxAllowed) {
@@ -148,6 +169,7 @@ export async function POST(req: NextRequest) {
         where: { id: cont.id },
         data: { statusEvaluare: 'RESPINS', activ: false, dataFinalizare: new Date() },
       });
+      fireEmail('RESPINS');
       phaseChanges++;
       continue;
     }
@@ -161,17 +183,17 @@ export async function POST(req: NextRequest) {
 
       const totalPhases = cont.reguli.length;
       if (cont.fazaCurenta < totalPhases) {
-        // Advance phase, reset capital relative to current level (TFP-style: keep gains, new target measured from now)
         await prisma.contTrader.update({
           where: { id: cont.id },
           data: { fazaCurenta: cont.fazaCurenta + 1, statusEvaluare: 'FAZA_2' },
         });
+        fireEmail('FAZA_2');
       } else {
-        // Last phase done → fund the account
         await prisma.contTrader.update({
           where: { id: cont.id },
           data: { statusEvaluare: 'FINANTAT', dataFinalizare: new Date() },
         });
+        fireEmail('FINANTAT');
       }
       phaseChanges++;
     }

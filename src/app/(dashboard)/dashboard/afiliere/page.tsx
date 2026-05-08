@@ -37,7 +37,7 @@ export default function AfiliereDashboard() {
 
   if (loading) {
     return (
-      <div className="p-8 space-y-3">
+      <div className="p-4 sm:p-8 space-y-3">
         {[...Array(4)].map((_, i) => <div key={i} className="bg-white/5 rounded-xl h-28 animate-pulse" />)}
       </div>
     );
@@ -45,8 +45,8 @@ export default function AfiliereDashboard() {
 
   if (!afiliat) {
     return (
-      <div className="p-8">
-        <div className="bg-[#141414] border border-white/10 rounded-2xl p-10 max-w-xl mx-auto text-center">
+      <div className="p-4 sm:p-8">
+        <div className="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-10 max-w-xl mx-auto text-center">
           <div className="text-5xl mb-4">🤝</div>
           <h1 className="text-2xl font-black text-white mb-3">Devino afiliat SuperFunded</h1>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
@@ -68,21 +68,21 @@ export default function AfiliereDashboard() {
   const referrals = new Set(afiliat.comisioane.map(c => c.id.slice(0, 8))).size;
 
   return (
-    <div className="p-8 max-w-5xl">
-      <h1 className="text-3xl font-black text-white mb-2">Afiliere</h1>
-      <p className="text-white/40 text-sm mb-8">Cod: <strong className="text-white font-mono">{afiliat.codReferral}</strong></p>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-5xl">
+      <h1 className="text-2xl sm:text-3xl font-black text-white mb-2">Afiliere</h1>
+      <p className="text-white/40 text-sm mb-6 sm:mb-8">Cod: <strong className="text-white font-mono">{afiliat.codReferral}</strong></p>
 
       {/* Link */}
-      <div className="bg-[#141414] border border-white/10 rounded-2xl p-6 mb-6">
+      <div className="bg-[#141414] border border-white/10 rounded-2xl p-4 sm:p-6 mb-5 sm:mb-6">
         <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-white/40 mb-3">
           <LinkIcon className="w-3.5 h-3.5" />
           Link-ul tău de afiliat
         </div>
-        <div className="flex gap-2">
-          <input readOnly value={link}
-            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm font-mono outline-none" />
+        <div className="flex flex-col sm:flex-row gap-2">
+          <input readOnly value={link} aria-label="Link afiliat"
+            className="flex-1 bg-white/5 border border-white/10 rounded-xl px-3 sm:px-4 py-3 text-white text-xs sm:text-sm font-mono outline-none truncate" />
           <button onClick={copyLink}
-            className="inline-flex items-center gap-2 font-bold text-sm px-5 py-3 rounded-xl text-white cursor-pointer transition-colors"
+            className="inline-flex items-center justify-center gap-2 font-bold text-sm px-5 py-3 rounded-xl text-white cursor-pointer transition-colors"
             style={{ background: copied ? '#15803d' : 'var(--red)' }}>
             {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
             {copied ? 'Copiat!' : 'Copiază'}
@@ -94,7 +94,7 @@ export default function AfiliereDashboard() {
       </div>
 
       {/* KPIs */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-8">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 sm:gap-3 mb-6 sm:mb-8">
         {[
           { label: 'Referrals',     val: referrals,                   sub: 'pickeri unici',  icon: Users },
           { label: 'Câștig total',  val: `€${totalEarned.toFixed(2)}`, sub: 'all-time',       icon: TrendingUp },
@@ -103,13 +103,13 @@ export default function AfiliereDashboard() {
         ].map(c => {
           const Icon = c.icon;
           return (
-            <div key={c.label} className="rounded-xl p-5"
+            <div key={c.label} className="rounded-xl p-3.5 sm:p-5"
               style={{ background: '#141414', border: c.accent ? '1px solid rgba(34,197,94,0.3)' : '1px solid rgba(255,255,255,0.08)' }}>
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                 <span className="text-[10px] font-bold tracking-widest uppercase text-white/40">{c.label}</span>
                 <Icon className="w-3.5 h-3.5 text-white/30" />
               </div>
-              <div className="font-bebas text-3xl text-white">{c.val}</div>
+              <div className="font-bebas text-2xl sm:text-3xl text-white truncate">{c.val}</div>
               <div className="text-[11px] text-white/30 mt-0.5">{c.sub}</div>
             </div>
           );
@@ -127,21 +127,26 @@ export default function AfiliereDashboard() {
           </div>
         ) : (
           <div>
-            <div className="grid grid-cols-4 px-5 py-2 text-[10px] font-bold tracking-widest uppercase text-white/30 border-b border-white/5">
+            <div className="hidden sm:grid grid-cols-4 px-5 py-2 text-[10px] font-bold tracking-widest uppercase text-white/30 border-b border-white/5">
               <span>Data</span><span>Procent</span><span>Sumă</span><span className="text-right">Status</span>
             </div>
             {afiliat.comisioane.map(c => (
-              <div key={c.id} className="grid grid-cols-4 px-5 py-3 text-sm border-b border-white/5 last:border-0 items-center">
-                <span className="text-white/60">{new Date(c.createdAt).toLocaleDateString('ro-RO')}</span>
-                <span className="text-white/60">{c.procent}%</span>
-                <span className="text-white font-bold">€{c.suma.toFixed(2)}</span>
-                <span className={`text-right text-[10px] font-bold uppercase tracking-wider ${
-                  c.status === 'PROCESAT' ? 'text-green-400' :
-                  c.status === 'IN_PROCESARE' ? 'text-yellow-300' :
-                  'text-white/40'
-                }`}>
-                  {c.status}
-                </span>
+              <div key={c.id} className="px-4 sm:px-5 py-3 text-sm border-b border-white/5 last:border-0
+                  flex items-center justify-between gap-3 sm:grid sm:grid-cols-4">
+                <div className="flex flex-col sm:contents min-w-0">
+                  <span className="text-white/60 text-xs sm:text-sm truncate">{new Date(c.createdAt).toLocaleDateString('ro-RO')}</span>
+                  <span className="text-white/40 text-[11px] sm:text-sm sm:text-white/60">{c.procent}%</span>
+                </div>
+                <div className="flex items-center gap-3 sm:contents">
+                  <span className="text-white font-bold whitespace-nowrap">€{c.suma.toFixed(2)}</span>
+                  <span className={`sm:text-right text-[10px] font-bold uppercase tracking-wider ${
+                    c.status === 'PROCESAT' ? 'text-green-400' :
+                    c.status === 'IN_PROCESARE' ? 'text-yellow-300' :
+                    'text-white/40'
+                  }`}>
+                    {c.status}
+                  </span>
+                </div>
               </div>
             ))}
           </div>
