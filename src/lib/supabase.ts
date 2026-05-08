@@ -1,18 +1,17 @@
-import { createBrowserClient, createServerClient } from '@supabase/ssr';
-import { cookies } from 'next/headers';
-import { createClient as _createClient } from '@supabase/supabase-js';
-
 /**
- * Browser-side Supabase client (used in client components).
- * IMPORTANT: uses @supabase/ssr's createBrowserClient so the auth session lands in
- * cookies — not localStorage — which lets the server-side `getUser()` calls in
- * route handlers and server components actually see the logged-in user.
+ * Browser-side Supabase client only. Server-side helpers live in
+ * `@/lib/supabase-server` so we don't accidentally pull `next/headers` into a
+ * client bundle (Turbopack refuses to compile that mix).
  *
- * Previously this was a plain `@supabase/supabase-js` client that wrote to
- * localStorage. After login the cookies were never set, the server kept
- * thinking the user was anonymous, and `/dashboard` redirected straight back
- * to /autentificare/login — that bug.
+ * History: this used to be `@supabase/supabase-js` which writes the session to
+ * localStorage. The dashboard uses `@supabase/ssr`'s server client which reads
+ * cookies, so logging in succeeded but `/dashboard` immediately bounced back
+ * to /autentificare/login because the server saw an anonymous request.
+ * Switching to `createBrowserClient` puts the session in cookies — server side
+ * sees it, redirect works, sessions persist across reloads.
  */
+import { createBrowserClient } from '@supabase/ssr';
+
 export function createClient() {
   return createBrowserClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,37 +19,4 @@ export function createClient() {
   );
 }
 
-/** Server-side Supabase client. Use in server components, route handlers, etc. */
-export async function createServerSupabase() {
-  const cookieStore = await cookies();
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll: () => cookieStore.getAll(),
-        setAll: (cookiesToSet) => {
-          try {
-            cookiesToSet.forEach(({ name, value, options }) => {
-              cookieStore.set(name, value, options);
-            });
-          } catch {
-            // Server components can't mutate cookies; safely ignore — middleware/route handlers will refresh.
-          }
-        },
-      },
-    }
-  );
-}
-
-/** Privileged service-role client. Server-only — NEVER import from a client component. */
-export function createAdminClient() {
-  return _createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    { auth: { autoRefreshToken: false, persistSession: false } }
-  );
-}
-
 export const supabase = createClient;
-export const supabaseAdmin = createAdminClient;
