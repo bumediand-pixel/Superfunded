@@ -28,9 +28,14 @@ export async function POST(req: NextRequest) {
 
   try {
     switch (event.type) {
-      case 'checkout.session.completed':
-        await handleCheckoutCompleted(event.data.object as Stripe.Checkout.Session);
+      case 'checkout.session.completed': {
+        const session = event.data.object as Stripe.Checkout.Session;
+        const kind = session.metadata?.kind;
+        if (kind === 'reset')      await handleResetPurchase(session);
+        else if (kind === 'scale') await handleScalePurchase(session);
+        else                       await handleCheckoutCompleted(session);
         break;
+      }
 
       case 'charge.refunded':
         await handleChargeRefunded(event.data.object as Stripe.Charge);
@@ -113,6 +118,56 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       console.error('[stripe-webhook] sendPlanActivatEmail failed:', err)
     );
   }
+}
+
+async function handleResetPurchase(session: Stripe.Checkout.Session) {
+  const contId = session.metadata?.contId;
+  if (!contId) return;
+  const cont = await prisma.contTrader.findUnique({ where: { id: contId }, include: { reguli: true } });
+  if (!cont) return;
+  // Reset: capital back to start, evaluation FAZA_1, profit/loss zeroed, mark all rules incomplete.
+  await prisma.$transaction(async tx => {
+    await tx.contTrader.update({
+      where: { id: contId },
+      data: {
+        capitalCurent:  cont.capitalInceput,
+        statusEvaluare: 'FAZA_1',
+        fazaCurenta:    1,
+        profitTotal:    0,
+        pierdereMaxima: 0,
+        tranzactiiTotal: 0,
+        activ:          true,
+        dataStart:      new Date(),
+        dataFinalizare: null,
+      },
+    });
+    for (const r of cont.reguli) {
+      await tx.regulaCont.update({ where: { id: r.id }, data: { completata: false } });
+    }
+  });
+  console.log('[stripe-webhook] reset applied to cont', contId);
+}
+
+async function handleScalePurchase(session: Stripe.Checkout.Session) {
+  const contId   = session.metadata?.contId;
+  const newPlan  = session.metadata?.plan;
+  const capital  = session.metadata?.capital;
+  if (!contId || !newPlan || !capital) return;
+  const capitalNum = parseFloat(capital);
+  if (Number.isNaN(capitalNum)) return;
+
+  await prisma.contTrader.update({
+    where: { id: contId },
+    data: {
+      plan:           newPlan as 'BASIC_1000'|'STANDARD_5000'|'ADVANCED_10000'|'PRO_25000'|'ELITE_50000',
+      capitalInceput: capitalNum,
+      capitalCurent:  capitalNum,
+      profitTotal:    0,
+      tranzactiiTotal: 0,
+      // keep statusEvaluare = FINANTAT, no need to re-evaluate
+    },
+  });
+  console.log('[stripe-webhook] scaled cont', contId, '→', newPlan);
 }
 
 async function handleChargeRefunded(charge: Stripe.Charge) {
