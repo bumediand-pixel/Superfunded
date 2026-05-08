@@ -30,6 +30,7 @@ const ROUTES = [
   '/rambursare',
   '/disclaimer',
   '/tari-suportate',
+  '/retentie-date',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

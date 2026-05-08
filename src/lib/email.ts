@@ -169,6 +169,7 @@ function emailTemplate({ title, preheader, body, cta, footer }: {
   cta: { label: string; url: string };
   footer: string;
 }) {
+  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://superfunded.ro';
   return `<!DOCTYPE html>
 <html lang="ro">
 <head>
@@ -176,48 +177,53 @@ function emailTemplate({ title, preheader, body, cta, footer }: {
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>${title}</title>
 </head>
-<body style="margin:0;padding:0;background:#060606;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
-  <!-- Preheader (hidden preview text) -->
+<body style="margin:0;padding:0;background:#faf7f5;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;color:#0f172a;">
   <span style="display:none;max-height:0;overflow:hidden;">${preheader}</span>
 
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#060606;padding:40px 20px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#faf7f5;padding:40px 20px;">
     <tr><td align="center">
-      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+      <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 8px 30px rgba(15,23,42,0.06);">
 
-        <!-- Header -->
-        <tr><td style="padding:0 0 32px 0;">
-          <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
-              <td style="padding:20px 32px;background:#0e0e0e;border-bottom:1px solid rgba(230,57,70,0.2);">
-                <span style="font-size:20px;font-weight:900;color:#ffffff;letter-spacing:0.12em;text-transform:uppercase;">SUPER<span style="color:#e63946;">FUNDED</span></span>
-              </td>
-            </tr>
-          </table>
+        <!-- Header (red bar) -->
+        <tr><td style="padding:24px 32px;background:#ffffff;border-bottom:1px solid #e2e8f0;">
+          <table width="100%"><tr>
+            <td style="vertical-align:middle;">
+              <span style="display:inline-block;width:36px;height:36px;border-radius:8px;background:#e63946;color:#ffffff;font-weight:900;font-size:14px;line-height:36px;text-align:center;letter-spacing:1px;">SF</span>
+            </td>
+            <td style="vertical-align:middle;padding-left:10px;">
+              <span style="font-size:18px;font-weight:800;color:#0f172a;letter-spacing:0.04em;">SUPER<span style="color:#e63946;">FUNDED</span></span>
+            </td>
+          </tr></table>
         </td></tr>
 
         <!-- Body -->
-        <tr><td style="background:#111111;border:1px solid rgba(255,255,255,0.06);padding:40px 32px;">
-          <h1 style="margin:0 0 24px 0;font-size:28px;font-weight:900;color:#ffffff;text-transform:uppercase;letter-spacing:0.04em;">${title}</h1>
-          <div style="font-size:15px;line-height:1.7;color:rgba(255,255,255,0.65);">
+        <tr><td style="padding:40px 32px;">
+          <h1 style="margin:0 0 20px 0;font-size:28px;font-weight:800;color:#0f172a;line-height:1.2;">${title}</h1>
+          <div style="font-size:15px;line-height:1.7;color:#475569;">
             ${body}
           </div>
           <div style="margin-top:32px;">
             <a href="${cta.url}"
-              style="display:inline-block;background:#e63946;color:#ffffff;font-size:12px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-decoration:none;padding:14px 32px;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);">
+              style="display:inline-block;background:#e63946;color:#ffffff;font-size:14px;font-weight:700;text-decoration:none;padding:14px 28px;border-radius:999px;box-shadow:0 6px 18px rgba(230,57,70,0.28);">
               ${cta.label}
             </a>
           </div>
         </td></tr>
 
         <!-- Footer -->
-        <tr><td style="padding:24px 32px;font-size:11px;color:rgba(255,255,255,0.2);line-height:1.6;border-top:1px solid rgba(255,255,255,0.04);">
-          <p style="margin:0 0 8px 0;">${footer}</p>
-          <p style="margin:0;">© ${new Date().getFullYear()} SuperFunded SRL · România ·
-            <a href="${process.env.NEXT_PUBLIC_SITE_URL}/confidentialitate" style="color:rgba(255,255,255,0.3);text-decoration:none;">Confidențialitate</a>
+        <tr><td style="padding:24px 32px;background:#fbf8f6;border-top:1px solid #e2e8f0;">
+          <p style="margin:0 0 6px 0;font-size:12px;line-height:1.6;color:#64748b;">${footer}</p>
+          <p style="margin:0;font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} SuperFunded SRL · România ·
+            <a href="${SITE}/confidentialitate" style="color:#e63946;text-decoration:none;font-weight:600;">Confidențialitate</a> ·
+            <a href="${SITE}/contact" style="color:#e63946;text-decoration:none;font-weight:600;">Contact</a>
           </p>
         </td></tr>
 
       </table>
+
+      <p style="margin:16px 0 0 0;font-size:11px;color:#94a3b8;">
+        Joc responsabil — <a href="https://www.jocresponsabil.ro" style="color:#94a3b8;">jocresponsabil.ro</a> · 18+
+      </p>
     </td></tr>
   </table>
 </body>

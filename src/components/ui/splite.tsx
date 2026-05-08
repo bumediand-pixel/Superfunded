@@ -1,7 +1,24 @@
 'use client';
-import { Suspense, lazy, Component, ReactNode } from 'react';
+import { Suspense, lazy, Component, ReactNode, useEffect, useState } from 'react';
 
 const Spline = lazy(() => import('@splinetool/react-spline'));
+
+/**
+ * Hook returns true on viewports that should render the heavy 3D scene.
+ * Below 1024px we keep the cheap CSS fallback to save ~500KB JS + ~30 fps GPU draws on mobile.
+ */
+function useDesktop(): boolean {
+  const [desktop, setDesktop] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const mq = window.matchMedia('(min-width: 1024px) and (prefers-reduced-motion: no-preference)');
+    setDesktop(mq.matches);
+    const onChange = (e: MediaQueryListEvent) => setDesktop(e.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+  return desktop;
+}
 
 interface SplineSceneProps {
   scene: string;
@@ -38,7 +55,12 @@ function SplineFallback({ className }: { className?: string }) {
 }
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
+  const desktop = useDesktop();
   const fallback = <SplineFallback className={className} />;
+
+  // Mobile / reduced-motion → render the static CSS fallback only.
+  if (!desktop) return fallback;
+
   return (
     <SplineErrorBoundary fallback={fallback}>
       <Suspense fallback={

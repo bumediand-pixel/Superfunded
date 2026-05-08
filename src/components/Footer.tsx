@@ -22,6 +22,7 @@ const LINKS_LEGAL = [
   { label: 'Politică Rambursare', href: '/rambursare' },
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Țări Suportate', href: '/tari-suportate' },
+  { label: 'Retenție date',  href: '/retentie-date' },
 ];
 
 const LINKS_CONT = [
