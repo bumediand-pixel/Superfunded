@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { CheckCircle2, ShieldCheck, Clock, RefreshCw, Wallet, Trophy } from 'lucide-react';
+import CheckoutDisclaimer from '@/components/CheckoutDisclaimer';
 
 type PlanId =
   | 'STARTER_500'
@@ -54,6 +55,7 @@ export default function PlanuriSection() {
   const [loading, setLoading] = useState<string | null>(null);
   const [mode, setMode] = useState<'1step' | '2step'>('2step');
   const [selectedId, setSelectedId] = useState<PlanId>('ADVANCED_10000');
+  const [showDisclaimer, setShowDisclaimer] = useState(false);
 
   const features = mode === '1step' ? FEATURES_1STEP : FEATURES_2STEP;
   const selected = PLANS.find(p => p.id === selectedId)!;
@@ -61,7 +63,8 @@ export default function PlanuriSection() {
   const split = mode === '1step' ? selected.split1 : selected.split2;
   const refundEligible = ['ADVANCED_10000', 'PRO_25000', 'ELITE_50000'].includes(selectedId);
 
-  const handleCheckout = async () => {
+  const handleConfirmedCheckout = async () => {
+    setShowDisclaimer(false);
     setLoading(selectedId);
     try {
       const res = await fetch('/api/stripe/checkout', {
@@ -76,6 +79,8 @@ export default function PlanuriSection() {
       setLoading(null);
     }
   };
+
+  const handleCheckout = () => setShowDisclaimer(true);
 
   return (
     <section id="planuri" className="py-24" style={{ background: 'var(--bg-alt)' }}>
@@ -232,6 +237,12 @@ export default function PlanuriSection() {
           Plățile securizate prin Stripe · KYC verificat prin Sumsub · Fără abonament, niciodată
         </p>
       </div>
+      <CheckoutDisclaimer
+        open={showDisclaimer}
+        planLabel={`${selected.size} · ${mode === '1step' ? '1-Step' : '2-Step'} · ${fee} taxă unică`}
+        onConfirm={handleConfirmedCheckout}
+        onCancel={() => setShowDisclaimer(false)}
+      />
     </section>
   );
 }

@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import Link from 'next/link';
+import SkillEvalBanner from '@/components/dashboard/SkillEvalBanner';
 
 async function getUser() {
   const cookieStore = await cookies();
@@ -50,8 +51,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </form>
         </div>
       </aside>
-      <main className="flex-1 overflow-auto">
-        {children}
+      <main className="flex-1 overflow-auto flex flex-col">
+        <SkillEvalBanner />
+        <div className="flex-1">{children}</div>
       </main>
     </div>
   );

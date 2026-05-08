@@ -55,6 +55,9 @@ export async function POST(req: NextRequest) {
       mode,
       capital: planInfo.capital.toString(),
       split: split.toString(),
+      // Audit trail: timestamp when user agreed to skill-eval disclaimer in the modal
+      // (the `CheckoutDisclaimer` blocks Stripe redirect until checkbox ticked).
+      skillEvalConsentAt: new Date().toISOString(),
     },
     customer_email: user.email,
     success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}&plan_activat=true`,

@@ -31,6 +31,7 @@ const ROUTES = [
   '/disclaimer',
   '/tari-suportate',
   '/retentie-date',
+  '/aml-kyc',
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {

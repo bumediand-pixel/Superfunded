@@ -23,6 +23,7 @@ const LINKS_LEGAL = [
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Țări Suportate', href: '/tari-suportate' },
   { label: 'Retenție date',  href: '/retentie-date' },
+  { label: 'AML & KYC',      href: '/aml-kyc' },
 ];
 
 const LINKS_CONT = [
