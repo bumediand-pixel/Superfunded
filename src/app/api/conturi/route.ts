@@ -13,8 +13,8 @@ export async function GET() {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
-  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
-  if (!utilizator) return NextResponse.json({ conturi: [] });
+  const { ensureUtilizator } = await import('@/lib/auth');
+  const utilizator = await ensureUtilizator(user);
 
   const conturi = await prisma.contTrader.findMany({
     where: { utilizatorId: utilizator.id, activ: true },

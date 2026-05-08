@@ -1,22 +1,19 @@
 'use client';
 import { useState } from 'react';
+import { Lock, Download, Trash2, AlertTriangle, X, Mail, MessageCircle } from 'lucide-react';
 
 export default function SetariPage() {
-  const [saved, setSaved] = useState(false);
-  const [notif, setNotif] = useState({ email: true, telegram: false, pariuConfirmat: true, retragereStatus: true });
-  const [saving, setSaving] = useState(false);
-
-  const [deleteOpen, setDeleteOpen] = useState(false);
-  const [deleteConfirm, setDeleteConfirm] = useState('');
-  const [deleting, setDeleting] = useState(false);
-  const [deleteError, setDeleteError] = useState<string | null>(null);
-
   const [pwOpen, setPwOpen] = useState(false);
   const [pwCurrent, setPwCurrent] = useState('');
   const [pwNew, setPwNew] = useState('');
   const [pwBusy, setPwBusy] = useState(false);
   const [pwError, setPwError] = useState<string | null>(null);
   const [pwOk, setPwOk] = useState(false);
+
+  const [delOpen, setDelOpen] = useState(false);
+  const [delConfirm, setDelConfirm] = useState('');
+  const [delBusy, setDelBusy] = useState(false);
+  const [delError, setDelError] = useState<string | null>(null);
 
   const handlePasswordChange = async () => {
     setPwBusy(true); setPwError(null); setPwOk(false);
@@ -37,9 +34,8 @@ export default function SetariPage() {
   };
 
   const handleDelete = async () => {
-    if (deleteConfirm !== 'STERGE') return;
-    setDeleting(true);
-    setDeleteError(null);
+    if (delConfirm !== 'STERGE') return;
+    setDelBusy(true); setDelError(null);
     try {
       const res = await fetch('/api/user/delete', {
         method: 'POST',
@@ -50,227 +46,224 @@ export default function SetariPage() {
       if (!res.ok) throw new Error(data.error || 'Ștergere eșuată');
       window.location.href = '/?account_deleted=1';
     } catch (err) {
-      setDeleteError(err instanceof Error ? err.message : 'Eroare');
-      setDeleting(false);
+      setDelError(err instanceof Error ? err.message : 'Eroare');
+      setDelBusy(false);
     }
   };
 
-  const handleSave = async () => {
-    setSaving(true);
-    await new Promise(r => setTimeout(r, 800));
-    setSaving(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
-  };
-
   return (
-    <div className="p-6 md:p-10 min-h-screen" style={{ background: 'var(--black-0)' }}>
-      <div className="max-w-2xl">
-        {/* Header */}
-        <div className="mb-10">
-          <div className="font-mono text-[10px] tracking-widest uppercase mb-1" style={{ color: 'var(--red)' }}>Dashboard</div>
-          <h1 className="font-bebas text-4xl tracking-widest" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>SETĂRI CONT</h1>
-        </div>
-
-        <div className="space-y-6">
-
-          {/* Profile */}
-          <div className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="font-bebas text-lg tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>PROFIL</div>
-            <div className="space-y-4">
-              <div>
-                <label className="block font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Nume afișat</label>
-                <input type="text" placeholder="Numele tău" defaultValue=""
-                  className="w-full px-4 py-3 text-sm outline-none transition-all duration-200"
-                  style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--white-hi)' }}
-                  onFocus={e => (e.target.style.borderColor = 'rgba(230,57,70,0.4)')}
-                  onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')} />
-              </div>
-              <div>
-                <label className="block font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Email</label>
-                <input type="email" placeholder="email@exemplu.ro" defaultValue=""
-                  className="w-full px-4 py-3 text-sm outline-none transition-all duration-200"
-                  style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--white-mid)' }}
-                  disabled />
-                <p className="mt-1 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>Emailul nu poate fi modificat. Contactează suportul.</p>
-              </div>
-              <div>
-                <label className="block font-mono text-[9px] uppercase tracking-widest mb-2" style={{ color: 'rgba(255,255,255,0.3)' }}>Telegram handle</label>
-                <input type="text" placeholder="@username"
-                  className="w-full px-4 py-3 text-sm outline-none transition-all duration-200"
-                  style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.08)', color: 'var(--white-hi)' }}
-                  onFocus={e => (e.target.style.borderColor = 'rgba(230,57,70,0.4)')}
-                  onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.08)')} />
-              </div>
-            </div>
-          </div>
-
-          {/* Notifications */}
-          <div className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="font-bebas text-lg tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>NOTIFICĂRI</div>
-            <div className="space-y-4">
-              {([
-                { key: 'email', label: 'Notificări email', desc: 'Actualizări despre cont, retrageri și promoții' },
-                { key: 'telegram', label: 'Notificări Telegram', desc: 'Alerte instant pe Telegram (necesită handle setat)' },
-                { key: 'pariuConfirmat', label: 'Confirmare pariu', desc: 'Notificare când un pariu a fost înregistrat' },
-                { key: 'retragereStatus', label: 'Status retragere', desc: 'Actualizări despre procesarea retragerilor' },
-              ] as const).map(({ key, label, desc }) => (
-                <div key={key} className="flex items-center justify-between py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.04)' }}>
-                  <div>
-                    <div className="text-sm font-medium" style={{ color: 'var(--white-hi)' }}>{label}</div>
-                    <div className="font-mono text-[10px] mt-0.5" style={{ color: 'rgba(255,255,255,0.3)' }}>{desc}</div>
-                  </div>
-                  <button onClick={() => setNotif(p => ({ ...p, [key]: !p[key] }))}
-                    className="relative w-10 h-5 rounded-full transition-all duration-300 shrink-0"
-                    style={{ background: notif[key] ? 'var(--red)' : 'rgba(255,255,255,0.1)' }}>
-                    <span className="absolute top-0.5 w-4 h-4 rounded-full bg-white transition-all duration-300"
-                      style={{ left: notif[key] ? '1.25rem' : '0.125rem' }} />
-                  </button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Security */}
-          <div className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-            <div className="font-bebas text-lg tracking-wider mb-5" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>SECURITATE</div>
-            <div className="space-y-3">
-              <button onClick={() => setPwOpen(true)}
-                className="w-full text-left px-4 py-3 text-sm transition-all duration-200 flex items-center justify-between group cursor-pointer"
-                style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.06)', color: 'var(--white-mid)' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(230,57,70,0.3)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
-                Schimbă parola
-                <span style={{ color: 'var(--red)' }}>→</span>
-              </button>
-              <button className="w-full text-left px-4 py-3 text-sm transition-all duration-200 flex items-center justify-between"
-                style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.06)', color: 'var(--white-mid)' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(230,57,70,0.3)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
-                Activează autentificare 2FA
-                <span className="font-mono text-[9px] uppercase tracking-widest px-2 py-0.5" style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', border: '1px solid rgba(34,197,94,0.2)' }}>Recomandat</span>
-              </button>
-              <a href="/api/user/export"
-                className="w-full text-left px-4 py-3 text-sm transition-all duration-200 flex items-center justify-between cursor-pointer"
-                style={{ background: 'var(--black-1)', border: '1px solid rgba(255,255,255,0.06)', color: 'var(--white-mid)' }}
-                onMouseEnter={e => (e.currentTarget.style.borderColor = 'rgba(230,57,70,0.3)')}
-                onMouseLeave={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)')}>
-                Descarcă datele mele (GDPR)
-                <span style={{ color: 'rgba(255,255,255,0.25)' }}>→</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Danger zone */}
-          <div className="p-6" style={{ background: 'rgba(230,57,70,0.03)', border: '1px solid rgba(230,57,70,0.15)' }}>
-            <div className="font-bebas text-lg tracking-wider mb-2" style={{ color: 'var(--red)', letterSpacing: '0.06em' }}>ZONĂ PERICULOASĂ</div>
-            <p className="text-xs leading-relaxed mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Ștergerea contului este permanentă și ireversibilă. Toate datele, istoricul pariurilor și conturile active vor fi eliminate.
-            </p>
-            <button onClick={() => setDeleteOpen(true)}
-              className="font-mono text-[10px] uppercase tracking-widest px-5 py-2.5 transition-all duration-200 cursor-pointer"
-              style={{ background: 'transparent', border: '1px solid rgba(230,57,70,0.3)', color: 'rgba(230,57,70,0.6)' }}
-              onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(230,57,70,0.1)'; (e.currentTarget as HTMLElement).style.color = 'var(--red)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; (e.currentTarget as HTMLElement).style.color = 'rgba(230,57,70,0.6)'; }}>
-              Șterge contul
-            </button>
-
-            {deleteOpen && (
-              <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-                style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)' }}
-                onClick={() => !deleting && setDeleteOpen(false)}>
-                <div className="rounded-2xl max-w-md w-full p-6"
-                  style={{ background: '#141414', border: '1px solid rgba(230,57,70,0.3)' }}
-                  onClick={e => e.stopPropagation()}>
-                  <h3 className="font-bebas text-2xl tracking-wider text-white mb-3">Confirmare ștergere cont</h3>
-                  <p className="text-sm text-white/70 leading-relaxed mb-2">
-                    Datele tale personale vor fi anonimizate ireversibil. Înregistrările financiare (plăți, retrageri procesate) sunt păstrate conform legii române timp de 5–10 ani, dar fără identificarea ta.
-                  </p>
-                  <p className="text-sm text-white/70 leading-relaxed mb-4">
-                    Conturile active vor fi suspendate. Tipează <span className="font-mono font-bold text-red-400">STERGE</span> pentru confirmare:
-                  </p>
-                  <input type="text" value={deleteConfirm} onChange={e => setDeleteConfirm(e.target.value)}
-                    placeholder="STERGE"
-                    autoFocus
-                    className="w-full mb-4 px-4 py-3 rounded-lg outline-none font-mono text-white"
-                    style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
-                  {deleteError && (
-                    <p className="text-xs text-red-400 mb-3">{deleteError}</p>
-                  )}
-                  <div className="flex gap-3">
-                    <button onClick={() => setDeleteOpen(false)} disabled={deleting}
-                      className="flex-1 py-3 text-sm font-bold rounded-lg cursor-pointer text-white"
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      Anulează
-                    </button>
-                    <button onClick={handleDelete} disabled={deleteConfirm !== 'STERGE' || deleting}
-                      className="flex-1 py-3 text-sm font-bold rounded-lg cursor-pointer text-white disabled:opacity-30"
-                      style={{ background: 'var(--red)' }}>
-                      {deleting ? 'Se șterge...' : 'Șterge contul definitiv'}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-
-          {/* Save button */}
-          <div className="flex items-center gap-4">
-            <button onClick={handleSave} disabled={saving}
-              className="font-bold text-xs tracking-[0.14em] uppercase px-8 py-3.5 transition-all duration-300 disabled:opacity-40"
-              style={{ background: 'var(--red)', color: 'white', clipPath: 'polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%)' }}>
-              {saving ? '⟳ Se salvează...' : 'Salvează modificările'}
-            </button>
-            {saved && <span className="font-mono text-xs" style={{ color: '#22c55e' }}>✓ Salvat cu succes</span>}
-          </div>
-
-        </div>
+    <div className="p-4 sm:p-6 max-w-3xl">
+      <div className="mb-6">
+        <h1 className="text-2xl sm:text-3xl font-extrabold text-white">Setări cont</h1>
+        <p className="text-white/40 text-sm mt-1">Gestionează contul tău, securitate și date personale.</p>
       </div>
 
+      <div className="space-y-4">
+
+        {/* Securitate */}
+        <SectionCard title="Securitate" subtitle="Protejează-ți contul">
+          <ActionRow
+            icon={Lock}
+            label="Schimbă parola"
+            desc="Ai nevoie de parola curentă pentru confirmare."
+            onClick={() => setPwOpen(true)}
+          />
+        </SectionCard>
+
+        {/* Date GDPR */}
+        <SectionCard title="Datele tale" subtitle="Drepturi GDPR">
+          <ActionRow
+            icon={Download}
+            label="Descarcă datele mele"
+            desc="Export JSON cu toate datele despre tine (GDPR Art. 20)."
+            href="/api/user/export"
+          />
+        </SectionCard>
+
+        {/* Suport */}
+        <SectionCard title="Suport" subtitle="Te ajutăm rapid">
+          <ActionRow
+            icon={MessageCircle}
+            label="Comunitate Discord"
+            desc="Răspuns în câteva minute, 24/7."
+            href="/discord"
+            external
+          />
+          <ActionRow
+            icon={Mail}
+            label="Trimite-ne un email"
+            desc="support@thesuperfunded.com — răspundem în 2-6h."
+            href="/contact"
+          />
+        </SectionCard>
+
+        {/* Danger zone */}
+        <SectionCard title="Zona periculoasă" tone="danger">
+          <ActionRow
+            icon={Trash2}
+            label="Șterge contul"
+            desc="Acțiunea anonimizează datele personale ireversibil. Datele financiare sunt păstrate 5-10 ani conform legii."
+            onClick={() => setDelOpen(true)}
+            tone="danger"
+          />
+        </SectionCard>
+      </div>
+
+      {/* Password change modal */}
       {pwOpen && (
-        <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"
-          style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(4px)' }}
-          onClick={() => !pwBusy && setPwOpen(false)}>
-          <div className="rounded-2xl max-w-md w-full p-6"
-            style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)' }}
-            onClick={e => e.stopPropagation()}>
-            <h3 className="font-bebas text-2xl tracking-wider text-white mb-5">Schimbă parola</h3>
+        <Modal onClose={() => !pwBusy && setPwOpen(false)}>
+          <h3 className="text-xl font-extrabold text-white mb-1">Schimbă parola</h3>
+          <p className="text-sm text-white/50 mb-5">Pune o parolă nouă de minim 8 caractere.</p>
 
-            <label className="block mb-3">
-              <span className="text-xs font-bold tracking-widest uppercase text-white/40">Parola curentă</span>
-              <input type="password" autoComplete="current-password" autoFocus
-                value={pwCurrent} onChange={e => setPwCurrent(e.target.value)}
-                className="w-full mt-1 px-3 py-2.5 rounded-lg outline-none text-white"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
-            </label>
+          <DarkField label="Parolă curentă">
+            <input type="password" autoComplete="current-password" autoFocus
+              value={pwCurrent} onChange={e => setPwCurrent(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg outline-none text-white"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
+          </DarkField>
 
-            <label className="block mb-4">
-              <span className="text-xs font-bold tracking-widest uppercase text-white/40">Parolă nouă (min. 8 caractere)</span>
-              <input type="password" autoComplete="new-password" minLength={8}
-                value={pwNew} onChange={e => setPwNew(e.target.value)}
-                className="w-full mt-1 px-3 py-2.5 rounded-lg outline-none text-white"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
-            </label>
+          <DarkField label="Parolă nouă (min. 8 caractere)">
+            <input type="password" autoComplete="new-password" minLength={8}
+              value={pwNew} onChange={e => setPwNew(e.target.value)}
+              className="w-full px-3 py-2.5 rounded-lg outline-none text-white"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
+          </DarkField>
 
-            {pwError && <p className="text-xs text-red-400 mb-3">{pwError}</p>}
-            {pwOk && <p className="text-xs text-green-400 mb-3">✓ Parola schimbată cu succes</p>}
+          {pwError && <p className="text-xs text-red-400 mb-3">{pwError}</p>}
+          {pwOk && <p className="text-xs text-green-400 mb-3">✓ Parolă schimbată</p>}
 
-            <div className="flex gap-3">
-              <button onClick={() => setPwOpen(false)} disabled={pwBusy}
-                className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white"
-                style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
-                Anulează
-              </button>
-              <button onClick={handlePasswordChange}
-                disabled={pwBusy || pwCurrent.length < 1 || pwNew.length < 8}
-                className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white disabled:opacity-30"
-                style={{ background: 'var(--red)' }}>
-                {pwBusy ? 'Se salvează...' : 'Salvează parola'}
-              </button>
-            </div>
+          <div className="flex gap-2 mt-2">
+            <button onClick={() => setPwOpen(false)} disabled={pwBusy}
+              className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              Anulează
+            </button>
+            <button onClick={handlePasswordChange}
+              disabled={pwBusy || pwCurrent.length < 1 || pwNew.length < 8}
+              className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white disabled:opacity-30"
+              style={{ background: 'var(--red, #e63946)' }}>
+              {pwBusy ? 'Se salvează...' : 'Salvează'}
+            </button>
           </div>
-        </div>
+        </Modal>
       )}
+
+      {/* Delete confirm modal */}
+      {delOpen && (
+        <Modal onClose={() => !delBusy && setDelOpen(false)}>
+          <div className="flex items-center justify-center w-12 h-12 rounded-xl mx-auto mb-4"
+            style={{ background: 'rgba(239,68,68,0.15)' }}>
+            <AlertTriangle className="w-6 h-6 text-red-400" />
+          </div>
+          <h3 className="text-xl font-extrabold text-white text-center mb-2">Ștergere cont?</h3>
+          <p className="text-sm text-white/60 mb-2">
+            Datele tale personale vor fi anonimizate ireversibil. Înregistrările financiare (plăți, retrageri procesate) sunt păstrate conform legii române timp de 5–10 ani, dar fără identificarea ta.
+          </p>
+          <p className="text-sm text-white/60 mb-4">
+            Tipează <span className="font-mono font-bold text-red-400">STERGE</span> pentru confirmare:
+          </p>
+          <input type="text" value={delConfirm} onChange={e => setDelConfirm(e.target.value)}
+            placeholder="STERGE" autoFocus
+            className="w-full mb-4 px-4 py-3 rounded-lg outline-none font-mono text-white"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }} />
+          {delError && <p className="text-xs text-red-400 mb-3">{delError}</p>}
+          <div className="flex gap-2">
+            <button onClick={() => setDelOpen(false)} disabled={delBusy}
+              className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white"
+              style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+              Anulează
+            </button>
+            <button onClick={handleDelete} disabled={delConfirm !== 'STERGE' || delBusy}
+              className="flex-1 py-2.5 text-sm font-bold rounded-lg cursor-pointer text-white disabled:opacity-30"
+              style={{ background: '#dc2626' }}>
+              {delBusy ? 'Se șterge...' : 'Șterge contul'}
+            </button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
+}
+
+// ─── Subcomponents ───────────────────────────────────────────────────────────
+
+function SectionCard({ title, subtitle, tone, children }: {
+  title: string; subtitle?: string; tone?: 'danger'; children: React.ReactNode;
+}) {
+  return (
+    <div className="rounded-2xl overflow-hidden"
+      style={{
+        background: '#141414',
+        border: tone === 'danger' ? '1px solid rgba(239,68,68,0.2)' : '1px solid rgba(255,255,255,0.06)',
+      }}>
+      <div className="px-5 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+        <h2 className="text-sm font-extrabold tracking-wider uppercase"
+          style={{ color: tone === 'danger' ? '#fca5a5' : 'rgba(255,255,255,0.7)' }}>{title}</h2>
+        {subtitle && <p className="text-xs text-white/40 mt-0.5">{subtitle}</p>}
+      </div>
+      <div>{children}</div>
+    </div>
+  );
+}
+
+function ActionRow({ icon: Icon, label, desc, onClick, href, external, tone }: {
+  icon: React.ComponentType<{ className?: string }>;
+  label: string; desc: string;
+  onClick?: () => void; href?: string; external?: boolean; tone?: 'danger';
+}) {
+  const inner = (
+    <div className="flex items-center gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02] cursor-pointer">
+      <div className="flex items-center justify-center w-10 h-10 rounded-lg flex-shrink-0"
+        style={{ background: tone === 'danger' ? 'rgba(239,68,68,0.12)' : 'rgba(255,255,255,0.05)' }}>
+        <Icon className={`w-4 h-4 ${tone === 'danger' ? 'text-red-400' : 'text-white/70'}`} />
+      </div>
+      <div className="flex-1 min-w-0">
+        <div className={`font-bold text-sm ${tone === 'danger' ? 'text-red-300' : 'text-white'}`}>{label}</div>
+        <div className="text-xs text-white/40 mt-0.5">{desc}</div>
+      </div>
+      <span className={`text-sm flex-shrink-0 ${tone === 'danger' ? 'text-red-400' : 'text-white/30'}`}>→</span>
+    </div>
+  );
+
+  if (href) {
+    return (
+      <a href={href} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}
+        className="block">
+        {inner}
+      </a>
+    );
+  }
+
+  return (
+    <button onClick={onClick} className="block w-full text-left">
+      {inner}
+    </button>
+  );
+}
+
+function DarkField({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <label className="block mb-3">
+      <span className="block text-[10px] font-bold tracking-widest uppercase mb-1.5 text-white/50">{label}</span>
+      {children}
+    </label>
+  );
+}
+
+function Modal({ children, onClose }: { children: React.ReactNode; onClose: () => void }) {
+  return (
+    <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"
+      style={{ background: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(6px)' }}
+      onClick={onClose}>
+      <div className="rounded-2xl max-w-md w-full p-6 sm:p-7"
+        style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)' }}
+        onClick={e => e.stopPropagation()}>
+        <button onClick={onClose} aria-label="Închide"
+          className="float-right text-white/30 hover:text-white p-1 cursor-pointer -mr-1 -mt-1">
+          <X className="w-4 h-4" />
+        </button>
+        {children}
+      </div>
     </div>
   );
 }

@@ -26,8 +26,8 @@ export async function GET() {
   const user = await getSupabaseUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
-  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
-  if (!utilizator) return NextResponse.json({ retrageri: [] });
+  const { ensureUtilizator } = await import('@/lib/auth');
+  const utilizator = await ensureUtilizator(user);
 
   const retrageri = await prisma.retragere.findMany({
     where: { utilizatorId: utilizator.id },
@@ -51,6 +51,8 @@ export async function POST(req: NextRequest) {
   }
   const { suma, metoda } = parsed.data;
 
+  const { ensureUtilizator } = await import('@/lib/auth');
+  await ensureUtilizator(user);
   const utilizator = await prisma.utilizator.findUnique({
     where: { supabaseId: user.id },
     include: { conturi: { where: { statusEvaluare: 'FINANTAT' } } },

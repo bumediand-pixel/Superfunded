@@ -32,8 +32,8 @@ export async function GET() {
   const user = await getSupabaseUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
-  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
-  if (!utilizator) return NextResponse.json({ pariuri: [] });
+  const { ensureUtilizator } = await import('@/lib/auth');
+  const utilizator = await ensureUtilizator(user);
 
   const pariuri = await prisma.pariu.findMany({
     where: { utilizatorId: utilizator.id },
@@ -58,8 +58,8 @@ export async function POST(req: NextRequest) {
   }
   const { cota, suma, ...rest } = parsed.data;
 
-  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
-  if (!utilizator) return NextResponse.json({ error: 'Utilizator negăsit' }, { status: 404 });
+  const { ensureUtilizator } = await import('@/lib/auth');
+  const utilizator = await ensureUtilizator(user);
 
   // Verify the contTrader belongs to this user
   const cont = await prisma.contTrader.findFirst({

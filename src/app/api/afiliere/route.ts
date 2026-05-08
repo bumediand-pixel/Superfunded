@@ -3,6 +3,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { rateLimit } from '@/lib/rateLimiter';
+import { ensureUtilizator } from '@/lib/auth';
 
 function generateCode(supabaseId: string): string {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -31,6 +32,8 @@ export async function GET() {
   const user = await getSupabaseUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
+  // Auto-mirror Supabase user into our Prisma table on first call.
+  await ensureUtilizator(user);
   const utilizator = await prisma.utilizator.findUnique({
     where: { supabaseId: user.id },
     include: {
@@ -56,8 +59,7 @@ export async function POST(req: NextRequest) {
   const user = await getSupabaseUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
-  const utilizator = await prisma.utilizator.findUnique({ where: { supabaseId: user.id } });
-  if (!utilizator) return NextResponse.json({ error: 'Utilizator negăsit' }, { status: 404 });
+  const utilizator = await ensureUtilizator(user);
 
   const existing = await prisma.afiliat.findUnique({ where: { utilizatorId: utilizator.id } });
   if (existing) return NextResponse.json({ afiliat: existing });
