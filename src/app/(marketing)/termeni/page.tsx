@@ -19,7 +19,7 @@ export default function TermeniPage() {
 
           <section>
             <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>1. ACCEPTAREA TERMENILOR</h2>
-            <p>Prin accesarea sau utilizarea platformei SuperFunded (superfunded.ro), ești de acord să respecți și să fii legat de acești Termeni și Condiții. Dacă nu ești de acord cu oricare parte a acestor termeni, nu poți accesa serviciul.</p>
+            <p>Prin accesarea sau utilizarea platformei SuperFunded (thesuperfunded.com), ești de acord să respecți și să fii legat de acești Termeni și Condiții. Dacă nu ești de acord cu oricare parte a acestor termeni, nu poți accesa serviciul.</p>
             <p className="mt-3">SuperFunded este operat de SuperFunded SRL, o companie înregistrată în România. Acești termeni se aplică tuturor vizitatorilor, utilizatorilor și oricărei alte persoane care accesează sau utilizează Serviciul.</p>
           </section>
 
@@ -144,7 +144,7 @@ export default function TermeniPage() {
             <p>Dacă ai întrebări despre acești Termeni și Condiții, contactează-ne la:</p>
             <div className="mt-4 p-4 font-mono text-xs space-y-1" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>
               <div>SuperFunded SRL</div>
-              <div>Email: support@superfunded.ro</div>
+              <div>Email: support@thesuperfunded.com</div>
               <div>România</div>
             </div>
           </section>

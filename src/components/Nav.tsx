@@ -5,8 +5,9 @@ import Link from 'next/link';
 const LINKS = [
   ['/#cum-functioneaza', 'Cum Funcționează'],
   ['/planuri', 'Planuri'],
-  ['/regulile', 'Regulile'],
+  ['/calculators', 'Calculatoare'],
   ['/clasament', 'Clasament'],
+  ['/blog', 'Blog'],
   ['/afiliere', 'Afiliere'],
   ['/faq', 'FAQ'],
 ];

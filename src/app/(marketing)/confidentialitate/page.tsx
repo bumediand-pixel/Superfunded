@@ -19,7 +19,7 @@ export default function ConfidentialittatePage() {
 
           <section>
             <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>1. INTRODUCERE</h2>
-            <p>SuperFunded SRL ("SuperFunded", "noi", "nostru") se angajează să protejeze confidențialitatea ta. Această Politică de Confidențialitate explică modul în care colectăm, utilizăm, dezvăluim și protejăm informațiile tale atunci când utilizezi platforma noastră la superfunded.ro.</p>
+            <p>SuperFunded SRL ("SuperFunded", "noi", "nostru") se angajează să protejeze confidențialitatea ta. Această Politică de Confidențialitate explică modul în care colectăm, utilizăm, dezvăluim și protejăm informațiile tale atunci când utilizezi platforma noastră la thesuperfunded.com.</p>
             <p className="mt-3">Prin utilizarea Serviciului, ești de acord cu colectarea și utilizarea informațiilor în conformitate cu această politică. Această politică este conformă cu Regulamentul General privind Protecția Datelor (GDPR) al Uniunii Europene.</p>
           </section>
 
@@ -129,7 +129,7 @@ export default function ConfidentialittatePage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4">Pentru a exercita oricare dintre aceste drepturi, contactează-ne la <span style={{ color: 'var(--white-hi)' }}>support@superfunded.ro</span>. Vom răspunde în termen de 30 de zile.</p>
+            <p className="mt-4">Pentru a exercita oricare dintre aceste drepturi, contactează-ne la <span style={{ color: 'var(--white-hi)' }}>support@thesuperfunded.com</span>. Vom răspunde în termen de 30 de zile.</p>
           </section>
 
           <section>
@@ -149,7 +149,7 @@ export default function ConfidentialittatePage() {
             <p>Responsabilul cu protecția datelor (DPO) poate fi contactat la:</p>
             <div className="mt-4 p-4 font-mono text-xs space-y-1" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>
               <div>SuperFunded SRL — DPO</div>
-              <div>Email: support@superfunded.ro</div>
+              <div>Email: support@thesuperfunded.com</div>
               <div>România</div>
             </div>
             <p className="mt-4">De asemenea, ai dreptul să depui o plângere la Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal (ANSPDCP) din România.</p>

@@ -64,7 +64,7 @@ export default function RamburssarePage() {
                 </li>
               ))}
             </ul>
-            <p className="mt-4">Pentru a solicita o rambursare în baza excepțiilor de mai sus, contactează echipa de suport la <span style={{ color: 'var(--white-hi)' }}>support@superfunded.ro</span> în termen de 7 zile de la data tranzacției, furnizând dovezile relevante.</p>
+            <p className="mt-4">Pentru a solicita o rambursare în baza excepțiilor de mai sus, contactează echipa de suport la <span style={{ color: 'var(--white-hi)' }}>support@thesuperfunded.com</span> în termen de 7 zile de la data tranzacției, furnizând dovezile relevante.</p>
           </section>
 
           <section>
@@ -111,7 +111,7 @@ export default function RamburssarePage() {
           <section>
             <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>7. CONTACT PENTRU RAMBURSĂRI</h2>
             <div className="p-4 font-mono text-xs space-y-1" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>
-              <div>Email: support@superfunded.ro</div>
+              <div>Email: support@thesuperfunded.com</div>
               <div>Subiect email: [RAMBURSARE] + ID tranzacție</div>
               <div>Timp răspuns: 24-48 ore lucrătoare</div>
             </div>

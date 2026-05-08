@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
+import { isDemoMode, DEMO_LEADERBOARD } from '@/lib/demoMode';
 
 const PeriodSchema = z.enum(['7d', '30d', 'all']).catch('30d');
 const LimitSchema = z.number().int().positive().max(100).catch(20);
@@ -9,6 +10,14 @@ export async function GET(req: NextRequest) {
   const period = PeriodSchema.parse(req.nextUrl.searchParams.get('period'));
   const limitRaw = parseInt(req.nextUrl.searchParams.get('limit') ?? '20');
   const limit = LimitSchema.parse(isNaN(limitRaw) ? 20 : limitRaw);
+
+  if (isDemoMode()) {
+    return NextResponse.json({
+      leaderboard: DEMO_LEADERBOARD.slice(0, limit),
+      period,
+      total: DEMO_LEADERBOARD.length,
+    });
+  }
 
   try {
     const dateFilter = period === '7d'

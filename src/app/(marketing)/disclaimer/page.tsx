@@ -110,7 +110,7 @@ export default function DisclaimerPage() {
             <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>7. CONTACT</h2>
             <div className="p-4 font-mono text-xs space-y-1" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.5)' }}>
               <div>SuperFunded SRL</div>
-              <div>Email: support@superfunded.ro</div>
+              <div>Email: support@thesuperfunded.com</div>
               <div>România</div>
             </div>
           </section>

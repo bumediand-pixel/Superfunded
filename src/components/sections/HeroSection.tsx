@@ -108,7 +108,7 @@ export default function HeroSection() {
                 <div className="w-2.5 h-2.5 rounded-full bg-red-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-400" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-400" />
-                <span className="ml-3 text-[11px] font-mono" style={{ color: 'var(--text-subtle)' }}>superfunded.ro/dashboard</span>
+                <span className="ml-3 text-[11px] font-mono" style={{ color: 'var(--text-subtle)' }}>thesuperfunded.com/dashboard</span>
               </div>
 
               {/* Dashboard */}

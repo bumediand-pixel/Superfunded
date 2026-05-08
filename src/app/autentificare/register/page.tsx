@@ -11,22 +11,32 @@ export default function RegisterPage() {
   const [nume, setNume] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [agreedSkillEval, setAgreedSkillEval] = useState(false);
+  const [agreedTerms, setAgreedTerms] = useState(false);
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!agreedSkillEval || !agreedTerms) {
+      setError('Trebuie să accepți ambele bife pentru a continua.');
+      return;
+    }
     setLoading(true);
     setError('');
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { full_name: nume } },
+      options: { data: { full_name: nume, skill_eval_consent_at: new Date().toISOString() } },
     });
     if (error) { setError(error.message); setLoading(false); return; }
     router.push('/dashboard');
   };
 
   const handleGoogle = async () => {
+    if (!agreedSkillEval || !agreedTerms) {
+      setError('Trebuie să accepți ambele bife înainte de Google sign-in.');
+      return;
+    }
     const supabase = createClient();
     await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/dashboard` } });
   };
@@ -72,11 +82,34 @@ export default function RegisterPage() {
               <input type="password" value={password} onChange={e => setPassword(e.target.value)} required minLength={8}
                 className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white text-sm focus:outline-none focus:border-red-500 transition-colors" placeholder="Minim 8 caractere" />
             </div>
-            <button type="submit" disabled={loading}
-              className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-50 text-white font-bold py-3 rounded-xl transition-colors">
+            <div className="space-y-2.5 pt-2">
+              <label className="flex items-start gap-2.5 text-xs text-white/70 cursor-pointer leading-relaxed">
+                <input type="checkbox" required checked={agreedSkillEval}
+                  onChange={e => setAgreedSkillEval(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 cursor-pointer flex-shrink-0"
+                  style={{ accentColor: '#e63946' }} />
+                <span>
+                  Confirm că înțeleg: SuperFunded este <strong className="text-white">platformă de evaluare a abilităților sportive</strong>, NU casă de pariuri. Capitalul este virtual și pick-urile sunt simulate.
+                </span>
+              </label>
+              <label className="flex items-start gap-2.5 text-xs text-white/70 cursor-pointer leading-relaxed">
+                <input type="checkbox" required checked={agreedTerms}
+                  onChange={e => setAgreedTerms(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 cursor-pointer flex-shrink-0"
+                  style={{ accentColor: '#e63946' }} />
+                <span>
+                  Sunt 18+ și am citit{' '}
+                  <Link href="/termeni" target="_blank" className="text-red-400 hover:text-red-300 font-semibold">Termenii</Link>,{' '}
+                  <Link href="/confidentialitate" target="_blank" className="text-red-400 hover:text-red-300 font-semibold">Confidențialitatea</Link> și{' '}
+                  <Link href="/disclaimer" target="_blank" className="text-red-400 hover:text-red-300 font-semibold">Disclaimer-ul</Link>.
+                </span>
+              </label>
+            </div>
+
+            <button type="submit" disabled={loading || !agreedSkillEval || !agreedTerms}
+              className="w-full bg-red-600 hover:bg-red-500 disabled:opacity-30 disabled:cursor-not-allowed text-white font-bold py-3 rounded-xl transition-colors">
               {loading ? 'Se creează contul...' : 'Creează Cont Gratuit'}
             </button>
-            <p className="text-white/30 text-xs text-center">Prin înregistrare ești de acord cu Termenii & Condițiile</p>
           </form>
         </div>
 

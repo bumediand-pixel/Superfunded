@@ -2,10 +2,18 @@ import Link from 'next/link';
 
 const LINKS_PLATFORMA = [
   { label: 'Cum Funcționează', href: '/#cum-functioneaza' },
-  { label: 'Planuri & Prețuri', href: '/#planuri' },
-  { label: 'Sporturi', href: '/#sporturi' },
+  { label: 'Planuri & Prețuri', href: '/planuri' },
+  { label: 'Calculatoare', href: '/calculators' },
+  { label: 'Reguli', href: '/regulile' },
   { label: 'Clasament', href: '/clasament' },
   { label: 'FAQ', href: '/faq' },
+];
+
+const LINKS_COMUNITATE = [
+  { label: 'Discord', href: '/discord' },
+  { label: 'Blog & Strategie', href: '/blog' },
+  { label: 'Afiliere', href: '/afiliere' },
+  { label: 'Contact', href: '/contact' },
 ];
 
 const LINKS_LEGAL = [
@@ -14,6 +22,8 @@ const LINKS_LEGAL = [
   { label: 'Politică Rambursare', href: '/rambursare' },
   { label: 'Disclaimer', href: '/disclaimer' },
   { label: 'Țări Suportate', href: '/tari-suportate' },
+  { label: 'Retenție date',  href: '/retentie-date' },
+  { label: 'AML & KYC',      href: '/aml-kyc' },
 ];
 
 const LINKS_CONT = [
@@ -29,7 +39,7 @@ export default function Footer() {
     <footer style={{ background: '#0f172a' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-14 pb-8">
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 mb-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-10 mb-12">
 
           {/* Brand */}
           <div className="lg:col-span-2">
@@ -44,7 +54,7 @@ export default function Footer() {
               Platforma de betting prop firm #1 din România. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
             </p>
             <div className="flex flex-col gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
-              <span>support@superfunded.ro</span>
+              <span>support@thesuperfunded.com</span>
               <span>Discord: discord.gg/superfunded</span>
             </div>
           </div>
@@ -77,6 +87,20 @@ export default function Footer() {
             </ul>
           </div>
 
+          {/* Comunitate */}
+          <div>
+            <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Comunitate</div>
+            <ul className="space-y-2.5">
+              {LINKS_COMUNITATE.map(({ label, href }) => (
+                <li key={href}>
+                  <Link href={href} className="text-sm transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.45)' }}>
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
           {/* Legal */}
           <div>
             <div className="text-xs font-bold tracking-widest uppercase mb-4" style={{ color: 'rgba(255,255,255,0.3)' }}>Legal</div>
@@ -94,11 +118,17 @@ export default function Footer() {
 
         {/* Disclaimer */}
         <div className="px-5 py-4 rounded-xl mb-8" style={{ background: 'rgba(230,57,70,0.08)', border: '1px solid rgba(230,57,70,0.15)' }}>
-          <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.35)' }}>
-            <span style={{ color: 'rgba(230,57,70,0.8)', fontWeight: 700 }}>AVERTISMENT:</span>{' '}
+          <p className="text-xs leading-relaxed text-center" style={{ color: 'rgba(255,255,255,0.45)' }}>
+            <span style={{ color: 'rgba(230,57,70,0.9)', fontWeight: 700 }}>AVERTISMENT:</span>{' '}
             SuperFunded este o platformă de evaluare a abilităților sportive, nu un operator de pariuri. Nu plasăm pariuri reale.
-            Taxa de evaluare reprezintă accesul la program. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>18 ani</strong>.
-            Joc responsabil: <strong style={{ color: 'rgba(255,255,255,0.5)' }}>jocresponsabil.ro</strong>
+            Taxa de evaluare reprezintă accesul la program. Vârsta minimă: <strong style={{ color: 'rgba(255,255,255,0.7)' }}>18 ani</strong>.
+            {' '}Joc responsabil:{' '}
+            <a href="https://www.jocresponsabil.ro" target="_blank" rel="noopener" className="underline font-bold transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              jocresponsabil.ro
+            </a>{' · '}
+            <a href="tel:0800800099" className="underline font-bold transition-colors hover:text-white" style={{ color: 'rgba(255,255,255,0.7)' }}>
+              Tel-Verde 0800 800 099
+            </a>
           </p>
         </div>
 
