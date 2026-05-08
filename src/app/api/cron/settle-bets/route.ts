@@ -59,17 +59,52 @@ export async function POST(req: NextRequest) {
     const awayScore = parseInt(ev.scores.find(s => s.name === ev.away_team)?.score ?? '');
     if (Number.isNaN(homeScore) || Number.isNaN(awayScore)) continue;
 
-    // h2h outcome resolution. `selectie` should be "1", "X", "2", or a team name.
-    const sel = bet.selectie.trim().toLowerCase();
-    let outcome: 'WIN' | 'LOSS' | 'PUSH';
+    // Resolve outcome based on the market type (`piata`) + selection.
+    const piata = bet.piata.toLowerCase();
+    const sel   = bet.selectie.trim().toLowerCase();
+    const total = homeScore + awayScore;
     const homeWin = homeScore > awayScore;
     const draw    = homeScore === awayScore;
     const awayWin = awayScore > homeScore;
 
-    if (sel === '1' || sel === ev.home_team.toLowerCase()) outcome = homeWin ? 'WIN' : (draw ? 'PUSH' : 'LOSS');
-    else if (sel === '2' || sel === ev.away_team.toLowerCase()) outcome = awayWin ? 'WIN' : (draw ? 'PUSH' : 'LOSS');
-    else if (sel === 'x' || sel === 'draw' || sel === 'egal') outcome = draw ? 'WIN' : 'LOSS';
-    else continue; // unknown selection — skip
+    let outcome: 'WIN' | 'LOSS' | 'PUSH' | null = null;
+
+    if (piata.includes('moneyline') || piata.includes('1x2') || piata.includes('h2h')) {
+      // Moneyline / 1X2
+      if (sel === '1' || sel === ev.home_team.toLowerCase()) outcome = homeWin ? 'WIN' : (draw ? 'PUSH' : 'LOSS');
+      else if (sel === '2' || sel === ev.away_team.toLowerCase()) outcome = awayWin ? 'WIN' : (draw ? 'PUSH' : 'LOSS');
+      else if (sel === 'x' || sel === 'draw' || sel === 'egal') outcome = draw ? 'WIN' : 'LOSS';
+    } else if (piata.includes('over') || piata.includes('under') || piata.includes('total')) {
+      // Over/Under — `selectie` formatted as "Over 2.5" / "Under 220.5"
+      const m = sel.match(/(over|under)\s+(\d+(?:\.\d+)?)/i);
+      if (m) {
+        const dir = m[1].toLowerCase(); // over | under
+        const line = parseFloat(m[2]);
+        if (total > line)      outcome = dir === 'over'  ? 'WIN'  : 'LOSS';
+        else if (total < line) outcome = dir === 'under' ? 'WIN'  : 'LOSS';
+        else                   outcome = 'PUSH'; // exact line — push (return stake)
+      }
+    } else if (piata.includes('spread') || piata.includes('handicap')) {
+      // Spread — `selectie` formatted as "Home -3.5" / "Away +7.5"
+      const m = sel.match(/(home|away|1|2)\s+([+-]?\d+(?:\.\d+)?)/i);
+      if (m) {
+        const side = m[1].toLowerCase();
+        const handicap = parseFloat(m[2]);
+        const adjusted = (side === 'home' || side === '1')
+          ? homeScore + handicap - awayScore
+          : awayScore + handicap - homeScore;
+        if (adjusted > 0)      outcome = 'WIN';
+        else if (adjusted < 0) outcome = 'LOSS';
+        else                   outcome = 'PUSH';
+      }
+    } else if (piata.includes('btts') || piata.includes('both teams')) {
+      // Both Teams To Score — `selectie` is "Yes"/"No"
+      const both = homeScore > 0 && awayScore > 0;
+      if (sel === 'yes' || sel === 'da')      outcome = both ? 'WIN' : 'LOSS';
+      else if (sel === 'no' || sel === 'nu')  outcome = both ? 'LOSS' : 'WIN';
+    }
+
+    if (outcome === null) continue; // unknown market — admin will resolve manually
 
     const stake = new Decimal(bet.suma);
     const odds  = new Decimal(bet.cota);
