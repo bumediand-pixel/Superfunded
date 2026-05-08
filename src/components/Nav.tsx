@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import BrandLogo from './BrandLogo';
 
 const LINKS = [
   ['/#cum-functioneaza', 'Cum Funcționează'],
@@ -29,14 +30,8 @@ export default function Nav() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between h-16">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5 shrink-0">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-            style={{ background: 'var(--red)' }}>
-            <span className="font-bebas text-white text-sm tracking-wider">SF</span>
-          </div>
-          <span className="font-jakarta font-800 text-lg tracking-tight" style={{ color: 'var(--text)', fontWeight: 800 }}>
-            SuperFunded
-          </span>
+        <Link href="/" className="flex items-center shrink-0" aria-label="SuperFunded — acasă">
+          <BrandLogo size={32} text variant="light" />
         </Link>
 
         {/* Desktop links */}

@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import {
   LayoutDashboard, Target, BarChart3, Wallet, Users, ShieldCheck, Settings, LogOut, Menu, X,
 } from 'lucide-react';
+import BrandLogo from '@/components/BrandLogo';
 
 const NAV = [
   { href: '/dashboard',           label: 'Dashboard',  icon: LayoutDashboard },
@@ -59,12 +60,8 @@ export default function DashboardSidebar({ email }: { email: string }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 h-16 border-b"
           style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
-          <Link href="/dashboard" className="flex items-center gap-2.5">
-            <span className="w-8 h-8 rounded-md flex items-center justify-center font-extrabold text-white text-sm"
-              style={{ background: 'var(--red, #e63946)' }}>
-              SF
-            </span>
-            <span className="font-extrabold text-base text-white">SuperFunded</span>
+          <Link href="/dashboard" className="flex items-center" aria-label="SuperFunded — dashboard">
+            <BrandLogo size={28} text variant="dark" />
           </Link>
           <button
             type="button"

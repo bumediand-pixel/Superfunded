@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import BrandLogo from './BrandLogo';
 
 const LINKS_PLATFORMA = [
   { label: 'Cum Funcționează', href: '/#cum-functioneaza' },
@@ -43,12 +44,8 @@ export default function Footer() {
 
           {/* Brand */}
           <div className="lg:col-span-2">
-            <div className="flex items-center gap-2.5 mb-5">
-              <div className="w-8 h-8 rounded-lg flex items-center justify-center"
-                style={{ background: 'var(--red)' }}>
-                <span className="font-bebas text-white text-sm tracking-wider">SF</span>
-              </div>
-              <span className="font-jakarta font-extrabold text-lg text-white">SuperFunded</span>
+            <div className="flex items-center mb-5">
+              <BrandLogo size={32} text variant="dark" />
             </div>
             <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
               Platforma de betting prop firm #1 din România. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
