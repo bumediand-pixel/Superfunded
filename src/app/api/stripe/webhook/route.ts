@@ -5,6 +5,13 @@ import Stripe from 'stripe';
 import { z } from 'zod';
 import { sendPlanActivatEmail } from '@/lib/email';
 
+// IMPORTANT: route must run on the Node.js runtime so we can use Stripe's
+// constructEvent (uses node:crypto) and we get a deterministic raw body via
+// req.text(). Never switch this to edge.
+export const runtime = 'nodejs';
+// Force-dynamic prevents any caching layer from eating the request body.
+export const dynamic = 'force-dynamic';
+
 const MetadataSchema = z.object({
   userId: z.string().min(1),
   plan: z.enum(['STARTER_500', 'BASIC_1000', 'STANDARD_5000', 'ADVANCED_10000', 'PRO_25000', 'ELITE_50000']),
@@ -14,18 +21,43 @@ const MetadataSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // 1. Raw body — required for HMAC verification. Never JSON.parse before this.
   const body = await req.text();
   const sig = req.headers.get('stripe-signature');
   if (!sig) return NextResponse.json({ error: 'Lipsă semnătură' }, { status: 400 });
 
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) {
+    console.error('[stripe-webhook] STRIPE_WEBHOOK_SECRET not set');
+    return NextResponse.json({ error: 'Webhook nu este configurat' }, { status: 503 });
+  }
+
+  // 2. Verify signature.
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(body, sig, secret);
   } catch (err) {
     console.error('[stripe-webhook] signature verification failed:', err);
     return NextResponse.json({ error: 'Semnătură invalidă' }, { status: 400 });
   }
 
+  // 3. Idempotency. ProcessedWebhookEvent has a unique (provider,eventId) index.
+  // We INSERT before doing any work; if the row already exists Postgres throws
+  // P2002 and we ack 200 without re-running side-effects.
+  try {
+    await prisma.processedWebhookEvent.create({
+      data: { provider: 'stripe', eventId: event.id, eventType: event.type },
+    });
+  } catch (err: unknown) {
+    if (isUniqueViolation(err)) {
+      // Already processed — ack so Stripe stops retrying.
+      return NextResponse.json({ received: true, duplicate: true });
+    }
+    console.error('[stripe-webhook] failed to record event:', err);
+    return NextResponse.json({ error: 'Eroare internă' }, { status: 500 });
+  }
+
+  // 4. Dispatch.
   try {
     switch (event.type) {
       case 'checkout.session.completed': {
@@ -34,6 +66,15 @@ export async function POST(req: NextRequest) {
         if (kind === 'reset')      await handleResetPurchase(session);
         else if (kind === 'scale') await handleScalePurchase(session);
         else                       await handleCheckoutCompleted(session);
+        break;
+      }
+
+      case 'payment_intent.succeeded': {
+        // Belt-and-braces fallback for cases where checkout.session.completed
+        // didn't fire (rare async timing edges). We DO NOT provision here —
+        // we just log + emit a metric so the team can investigate.
+        const pi = event.data.object as Stripe.PaymentIntent;
+        console.log('[stripe-webhook] payment_intent.succeeded', { pi: pi.id, amount: pi.amount });
         break;
       }
 
@@ -46,15 +87,28 @@ export async function POST(req: NextRequest) {
         break;
 
       default:
-        // ignore other events but acknowledge so Stripe stops retrying
+        // Unhandled event types are still ack'd — Stripe's retry budget shouldn't
+        // be wasted on events we explicitly opted not to handle.
         break;
     }
   } catch (err) {
+    // Side-effect failed AFTER we recorded the event — the most likely cause is
+    // a transient DB issue. Roll back the idempotency record so Stripe retries.
     console.error(`[stripe-webhook] error handling ${event.type}:`, err);
+    await prisma.processedWebhookEvent
+      .deleteMany({ where: { provider: 'stripe', eventId: event.id } })
+      .catch(() => { /* swallow — we're already in an error path */ });
     return NextResponse.json({ error: 'Eroare la procesare' }, { status: 500 });
   }
 
   return NextResponse.json({ received: true });
+}
+
+function isUniqueViolation(err: unknown): boolean {
+  return typeof err === 'object'
+    && err !== null
+    && 'code' in err
+    && (err as { code?: string }).code === 'P2002';
 }
 
 async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
@@ -99,18 +153,31 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     zileMinime:   r.zileMinime,
   }));
 
-  await prisma.contTrader.create({
-    data: {
-      utilizatorId:   utilizator.id,
-      plan,
-      capitalInceput: capitalNum,
-      capitalCurent:  capitalNum,
-      statusEvaluare: 'FAZA_1',
-      fazaCurenta:    1,
-      dataStart:      new Date(),
-      stripeSessionId: session.id,
-      reguli:         { create: rules },
-    },
+  await prisma.$transaction(async tx => {
+    await tx.contTrader.create({
+      data: {
+        utilizatorId:   utilizator!.id,
+        plan,
+        capitalInceput: capitalNum,
+        capitalCurent:  capitalNum,
+        statusEvaluare: 'FAZA_1',
+        fazaCurenta:    1,
+        dataStart:      new Date(),
+        stripeSessionId: session.id,
+        reguli:         { create: rules },
+      },
+    });
+    await tx.ledger.create({
+      data: {
+        utilizatorId: utilizator!.id,
+        type:         'CHALLENGE_PURCHASE',
+        amount:       -((session.amount_total ?? 0) / 100),
+        currency:     (session.currency ?? 'eur').toUpperCase(),
+        refType:      'StripeCheckoutSession',
+        refId:        session.id,
+        metadata:     { plan, capital: capitalNum, mode },
+      },
+    });
   });
 
   if (session.customer_email) {
@@ -175,9 +242,23 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
   if (!sessionId) return;
   const cont = await prisma.contTrader.findUnique({ where: { stripeSessionId: sessionId } });
   if (!cont) return;
-  await prisma.contTrader.update({
-    where: { id: cont.id },
-    data: { activ: false, statusEvaluare: 'SUSPENDAT' },
+  await prisma.$transaction(async tx => {
+    await tx.contTrader.update({
+      where: { id: cont.id },
+      data: { activ: false, statusEvaluare: 'SUSPENDAT' },
+    });
+    await tx.ledger.create({
+      data: {
+        utilizatorId: cont.utilizatorId,
+        contId:       cont.id,
+        type:         'CHALLENGE_REFUND',
+        amount:       (charge.amount_refunded ?? 0) / 100,
+        currency:     (charge.currency ?? 'eur').toUpperCase(),
+        refType:      'StripeCharge',
+        refId:        charge.id,
+        metadata:     { sessionId, reason: 'refund' },
+      },
+    });
   });
 }
 
@@ -189,8 +270,21 @@ async function handleDispute(dispute: Stripe.Dispute) {
   if (!sessionId) return;
   const cont = await prisma.contTrader.findUnique({ where: { stripeSessionId: sessionId } });
   if (!cont) return;
-  await prisma.contTrader.update({
-    where: { id: cont.id },
-    data: { activ: false, statusEvaluare: 'SUSPENDAT' },
+  await prisma.$transaction(async tx => {
+    await tx.contTrader.update({
+      where: { id: cont.id },
+      data: { activ: false, statusEvaluare: 'SUSPENDAT' },
+    });
+    await tx.ledger.create({
+      data: {
+        utilizatorId: cont.utilizatorId,
+        contId:       cont.id,
+        type:         'ADJUSTMENT',
+        amount:       0,
+        refType:      'StripeDispute',
+        refId:        dispute.id,
+        metadata:     { sessionId, reason: 'dispute', disputeStatus: dispute.status },
+      },
+    });
   });
 }

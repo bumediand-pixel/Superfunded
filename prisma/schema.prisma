@@ -46,6 +46,27 @@ enum StatusPariu {
   JUMATATE_CASTIG
 }
 
+enum StatusRetragere {
+  PENDING
+  APPROVED
+  PROCESSING
+  PAID
+  REJECTED
+  FAILED
+  REFUNDED
+}
+
+enum LedgerEntryType {
+  WITHDRAWAL_HOLD
+  WITHDRAWAL_PAID
+  WITHDRAWAL_REFUND
+  BET_STAKE
+  BET_PAYOUT
+  CHALLENGE_PURCHASE
+  CHALLENGE_REFUND
+  ADJUSTMENT
+}
+
 model Utilizator {
   id                String       @id @default(cuid())
   supabaseId        String       @unique
@@ -60,6 +81,7 @@ model Utilizator {
   conturi           ContTrader[]
   pariuri           Pariu[]
   retrageri         Retragere[]
+  ledger            Ledger[]
   afiliat           Afiliat?
 }
 
@@ -106,15 +128,58 @@ model Pariu {
 }
 
 model Retragere {
-  id           String     @id @default(cuid())
-  utilizatorId String
-  utilizator   Utilizator @relation(fields: [utilizatorId], references: [id])
-  suma         Float
-  metodaPlata  String
-  detaliiPlata Json
-  status       String     @default("IN_PROCESARE")
-  createdAt    DateTime   @default(now())
-  procesatLa   DateTime?
+  id              String          @id @default(cuid())
+  utilizatorId    String
+  utilizator      Utilizator      @relation(fields: [utilizatorId], references: [id])
+  suma            Float
+  metodaPlata     String
+  detaliiPlata    Json
+  status          String          @default("IN_PROCESARE")
+  // P0: explicit state-machine status (parallel to legacy `status` string for back-compat)
+  statusEnum      StatusRetragere @default(PENDING)
+  // Idempotency key supplied by client (UUID v4) — prevents double-submits + retry storms
+  idempotencyKey  String?         @unique
+  failureReason   String?
+  ledgerEntries   Ledger[]
+  createdAt       DateTime        @default(now())
+  procesatLa      DateTime?
+  updatedAt       DateTime        @updatedAt
+}
+
+/// Append-only money ledger. Database RULES (see migrations/20260509_p0_security/migration.sql)
+/// block UPDATE/DELETE so this table is the auditable source of truth for every cent.
+model Ledger {
+  id            String          @id @default(cuid())
+  utilizatorId  String
+  utilizator    Utilizator      @relation(fields: [utilizatorId], references: [id])
+  contId        String?
+  type          LedgerEntryType
+  /// Signed amount in EUR. Positive = credit to user, negative = debit.
+  amount        Float
+  currency      String          @default("EUR")
+  /// Free-form reference to the originating domain object (retragereId, pariuId, sessionId).
+  refType       String?
+  refId         String?
+  retragereId   String?
+  retragere     Retragere?      @relation(fields: [retragereId], references: [id])
+  metadata      Json?
+  createdAt     DateTime        @default(now())
+
+  @@index([utilizatorId, createdAt])
+  @@index([refType, refId])
+}
+
+/// Webhook idempotency table — every Stripe / Sumsub event is recorded here BEFORE
+/// any side-effect runs. Unique on (provider, eventId) prevents duplicate processing.
+model ProcessedWebhookEvent {
+  id          String   @id @default(cuid())
+  provider    String
+  eventId     String
+  eventType   String?
+  processedAt DateTime @default(now())
+
+  @@unique([provider, eventId])
+  @@index([processedAt])
 }
 
 model RegulaCont {
