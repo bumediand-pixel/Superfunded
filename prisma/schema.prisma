@@ -105,16 +105,78 @@ model Pariu {
   note              String?
 }
 
+enum WithdrawalState {
+  PENDING
+  APPROVED
+  PROCESSING
+  COMPLETED
+  REJECTED
+  FAILED
+  REFUNDED
+}
+
 model Retragere {
-  id           String     @id @default(cuid())
-  utilizatorId String
-  utilizator   Utilizator @relation(fields: [utilizatorId], references: [id])
-  suma         Float
-  metodaPlata  String
-  detaliiPlata Json
-  status       String     @default("IN_PROCESARE")
-  createdAt    DateTime   @default(now())
-  procesatLa   DateTime?
+  id              String          @id @default(cuid())
+  utilizatorId    String
+  utilizator      Utilizator      @relation(fields: [utilizatorId], references: [id])
+  suma            Float
+  metodaPlata     String
+  detaliiPlata    Json
+  /// Legacy free-form status — kept for backwards compatibility with admin UI.
+  status          String          @default("IN_PROCESARE")
+  /// Strongly-typed state machine for withdrawals.
+  state           WithdrawalState @default(PENDING)
+  /// Client-supplied idempotency key — uniqueness prevents double-spend on retries.
+  idempotencyKey  String?         @unique
+  /// Optional ledger entry produced when the withdrawal debit hit the books.
+  ledgerEntryId   String?         @unique
+  failureReason   String?
+  approvedAt      DateTime?
+  processedAt     DateTime?
+  createdAt       DateTime        @default(now())
+  procesatLa      DateTime?
+  ledgerEntries   Ledger[]        @relation("RetragereLedger")
+}
+
+/// Append-only ledger for monetary movements. SQL-level RULEs in the
+/// accompanying migration block UPDATE/DELETE so history can never be edited.
+model Ledger {
+  id             String      @id @default(cuid())
+  utilizatorId   String
+  /// Account that produced the movement (null for system entries like fees).
+  contId         String?
+  /// Withdrawal that created this entry (debit when approved, credit on refund).
+  retragereId    String?
+  retragere      Retragere?  @relation("RetragereLedger", fields: [retragereId], references: [id])
+  /// One of: WITHDRAWAL_DEBIT, WITHDRAWAL_REFUND, BET_STAKE, BET_PAYOUT, ADJUSTMENT, FEE, DEPOSIT.
+  kind           String
+  /// Signed amount in the user's home currency (negative = debit, positive = credit).
+  amount         Float
+  currency       String      @default("EUR")
+  /// Free-form correlation ID — stripe event id, sumsub digest, etc.
+  externalRef    String?
+  /// Idempotency key reused from the source action to deduplicate writes.
+  idempotencyKey String?     @unique
+  metadata       Json?
+  createdAt      DateTime    @default(now())
+
+  @@index([utilizatorId, createdAt])
+  @@index([contId, createdAt])
+  @@index([retragereId])
+}
+
+/// Records every webhook delivery we have already executed handlers for so a
+/// second attempt by Stripe / Sumsub becomes a no-op.
+model ProcessedWebhookEvent {
+  /// `${provider}:${eventId}` — e.g. `stripe:evt_123` or `sumsub:<digest>`.
+  id          String   @id
+  provider    String
+  eventId     String
+  eventType   String?
+  payloadHash String?
+  processedAt DateTime @default(now())
+
+  @@index([provider, processedAt])
 }
 
 model RegulaCont {
@@ -147,4 +209,24 @@ model ComisionAfiliat {
   referralId  String
   status      String   @default("IN_PROCESARE")
   createdAt   DateTime @default(now())
+}
+
+/// GDPR consent log. We persist (userId|sessionId, version, ip, userAgent) so
+/// consent is demonstrable per ANSPDCP guidance. The cookie banner POSTs to
+/// /api/consent which writes one row per change-of-mind. The newest row for
+/// a given (userId|sessionId, version) pair is the authoritative one.
+model Consent {
+  id        String   @id @default(cuid())
+  userId    String?
+  sessionId String
+  necessary Boolean  @default(true)
+  analytics Boolean  @default(false)
+  marketing Boolean  @default(false)
+  version   Int      @default(1)
+  ip        String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  @@index([userId, version])
+  @@index([sessionId, version])
 }

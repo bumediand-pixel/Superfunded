@@ -96,3 +96,85 @@ body {
 }
 .plan-card:hover::before { opacity: 1; }
 .plan-card-popular::before { opacity: 1 !important; }
+
+/* ─────────────────────────────────────────────────────────────────────
+   LANDING REDESIGN — DARK + GOLD PALETTE
+   Scoped to .landing-dark wrapper to avoid bleeding into other pages.
+   Tokens are additive; do not modify or remove the blocks above.
+   ───────────────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Ink (neutral dark) scale */
+  --color-ink-50:  #f5f6f8;
+  --color-ink-100: #e7e9ee;
+  --color-ink-200: #c8ccd6;
+  --color-ink-300: #9aa0ae;
+  --color-ink-400: #6e7585;
+  --color-ink-500: #4a5161;
+  --color-ink-600: #303744;
+  --color-ink-700: #1f2530;
+  --color-ink-800: #141823;
+  --color-ink-900: #0b0e16;
+  --color-ink-950: #05070d;
+
+  /* Gold (primary accent) */
+  --color-gold-400: #f7c948;
+  --color-gold-500: #e0a82e;
+
+  /* Volt (electric green, secondary accent) */
+  --color-volt-400: #6df27a;
+  --color-volt-500: #2bd348;
+
+  /* Mist (text on dark) */
+  --color-mist-200: #e9ecf3;
+  --color-mist-400: #aab1c0;
+  --color-mist-500: #7d8493;
+}
+
+/* All landing-only base styles live under this wrapper so the rest of
+   the app (which ships a light theme via :root) is unaffected. */
+.landing-dark {
+  color-scheme: dark;
+  background: var(--color-ink-950);
+  color: var(--color-mist-200);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.landing-dark a:focus-visible,
+.landing-dark button:focus-visible,
+.landing-dark [role="button"]:focus-visible,
+.landing-dark input:focus-visible {
+  outline: 2px solid var(--color-gold-400);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.landing-dark ::selection {
+  background: var(--color-gold-500);
+  color: var(--color-ink-950);
+}
+
+.landing-dark .ld-skip-link {
+  position: absolute;
+  left: -10000px;
+  top: 8px;
+  z-index: 100;
+  padding: 12px 16px;
+  background: var(--color-gold-400);
+  color: var(--color-ink-950);
+  font-weight: 700;
+  border-radius: 6px;
+}
+.landing-dark .ld-skip-link:focus { left: 12px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-dark *,
+  .landing-dark *::before,
+  .landing-dark *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

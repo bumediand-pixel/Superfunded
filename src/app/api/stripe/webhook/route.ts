@@ -5,6 +5,25 @@ import Stripe from 'stripe';
 import { z } from 'zod';
 import { sendPlanActivatEmail } from '@/lib/email';
 
+/**
+ * Stripe webhook handler — hardened for production.
+ *
+ *   - Reads the **raw** request body via `req.text()` (constructEvent verifies
+ *     the HMAC over the original bytes; parsing first would corrupt it).
+ *   - Verifies signature against `STRIPE_WEBHOOK_SECRET`. Failure = 400.
+ *   - Records every accepted event in `ProcessedWebhookEvent` so retries
+ *     become a no-op. We INSERT before running the handler; if the insert
+ *     fails on the unique PK we know the event was already processed.
+ *   - Handlers covered: checkout.session.completed, payment_intent.succeeded,
+ *     charge.refunded, charge.dispute.created. Unknown events are ack'd
+ *     (return 200) so Stripe stops retrying.
+ *
+ * Important: keep this route runtime as Node (default) — Edge can't read
+ * raw bodies the way the Stripe SDK expects.
+ */
+export const dynamic = 'force-dynamic';
+export const runtime = 'nodejs';
+
 const MetadataSchema = z.object({
   userId: z.string().min(1),
   plan: z.enum(['STARTER_500', 'BASIC_1000', 'STANDARD_5000', 'ADVANCED_10000', 'PRO_25000', 'ELITE_50000']),
@@ -13,17 +32,50 @@ const MetadataSchema = z.object({
   split: z.string().regex(/^\d+$/).optional(),
 });
 
+/** Returns true if we just claimed this event for processing (i.e. first delivery). */
+async function claimEvent(eventId: string, eventType: string): Promise<boolean> {
+  try {
+    await prisma.processedWebhookEvent.create({
+      data: {
+        id: `stripe:${eventId}`,
+        provider: 'stripe',
+        eventId,
+        eventType,
+      },
+    });
+    return true;
+  } catch (e: unknown) {
+    // Prisma throws P2002 on unique violation — that's our idempotency signal.
+    const code = (e as { code?: string })?.code;
+    if (code === 'P2002') return false;
+    throw e;
+  }
+}
+
 export async function POST(req: NextRequest) {
+  const secret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!secret) {
+    console.error('[stripe-webhook] STRIPE_WEBHOOK_SECRET is not configured');
+    return NextResponse.json({ error: 'Configurare incompletă' }, { status: 500 });
+  }
+
   const body = await req.text();
   const sig = req.headers.get('stripe-signature');
   if (!sig) return NextResponse.json({ error: 'Lipsă semnătură' }, { status: 400 });
 
   let event: Stripe.Event;
   try {
-    event = stripe.webhooks.constructEvent(body, sig, process.env.STRIPE_WEBHOOK_SECRET!);
+    event = stripe.webhooks.constructEvent(body, sig, secret);
   } catch (err) {
     console.error('[stripe-webhook] signature verification failed:', err);
     return NextResponse.json({ error: 'Semnătură invalidă' }, { status: 400 });
+  }
+
+  // Idempotency gate — atomic claim.
+  const claimed = await claimEvent(event.id, event.type);
+  if (!claimed) {
+    console.log('[stripe-webhook] duplicate event ignored:', event.id, event.type);
+    return NextResponse.json({ received: true, duplicate: true });
   }
 
   try {
@@ -36,6 +88,10 @@ export async function POST(req: NextRequest) {
         else                       await handleCheckoutCompleted(session);
         break;
       }
+
+      case 'payment_intent.succeeded':
+        await handlePaymentIntentSucceeded(event.data.object as Stripe.PaymentIntent);
+        break;
 
       case 'charge.refunded':
         await handleChargeRefunded(event.data.object as Stripe.Charge);
@@ -51,6 +107,11 @@ export async function POST(req: NextRequest) {
     }
   } catch (err) {
     console.error(`[stripe-webhook] error handling ${event.type}:`, err);
+    // Roll back the idempotency claim so Stripe's next retry can re-attempt
+    // the handler. Without this, transient DB errors would silently drop work.
+    await prisma.processedWebhookEvent
+      .delete({ where: { id: `stripe:${event.id}` } })
+      .catch(() => {});
     return NextResponse.json({ error: 'Eroare la procesare' }, { status: 500 });
   }
 
@@ -170,6 +231,46 @@ async function handleScalePurchase(session: Stripe.Checkout.Session) {
   console.log('[stripe-webhook] scaled cont', contId, '→', newPlan);
 }
 
+/**
+ * `payment_intent.succeeded` typically arrives alongside checkout.session.completed
+ * but for some PaymentLink / async-flow sessions the PI lands first. We log a
+ * positive ledger entry tagged with the PI id so reconciliation tooling can
+ * cross-reference Stripe's payments dashboard. Safe to receive multiple times
+ * because of the unique idempotencyKey on Ledger.
+ */
+async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent) {
+  const sessionId = (pi.metadata?.checkout_session_id as string | undefined) ?? null;
+  if (!sessionId) {
+    console.log('[stripe-webhook] payment_intent without checkout_session_id, skipping ledger:', pi.id);
+    return;
+  }
+  const cont = await prisma.contTrader.findUnique({
+    where: { stripeSessionId: sessionId },
+    select: { id: true, utilizatorId: true },
+  });
+  if (!cont) return;
+
+  await prisma.ledger
+    .create({
+      data: {
+        utilizatorId:   cont.utilizatorId,
+        contId:         cont.id,
+        kind:           'DEPOSIT',
+        amount:         (pi.amount_received ?? pi.amount) / 100,
+        currency:       (pi.currency ?? 'eur').toUpperCase(),
+        externalRef:    pi.id,
+        idempotencyKey: `stripe:pi:${pi.id}`,
+        metadata:       { sessionId },
+      },
+    })
+    .catch((e: unknown) => {
+      // P2002 = idempotency hit; everything else bubbles up so the webhook
+      // retries.
+      const code = (e as { code?: string })?.code;
+      if (code !== 'P2002') throw e;
+    });
+}
+
 async function handleChargeRefunded(charge: Stripe.Charge) {
   const sessionId = charge.metadata?.checkout_session_id;
   if (!sessionId) return;
@@ -179,6 +280,24 @@ async function handleChargeRefunded(charge: Stripe.Charge) {
     where: { id: cont.id },
     data: { activ: false, statusEvaluare: 'SUSPENDAT' },
   });
+  // Negative ledger entry to record the refund.
+  await prisma.ledger
+    .create({
+      data: {
+        utilizatorId:   cont.utilizatorId,
+        contId:         cont.id,
+        kind:           'ADJUSTMENT',
+        amount:         -((charge.amount_refunded ?? 0) / 100),
+        currency:       (charge.currency ?? 'eur').toUpperCase(),
+        externalRef:    charge.id,
+        idempotencyKey: `stripe:refund:${charge.id}`,
+        metadata:       { sessionId, reason: 'charge.refunded' },
+      },
+    })
+    .catch((e: unknown) => {
+      const code = (e as { code?: string })?.code;
+      if (code !== 'P2002') throw e;
+    });
 }
 
 async function handleDispute(dispute: Stripe.Dispute) {

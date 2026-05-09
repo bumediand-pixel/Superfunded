@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import { getScores, SPORTURI_DISPONIBILE, type ScoreEvent } from '@/lib/odds-api';
 import { Decimal } from 'decimal.js';
 import { sendPhaseChangeEmail } from '@/lib/email';
+import { requireCronAuth } from '@/lib/auth/cron';
 
 /**
  * Settles open bets for all known sports.
@@ -22,12 +23,9 @@ import { sendPhaseChangeEmail } from '@/lib/email';
  * canonical handler for manual curl/test invocations.
  */
 export async function POST(req: NextRequest) {
-  // Auth: cron-only secret. Vercel Cron sends `Authorization: Bearer $CRON_SECRET`.
-  const auth = req.headers.get('authorization') ?? '';
-  const expected = `Bearer ${process.env.CRON_SECRET ?? ''}`;
-  if (!process.env.CRON_SECRET || auth !== expected) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  }
+  // Auth: cron-only secret enforced via shared helper (constant-time compare).
+  const denied = requireCronAuth(req);
+  if (denied) return denied;
 
   // Pull every open bet and group by sport so we fetch scores once per sport.
   const open = await prisma.pariu.findMany({ where: { statusPariu: 'DESCHIS' } });

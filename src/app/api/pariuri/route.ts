@@ -4,7 +4,7 @@ import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
 import Decimal from 'decimal.js';
-import { rateLimit } from '@/lib/rateLimiter';
+import { rateLimit, rateLimitHeaders } from '@/lib/ratelimit';
 
 const BetSchema = z.object({
   sport: z.string().min(1).max(50),
@@ -44,17 +44,25 @@ export async function GET() {
 }
 
 export async function POST(req: NextRequest) {
-  const ip = req.headers.get('x-forwarded-for') ?? 'unknown';
-  if (!rateLimit(`pariuri:${ip}`, 30, 60 * 1000)) {
-    return NextResponse.json({ error: 'Prea multe cereri' }, { status: 429 });
-  }
-
   const user = await getSupabaseUser();
   if (!user) return NextResponse.json({ error: 'Neautentificat' }, { status: 401 });
 
+  // Per-user rate limit (30 bets / minute). User-id keying prevents lockout
+  // on shared IPs and stops a single account from spamming via IP rotation.
+  const rl = await rateLimit('bets', `user:${user.id}`);
+  if (!rl.success) {
+    return NextResponse.json(
+      { error: 'Prea multe cereri' },
+      { status: 429, headers: rateLimitHeaders(rl) }
+    );
+  }
+
   const parsed = BetSchema.safeParse(await req.json());
   if (!parsed.success) {
-    return NextResponse.json({ error: 'Date invalide' }, { status: 400 });
+    return NextResponse.json(
+      { error: 'Date invalide' },
+      { status: 400, headers: rateLimitHeaders(rl) }
+    );
   }
   const { cota, suma, ...rest } = parsed.data;
 
