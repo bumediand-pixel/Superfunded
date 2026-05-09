@@ -1,0 +1,731 @@
+{
+  "mcpServers": {
+    "context7": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@upstash/context7-mcp@latest"
+      ],
+      "env": {
+        "CONTEXT7_API_KEY": "<your-context7-api-key>"
+      }
+    },
+    "memory": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ]
+    },
+    "executeautomation-playwright-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ]
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-postgres"
+      ],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/dbname"
+      }
+    },
+    "fetch": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-fetch"
+      ]
+    },
+    "supabase": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest",
+        "--read-only",
+        "--project-ref=<project-ref>"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "<personal-access-token>"
+      }
+    },
+    "chrome-devtools": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "chrome-devtools-mcp@latest"
+      ]
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/path/to/allowed/files"
+      ]
+    },
+    "browser-server": {
+      "command": "browser-use-mcp-server",
+      "args": [
+        "run",
+        "server",
+        "--port",
+        "8000",
+        "--stdio",
+        "--proxy-port",
+        "9000"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "your-api-key"
+      }
+    },
+    "playwright-server": {
+      "command": "npx",
+      "args": [
+        "@playwright/mcp@latest"
+      ]
+    },
+    "mysql": {
+      "command": "uvx",
+      "args": [
+        "mcp-server-mysql"
+      ],
+      "env": {
+        "MYSQL_CONNECTION_STRING": "mysql://user:password@localhost:3306/dbname"
+      }
+    },
+    "DeepGraph Next.js MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-code-graph@latest",
+        "vercel/next.js"
+      ]
+    },
+    "Figma Dev Mode MCP": {
+      "url": "http://127.0.0.1:3845/mcp"
+    },
+    "markitdown": {
+      "command": "docker",
+      "args": [
+        "run",
+        "--rm",
+        "-i",
+        "markitdown-mcp:latest"
+      ]
+    },
+    "DeepGraph React MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-code-graph@latest",
+        "facebook/react"
+      ]
+    },
+    "ios-simulator": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "ios-simulator-mcp"
+      ]
+    },
+    "DeepGraph TypeScript MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-code-graph@latest",
+        "microsoft/TypeScript"
+      ]
+    },
+    "serena": {
+      "command": "/abs/path/to/uv",
+      "args": [
+        "run",
+        "--directory",
+        "/abs/path/to/serena",
+        "serena",
+        "start-mcp-server"
+      ]
+    },
+    "automatalabs-playwright-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@automatalabs/mcp-server-playwright"
+      ]
+    },
+    "browsermcp": {
+      "command": "npx",
+      "args": [
+        "@browsermcp/mcp@latest"
+      ]
+    },
+    "notionApi": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@notionhq/notion-mcp-server"
+      ],
+      "env": {
+        "NOTION_TOKEN": "ntn_****"
+      }
+    },
+    "DeepGraph Vue MCP": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-code-graph@latest",
+        "vuejs/core"
+      ]
+    },
+    "huggingface": {
+      "url": "https://huggingface.co/mcp",
+      "headers": {
+        "Authorization": "Bearer <YOUR_HF_TOKEN>"
+      }
+    },
+    "fb-ads-mcp-server": {
+      "command": "python",
+      "args": [
+        "/path/to/your/fb-ads-mcp-server/server.py",
+        "--fb-token",
+        "YOUR_META_ACCESS_TOKEN"
+      ]
+    },
+    "google-ads": {
+      "command": "/full/path/to/your/project/.venv/bin/python",
+      "args": [
+        "/full/path/to/your/project/server.py"
+      ]
+    },
+    "postman-api-http-server": {
+      "type": "http",
+      "url": "https://mcp.postman.com/{minimal | mcp}",
+      "headers": {
+        "Authorization": "Bearer ${input:postman-api-key}"
+      }
+    },
+    "firecrawl-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "firecrawl-mcp"
+      ],
+      "env": {
+        "FIRECRAWL_API_KEY": "YOUR-API-KEY"
+      }
+    },
+    "stripe": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@stripe/mcp",
+        "--tools=all"
+      ],
+      "env": {
+        "STRIPE_SECRET_KEY": "your_stripe_secret_key_here"
+      }
+    },
+    "terraform": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "hashicorp/terraform-mcp-server:0.2.3"
+      ]
+    },
+    "browserbase": {
+      "command": "npx",
+      "args": [
+        "@browserbasehq/mcp-server-browserbase"
+      ],
+      "env": {
+        "BROWSERBASE_API_KEY": "",
+        "BROWSERBASE_PROJECT_ID": "",
+        "GEMINI_API_KEY": ""
+      }
+    },
+    "postgres-documentation": {
+      "url": "https://mcp.tigerdata.com/docs"
+    },
+    "MongoDB": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server@latest",
+        "--readOnly"
+      ],
+      "env": {
+        "MDB_MCP_CONNECTION_STRING": "mongodb://localhost:27017/myDatabase"
+      }
+    },
+    "sentry": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@sentry/mcp-server@latest"
+      ],
+      "env": {
+        "SENTRY_ACCESS_TOKEN": "<your-sentry-auth-token>"
+      }
+    },
+    "grafana": {
+      "command": "mcp-grafana",
+      "args": [],
+      "env": {
+        "GRAFANA_URL": "http://localhost:3000",
+        "GRAFANA_SERVICE_ACCOUNT_TOKEN": "<your service account token>",
+        "GRAFANA_USERNAME": "<your username>",
+        "GRAFANA_PASSWORD": "<your password>"
+      }
+    },
+    "Neon": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.neon.tech/mcp"
+      ]
+    },
+    "elevenlabs": {
+      "command": "uvx",
+      "args": [
+        "elevenlabs-mcp"
+      ],
+      "env": {
+        "ELEVENLABS_API_KEY": "<your-api-key>",
+        "ELEVENLABS_MCP_BASE_PATH": "~/Desktop",
+        "ELEVENLABS_MCP_OUTPUT_MODE": "files"
+      }
+    },
+    "imagesorcery-mcp": {
+      "command": "imagesorcery-mcp",
+      "transportType": "stdio",
+      "autoApprove": [
+        "blur",
+        "change_color",
+        "config",
+        "crop",
+        "detect",
+        "draw_arrows",
+        "draw_circles",
+        "draw_lines",
+        "draw_rectangles",
+        "draw_texts",
+        "fill",
+        "find",
+        "get_metainfo",
+        "ocr",
+        "overlay",
+        "resize",
+        "rotate"
+      ],
+      "timeout": 100
+    },
+    "bitbucket": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@aashari/mcp-server-atlassian-bitbucket"
+      ]
+    },
+    "trello": {
+      "command": "pnpx",
+      "args": [
+        "@delorenj/mcp-server-trello"
+      ],
+      "env": {
+        "TRELLO_API_KEY": "your-api-key",
+        "TRELLO_TOKEN": "your-token"
+      }
+    },
+    "leetcode": {
+      "command": "mcp-server-leetcode"
+    },
+    "just-mcp": {
+      "command": "/path/to/just-mcp",
+      "args": [
+        "--stdio"
+      ]
+    },
+    "elasticsearch-mcp-server": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "ES_URL",
+        "-e",
+        "ES_API_KEY",
+        "docker.elastic.co/mcp/elasticsearch",
+        "stdio"
+      ],
+      "env": {
+        "ES_URL": "<elasticsearch-cluster-url>",
+        "ES_API_KEY": "<elasticsearch-API-key>"
+      }
+    },
+    "mcp-server-nia": {
+      "descrption": "Nia is a context-augmentation layer for agents, primarily designed for coding agents.",
+      "command": "pipx",
+      "args": [
+        "run",
+        "--no-cache",
+        "nia-mcp-server"
+      ],
+      "env": {
+        "NIA_API_KEY": "YOUR_API_KEY",
+        "NIA_API_URL": "https://apigcp.trynia.ai/"
+      }
+    },
+    "web-reader": {
+      "type": "http",
+      "url": "https://api.z.ai/api/mcp/web_reader/mcp",
+      "headers": {
+        "Authorization": "Bearer your_api_key"
+      }
+    },
+    "DevBox": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/devbox-mcp@latest"
+      ]
+    },
+    "webflow": {
+      "command": "npx mcp-remote https://mcp.webflow.com/sse"
+    },
+    "Railway": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@railway/mcp-server"
+      ]
+    },
+    "circleci-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@circleci/mcp-server-circleci"
+      ],
+      "env": {
+        "CIRCLECI_TOKEN": "your-circleci-token",
+        "CIRCLECI_BASE_URL": "https://circleci.com"
+      }
+    },
+    "firefly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@fireflyai/firefly-mcp"
+      ],
+      "env": {
+        "FIREFLY_ACCESS_KEY": "your_access_key",
+        "FIREFLY_SECRET_KEY": "your_secret_key"
+      }
+    },
+    "web-search-prime": {
+      "type": "http",
+      "url": "https://api.z.ai/api/mcp/web_search_prime/mcp",
+      "headers": {
+        "Authorization": "Bearer your_api_key"
+      }
+    },
+    "logfire": {
+      "command": "uvx",
+      "args": [
+        "logfire-mcp@latest",
+        "--read-token=YOUR-TOKEN"
+      ]
+    },
+    "@microsoft/clarity-mcp-server": {
+      "command": "npx",
+      "args": [
+        "@microsoft/clarity-mcp-server",
+        "--clarity_api_token=your-api-token-here"
+      ]
+    },
+    "TestSprite": {
+      "command": "npx",
+      "args": [
+        "@testsprite/testsprite-mcp@latest"
+      ],
+      "env": {
+        "API_KEY": "your-api-key"
+      }
+    },
+    "brightdata": {
+      "url": "https://mcp.brightdata.com/mcp?token=YOUR_BRIGHTDATA_API_TOKEN&pro=1"
+    },
+    "monday-api-mcp": {
+      "command": "npx",
+      "args": [
+        "@mondaydotcomorg/monday-api-mcp",
+        "-t",
+        "your_monday_api_token"
+      ],
+      "env": {}
+    },
+    "mcp-server-box": {
+      "command": "uv",
+      "args": [
+        "--directory",
+        "/path/to/mcp-server-box",
+        "run",
+        "src/mcp_server_box.py"
+      ]
+    },
+    "aks": {
+      "command": "<path of binary aks-mcp>",
+      "args": [
+        "--transport",
+        "stdio"
+      ]
+    },
+    "codacy": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@codacy/codacy-mcp"
+      ],
+      "env": {
+        "CODACY_ACCOUNT_TOKEN": "<YOUR_TOKEN>"
+      }
+    },
+    "LaunchDarkly": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "--package",
+        "@launchdarkly/mcp-server",
+        "--",
+        "mcp",
+        "start",
+        "--api-key",
+        "api-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+      ]
+    },
+    "pulumi": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@pulumi/mcp-server@latest",
+        "stdio"
+      ]
+    },
+    "zread": {
+      "type": "http",
+      "url": "https://api.z.ai/api/mcp/zread/mcp",
+      "headers": {
+        "Authorization": "Bearer your_api_key"
+      }
+    },
+    "jfrog": {
+      "url": "https://<​​JFROG_PLATFORM_URL​​>/mcp"
+    },
+    "dynatrace-mcp-server": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@dynatrace-oss/dynatrace-mcp-server@latest"
+      ],
+      "env": {
+        "DT_PLATFORM_TOKEN": "",
+        "DT_ENVIRONMENT": ""
+      }
+    },
+    "zai-mcp-server": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@z_ai/mcp-server"
+      ],
+      "env": {
+        "Z_AI_API_KEY": "your_api_key",
+        "Z_AI_MODE": "ZAI"
+      }
+    },
+    "google-workspace": {
+      "command": "uvx",
+      "args": [
+        "workspace-mcp"
+      ],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "<your-client-id>",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "<your-client-secret>"
+      }
+    },
+    "tinyfish": {
+      "type": "http",
+      "url": "https://agent.tinyfish.ai/mcp"
+    },
+    "footballbin-predictions": {
+      "url": "https://ru7m5svay1.execute-api.eu-central-1.amazonaws.com/prod/mcp"
+    },
+    "n8n-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "n8n-mcp"
+      ],
+      "env": {
+        "MCP_MODE": "stdio"
+      }
+    },
+    "devplan": {
+      "type": "sse",
+      "url": "https://mcp.devplanmcp.store/sse"
+    },
+    "github-official": {
+      "command": "docker",
+      "args": [
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "GITHUB_PERSONAL_ACCESS_TOKEN",
+        "ghcr.io/github/github-mcp-server"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-token>"
+      }
+    },
+    "mermaid": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-mermaid"
+      ]
+    },
+    "android-mcp": {
+      "command": "uvx",
+      "args": [
+        "--python",
+        "3.13",
+        "android-mcp"
+      ]
+    },
+    "apify": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@apify/actors-mcp-server"
+      ],
+      "env": {
+        "APIFY_TOKEN": "<your-apify-token>"
+      }
+    },
+    "browseract": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "browseract-mcp"
+      ],
+      "env": {
+        "BROWSERACT_API_KEY": "<YOUR_BROWSERACT_API_KEY>"
+      }
+    },
+    "redis": {
+      "command": "uvx",
+      "args": [
+        "--from",
+        "redis-mcp-server@latest",
+        "redis-mcp-server"
+      ],
+      "env": {
+        "REDIS_URL": "<your-redis-url>"
+      }
+    },
+    "arxiv-mcp-server": {
+      "command": "uvx",
+      "args": [
+        "arxiv-mcp-server"
+      ]
+    },
+    "mongodb-official": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mongodb-mcp-server@latest"
+      ],
+      "env": {
+        "MDB_MCP_CONNECTION_STRING": "<your-mongodb-connection-string>"
+      }
+    },
+    "alpaca-trading": {
+      "command": "uvx",
+      "args": [
+        "alpaca-mcp-server"
+      ],
+      "env": {
+        "ALPACA_API_KEY": "<your-alpaca-api-key>",
+        "ALPACA_SECRET_KEY": "<your-alpaca-secret-key>"
+      }
+    },
+    "searxng": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-searxng"
+      ],
+      "env": {
+        "SEARXNG_URL": "<your-searxng-instance-url>"
+      }
+    },
+    "dbhub": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@bytebase/dbhub@latest"
+      ],
+      "env": {
+        "DATABASE_DSN": "<your-database-dsn>"
+      }
+    },
+    "jina-ai": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://mcp.jina.ai/v1"
+      ],
+      "env": {
+        "JINA_API_KEY": "<your-jina-api-key>"
+      }
+    },
+    "jupyter": {
+      "command": "uvx",
+      "args": [
+        "jupyter-mcp-server@latest"
+      ],
+      "env": {
+        "JUPYTER_URL": "<your-jupyter-url>",
+        "JUPYTER_TOKEN": "<your-jupyter-token>"
+      }
+    },
+    "trace-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "trace-mcp@latest"
+      ]
+    }
+  }
+}
