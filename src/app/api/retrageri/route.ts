@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
+import { Prisma } from '@prisma/client';
 import { prisma } from '@/lib/prisma';
 import { getCurrentUser } from '@/lib/auth';
 import { rateLimit, rateLimitHeaders } from '@/lib/ratelimit';
@@ -82,7 +83,7 @@ export async function POST(req: NextRequest) {
     utilizatorId:   session.utilizator.id,
     suma,
     metoda,
-    detaliiPlata:  detaliiPlata as Record<string, unknown> | undefined,
+    detaliiPlata:  (detaliiPlata ?? {}) as Prisma.InputJsonValue,
     idempotencyKey,
   });
 
