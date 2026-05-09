@@ -1,6 +1,6 @@
 'use client';
-import { useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const SCENES = [
   {
@@ -126,109 +126,66 @@ function MmaOctagon() {
 
 const FIELDS = { football: FootballField, tennis: TennisCourt, basketball: BasketballCourt, mma: MmaOctagon };
 
-/* ── Single cinematic scene ── */
-function SportScene({ scene, index }: { scene: typeof SCENES[0]; index: number }) {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] });
-
-  const spring = { stiffness: 60, damping: 18 };
-
-  const bgScale   = useSpring(useTransform(scrollYProgress, [0, 0.5, 1], [1.05, 1.18, 1.05]), spring);
-  const bgY       = useSpring(useTransform(scrollYProgress, [0, 1], ['6%', '-6%']), spring);
-  const midY      = useSpring(useTransform(scrollYProgress, [0, 1], ['3%', '-3%']), spring);
-  const textY     = useSpring(useTransform(scrollYProgress, [0.05, 0.4], ['28px', '0px']), spring);
-  const opacity   = useTransform(scrollYProgress, [0, 0.12, 0.88, 1], [0, 1, 1, 0]);
-
+/* ── Single horizontal panel ── */
+function SportPanel({ scene }: { scene: typeof SCENES[0] }) {
   const Field = FIELDS[scene.field as keyof typeof FIELDS];
 
   return (
-    <div ref={ref} className="relative overflow-hidden" style={{ height: '92vh' }}>
-
-      {/* Layer 1 — sport field, slowest, zoom on scroll */}
-      <motion.div className="absolute inset-0" style={{ scale: bgScale, y: bgY }}>
+    <div className="relative overflow-hidden flex-shrink-0 w-full snap-center"
+      style={{ height: 'min(75vh, 700px)' }}>
+      <div className="absolute inset-0">
         <Field />
-        {/* cinematic dark overlay */}
         <div className="absolute inset-0" style={{
           background: 'linear-gradient(160deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.4) 45%, rgba(0,0,0,0.75) 100%)',
         }} />
-        {/* edge vignette */}
         <div className="absolute inset-0" style={{
           background: 'radial-gradient(ellipse 75% 65% at 50% 50%, transparent 35%, rgba(0,0,0,0.65) 100%)',
         }} />
-        {/* accent color wash */}
         <div className="absolute inset-0" style={{
           background: `radial-gradient(ellipse 60% 50% at 50% 50%, ${scene.accent}28 0%, transparent 65%)`,
         }} />
-      </motion.div>
+      </div>
 
-      {/* Layer 2 — ambient particles, medium parallax */}
-      <motion.div className="absolute inset-0 pointer-events-none" style={{ y: midY }}>
-        {Array.from({ length: 7 }).map((_, i) => (
-          <motion.div key={i}
-            className="absolute rounded-full"
-            style={{
-              width: `${5 + i * 3}px`, height: `${5 + i * 3}px`,
-              background: scene.accent,
-              opacity: 0.12 + i * 0.04,
-              left: `${8 + i * 12}%`, top: `${15 + (i % 4) * 18}%`,
-              filter: 'blur(1px)',
-            }}
-            animate={{ y: [0, -14, 0], opacity: [0.12 + i * 0.04, 0.3 + i * 0.04, 0.12 + i * 0.04] }}
-            transition={{ duration: 3.5 + i * 0.6, repeat: Infinity, delay: i * 0.35, ease: 'easeInOut' }}
-          />
-        ))}
-      </motion.div>
-
-      {/* Layer 3 — foreground text, fastest */}
-      <motion.div
-        className="absolute inset-0 flex flex-col items-center justify-center text-center px-6"
-        style={{ opacity, y: textY }}>
-
-        {/* sport pill */}
+      <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-6">
         <motion.div
           initial={{ opacity: 0, scale: 0.8, y: 16 }}
           whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.7, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
-          className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-sm font-bold mb-7"
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+          className="inline-flex items-center gap-2.5 px-5 py-2 rounded-full text-sm font-bold mb-6"
           style={{ background: scene.accent, color: 'white', boxShadow: `0 4px 24px ${scene.accent}55` }}>
-          <motion.span
-            className="w-2 h-2 rounded-full bg-white"
+          <motion.span className="w-2 h-2 rounded-full bg-white"
             animate={{ opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1.2, repeat: Infinity }}
-          />
+            transition={{ duration: 1.2, repeat: Infinity }} />
           {scene.sport}
         </motion.div>
 
-        {/* headline */}
         <motion.h2
-          initial={{ opacity: 0, y: 40 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
-          className="font-extrabold text-white leading-[1.05] tracking-tight mb-5 max-w-3xl"
-          style={{ fontSize: 'clamp(30px, 5.5vw, 66px)', textShadow: '0 3px 24px rgba(0,0,0,0.6)' }}>
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+          className="font-extrabold text-white leading-[1.05] tracking-tight mb-4 max-w-3xl"
+          style={{ fontSize: 'clamp(28px, 5vw, 60px)', textShadow: '0 3px 24px rgba(0,0,0,0.6)' }}>
           {scene.headline}
         </motion.h2>
 
-        {/* sub */}
         <motion.p
-          initial={{ opacity: 0, y: 24 }}
+          initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.75, delay: 0.35, ease: 'easeOut' }}
-          className="text-lg font-medium mb-10"
-          style={{ color: 'rgba(255,255,255,0.6)' }}>
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="text-base sm:text-lg font-medium mb-8"
+          style={{ color: 'rgba(255,255,255,0.7)' }}>
           {scene.sub}
         </motion.p>
 
-        {/* stat card — glassmorphism */}
         <motion.div
-          initial={{ opacity: 0, scale: 0.8, y: 20 }}
-          whileInView={{ opacity: 1, scale: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, delay: 0.45, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col items-center px-12 py-6 rounded-2xl"
+          initial={{ opacity: 0, scale: 0.85 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.5 }}
+          transition={{ duration: 0.55, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center px-10 py-5 rounded-2xl"
           style={{
             background: 'rgba(255,255,255,0.08)',
             backdropFilter: 'blur(24px)',
@@ -236,44 +193,102 @@ function SportScene({ scene, index }: { scene: typeof SCENES[0]; index: number }
             border: `1px solid ${scene.accent}55`,
             boxShadow: `0 8px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.12)`,
           }}>
-          <span className="font-extrabold text-white leading-none" style={{ fontSize: 'clamp(40px, 6.5vw, 80px)' }}>
+          <span className="font-extrabold text-white leading-none" style={{ fontSize: 'clamp(36px, 5.5vw, 70px)' }}>
             {scene.stat}
           </span>
-          <span className="text-sm font-semibold mt-2" style={{ color: scene.accent }}>
+          <span className="text-xs sm:text-sm font-semibold mt-2" style={{ color: scene.accent }}>
             {scene.statLabel}
           </span>
         </motion.div>
-
-        {/* scene index dots */}
-        <div className="flex items-center gap-2 mt-10">
-          {SCENES.map((_, i) => (
-            <div key={i} className="rounded-full transition-all duration-500"
-              style={{
-                width: i === index ? '28px' : '6px',
-                height: '6px',
-                background: i === index ? scene.accent : 'rgba(255,255,255,0.2)',
-              }} />
-          ))}
-        </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
 
-/* ── Main export ── */
+/* ── Main export — horizontal snap carousel ── */
 export default function SportsCinematicSection() {
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const onScroll = () => {
+      const w = el.clientWidth;
+      const i = Math.round(el.scrollLeft / w);
+      setActiveIdx(Math.min(SCENES.length - 1, Math.max(0, i)));
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollTo = (i: number) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    el.scrollTo({ left: i * el.clientWidth, behavior: 'smooth' });
+  };
+
+  const accent = SCENES[activeIdx].accent;
+
   return (
     <section className="relative" style={{ background: '#080808' }}>
-      {/* top fade from white */}
-      <div className="absolute top-0 left-0 right-0 h-28 z-20 pointer-events-none"
+      <div className="absolute top-0 left-0 right-0 h-20 z-20 pointer-events-none"
         style={{ background: 'linear-gradient(to bottom, #ffffff, transparent)' }} />
 
-      {SCENES.map((scene, i) => (
-        <SportScene key={i} scene={scene} index={i} />
-      ))}
+      <div
+        ref={scrollerRef}
+        data-sports-scroller
+        className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
+        style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
+        aria-label="Sporturi disponibile">
+        {SCENES.map((scene, i) => (
+          <SportPanel key={i} scene={scene} />
+        ))}
+      </div>
 
-      {/* bottom fade to white */}
-      <div className="absolute bottom-0 left-0 right-0 h-28 z-20 pointer-events-none"
+      <style>{`[data-sports-scroller]::-webkit-scrollbar { display: none; }`}</style>
+
+      {/* Dots + hint */}
+      <div className="absolute bottom-6 left-0 right-0 z-20 flex flex-col items-center gap-3 pointer-events-none">
+        <div className="flex items-center gap-2">
+          {SCENES.map((s, i) => (
+            <button
+              key={i}
+              type="button"
+              onClick={() => scrollTo(i)}
+              aria-label={`Mergi la ${s.sport}`}
+              className="rounded-full transition-all duration-500 cursor-pointer pointer-events-auto"
+              style={{
+                width: i === activeIdx ? '32px' : '8px',
+                height: '8px',
+                background: i === activeIdx ? accent : 'rgba(255,255,255,0.25)',
+              }}
+            />
+          ))}
+        </div>
+        <span className="text-[11px] uppercase tracking-[0.18em] font-semibold"
+          style={{ color: 'rgba(255,255,255,0.4)' }}>
+          ← scroll orizontal →
+        </span>
+      </div>
+
+      {/* Arrow buttons (desktop only) */}
+      {activeIdx > 0 && (
+        <button type="button" onClick={() => scrollTo(activeIdx - 1)} aria-label="Sport anterior"
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full cursor-pointer transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+          <span className="text-white text-xl">←</span>
+        </button>
+      )}
+      {activeIdx < SCENES.length - 1 && (
+        <button type="button" onClick={() => scrollTo(activeIdx + 1)} aria-label="Sport următor"
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-11 h-11 items-center justify-center rounded-full cursor-pointer transition-all hover:scale-105"
+          style={{ background: 'rgba(255,255,255,0.08)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.15)' }}>
+          <span className="text-white text-xl">→</span>
+        </button>
+      )}
+
+      <div className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
         style={{ background: 'linear-gradient(to top, #ffffff, transparent)' }} />
     </section>
   );
