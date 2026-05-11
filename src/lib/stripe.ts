@@ -25,12 +25,15 @@ export type PlanInfo = {
 };
 
 export const PLANURI_STRIPE: Record<PlanId, PlanInfo> = {
-  STARTER_500:    { name: 'Starter €500',     capital: 500,   price1step: 2900,  price2step: 1900,  split1step: 70, split2step: 80 },
-  BASIC_1000:     { name: 'Basic €1.000',     capital: 1000,  price1step: 4900,  price2step: 3500,  split1step: 70, split2step: 80 },
-  STANDARD_5000:  { name: 'Standard €5.000',  capital: 5000,  price1step: 9900,  price2step: 7400,  split1step: 70, split2step: 80 },
-  ADVANCED_10000: { name: 'Advanced €10.000', capital: 10000, price1step: 17900, price2step: 13900, split1step: 75, split2step: 80 },
-  PRO_25000:      { name: 'Pro €25.000',      capital: 25000, price1step: 34900, price2step: 26900, split1step: 75, split2step: 80 },
-  ELITE_50000:    { name: 'Elite €50.000',    capital: 50000, price1step: 59900, price2step: 44900, split1step: 80, split2step: 80 },
+  // Prices mirror thefundedpick.com/#pricing (USD→EUR parity), 70% split on 1-step,
+  // 80% on 2-step. €500 tier is 2-step-only upstream — we keep a 1-step option at
+  // half the €1k 1-step fee for ladder consistency. Values are EUR cents.
+  STARTER_500:    { name: 'Starter €500',     capital: 500,   price1step: 1700,   price2step: 1900,  split1step: 70, split2step: 80 },
+  BASIC_1000:     { name: 'Basic €1.000',     capital: 1000,  price1step: 4900,   price2step: 3400,  split1step: 70, split2step: 80 },
+  STANDARD_5000:  { name: 'Standard €5.000',  capital: 5000,  price1step: 20499,  price2step: 15400, split1step: 70, split2step: 80 },
+  ADVANCED_10000: { name: 'Advanced €10.000', capital: 10000, price1step: 38999,  price2step: 29400, split1step: 70, split2step: 80 },
+  PRO_25000:      { name: 'Pro €25.000',      capital: 25000, price1step: 70999,  price2step: 53400, split1step: 70, split2step: 80 },
+  ELITE_50000:    { name: 'Elite €50.000',    capital: 50000, price1step: 124999, price2step: 94400, split1step: 70, split2step: 80 },
 };
 
 export function priceFor(plan: PlanId, mode: ChallengeMode): number {
