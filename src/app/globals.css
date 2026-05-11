@@ -178,3 +178,37 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────────
+   Dashboard theme tokens — light & dark variants.
+   Use these in /dashboard pages instead of hardcoded hex so that the
+   theme toggle (data-theme on <html> or wrapper) instantly flips colours.
+   ────────────────────────────────────────────────────────────────────── */
+:root,
+[data-theme='dark'] {
+  --dash-bg:           #0a0a0a;
+  --dash-surface:      #141414;
+  --dash-surface-2:    #1c1c1c;
+  --dash-text:         #ffffff;
+  --dash-text-muted:   rgba(255,255,255,0.55);
+  --dash-text-subtle:  rgba(255,255,255,0.35);
+  --dash-border:       rgba(255,255,255,0.08);
+  --dash-border-2:     rgba(255,255,255,0.12);
+  --dash-input-bg:     rgba(255,255,255,0.04);
+}
+
+[data-theme='light'] {
+  --dash-bg:           #ffffff;
+  --dash-surface:      #ffffff;
+  --dash-surface-2:    #f8fafc;
+  --dash-text:         #0f172a;
+  --dash-text-muted:   #64748b;
+  --dash-text-subtle:  #94a3b8;
+  --dash-border:       #e2e8f0;
+  --dash-border-2:     #cbd5e1;
+  --dash-input-bg:     #f1f5f9;
+}
+
+[data-theme='light'] body {
+  background: #fbf8f6;
+}

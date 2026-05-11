@@ -38,7 +38,7 @@ export default function DashboardSidebar({ email }: { email: string }) {
         onClick={() => setOpen(true)}
         aria-label="Deschide meniu"
         className="lg:hidden fixed top-2.5 left-3 z-40 w-9 h-9 inline-flex items-center justify-center rounded-lg border"
-        style={{ background: '#0d0d0d', borderColor: 'rgba(255,255,255,0.1)' }}>
+        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, rgba(255,255,255,0.1))' }}>
         <Menu className="w-4 h-4 text-white" />
       </button>
 
@@ -55,11 +55,11 @@ export default function DashboardSidebar({ email }: { email: string }) {
       <aside
         className={`fixed top-0 left-0 z-50 h-screen w-64 flex flex-col border-r transition-transform duration-300 ease-out
           ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
-        style={{ background: '#0d0d0d', borderColor: 'rgba(255,255,255,0.06)' }}>
+        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 h-16 border-b"
-          style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+          style={{ borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
           <Link href="/dashboard" className="flex items-center" aria-label="SuperFunded — dashboard">
             <BrandLogo size={28} text variant="dark" />
           </Link>
@@ -91,7 +91,7 @@ export default function DashboardSidebar({ email }: { email: string }) {
         </nav>
 
         {/* Footer / user */}
-        <div className="p-3 border-t" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="p-3 border-t" style={{ borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
           <div className="px-3 py-2 mb-2 truncate text-xs text-white/40" title={email}>{email}</div>
           <form action="/api/auth/logout" method="POST">
             <button type="submit"

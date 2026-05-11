@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import Link from 'next/link';
 import SkillEvalBanner from '@/components/dashboard/SkillEvalBanner';
 import NotificationCenter from '@/components/dashboard/NotificationCenter';
+import ThemeToggle from '@/components/dashboard/ThemeToggle';
 import DashboardSidebar from '@/components/dashboard/DashboardSidebar';
 
 async function getUser() {
@@ -33,19 +34,23 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!user) redirect('/autentificare/login');
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white">
+    <div className="min-h-screen"
+      style={{ background: 'var(--dash-bg, #0a0a0a)', color: 'var(--dash-text, #ffffff)' }}>
       <DashboardSidebar email={user.email ?? ''} />
       <div className="lg:pl-64 flex flex-col min-h-screen">
         <header className="sticky top-0 z-30 flex items-center justify-between gap-3 px-4 lg:px-6 h-14 border-b backdrop-blur-md"
-          style={{ background: 'rgba(13,13,13,0.85)', borderColor: 'rgba(255,255,255,0.06)' }}>
+          style={{ background: 'var(--dash-surface, rgba(13,13,13,0.85))', borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
           {/* Spacer for mobile menu button (in DashboardSidebar) */}
           <div className="lg:hidden w-10" />
           <Link href="/dashboard" className="flex-1 lg:flex-none flex items-center gap-2 min-w-0">
-            <span className="w-7 h-7 rounded-md flex items-center justify-center font-extrabold text-white text-xs flex-shrink-0"
-              style={{ background: 'var(--red, #e63946)' }}>SF</span>
-            <span className="font-extrabold text-base truncate">SuperFunded</span>
+            <span className="w-7 h-7 rounded-md flex items-center justify-center font-extrabold text-xs flex-shrink-0"
+              style={{ background: 'var(--red, #e63946)', color: '#fff' }}>SF</span>
+            <span className="font-extrabold text-base truncate" style={{ color: 'var(--dash-text)' }}>SuperFunded</span>
           </Link>
-          <NotificationCenter />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <NotificationCenter />
+          </div>
         </header>
         <SkillEvalBanner />
         <main className="flex-1">{children}</main>

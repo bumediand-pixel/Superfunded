@@ -78,6 +78,14 @@ const orgJsonLd = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ro" className={`${bebas.variable} ${jakarta.variable} ${mono.variable}`}>
+      <head>
+        {/* Anti-flash: setează data-theme pe <html> înainte de paint, citind localStorage. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('sf-dash-theme');if(t==='light'||t==='dark'){document.documentElement.setAttribute('data-theme',t);}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body className="min-h-full font-jakarta" style={{ background: "var(--bg)", color: "var(--text)" }}>
         <script
           type="application/ld+json"
