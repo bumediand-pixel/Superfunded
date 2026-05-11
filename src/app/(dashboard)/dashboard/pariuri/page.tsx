@@ -15,11 +15,12 @@
  */
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import { Loader2, History, Download, X, Search, Calendar, Zap } from 'lucide-react';
+import { Loader2, History, Download, X, Search, Calendar, Zap, Trophy, Users2, ChevronRight, MessageCircle } from 'lucide-react';
 import SportTabs from '@/components/pariuri/SportTabs';
 import MatchCard, { type Pick } from '@/components/pariuri/MatchCard';
 import BetSlip from '@/components/pariuri/BetSlip';
 import type { OddsEvent } from '@/lib/odds-api';
+import { SPORTURI_DISPONIBILE } from '@/lib/odds-api';
 
 interface PariuRow {
   id: string;
@@ -55,7 +56,8 @@ export default function PariuriPage() {
   const [events, setEvents] = useState<OddsEvent[]>([]);
   const [oddsStatus, setOddsStatus] = useState<'ok' | 'empty' | 'unconfigured' | 'upstream_error'>('ok');
   const [loadingEvents, setLoadingEvents] = useState(true);
-  // Superbet-style filters
+  // Superbet-style sub-tab (Calendar / Competiții / Social) + filters
+  const [view, setView] = useState<'calendar' | 'competitii' | 'social'>('calendar');
   const [dateFilter, setDateFilter] = useState<'live' | 'today' | 'tomorrow' | 'all'>('all');
   const [query, setQuery] = useState('');
 
@@ -198,7 +200,32 @@ export default function PariuriPage() {
         {/* Sport tabs (sticky) */}
         <SportTabs active={sport} onChange={setSport} />
 
-        {/* Filter strip: date chips + search */}
+        {/* Superbet-style sub-tabs (Social | Calendar | Competiții) */}
+        <div className="mt-3 flex items-center gap-6 border-b" style={{ borderColor: 'var(--dash-border)' }}>
+          {([
+            { key: 'social',     label: 'Social',     icon: MessageCircle },
+            { key: 'calendar',   label: 'Calendar',   icon: Calendar },
+            { key: 'competitii', label: 'Competiții', icon: Trophy },
+          ] as const).map(t => {
+            const on = view === t.key;
+            const Icon = t.icon;
+            return (
+              <button key={t.key} type="button" onClick={() => setView(t.key)}
+                className="relative inline-flex items-center gap-1.5 pb-2.5 text-sm font-bold cursor-pointer transition-colors"
+                style={{ color: on ? 'var(--dash-text)' : 'var(--dash-text-muted)' }}>
+                <Icon className="w-3.5 h-3.5" />
+                {t.label}
+                {on && (
+                  <span className="absolute -bottom-px left-0 right-0 h-0.5"
+                    style={{ background: 'var(--red, #e63946)' }} />
+                )}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Filter strip: date chips + search — only for Calendar view */}
+        {view === 'calendar' && (
         <div className="mt-3 flex items-center gap-2 flex-wrap">
           <div className="flex gap-1.5 -mx-1 sm:mx-0 overflow-x-auto px-1 sm:px-0">
             {([
@@ -240,8 +267,63 @@ export default function PariuriPage() {
             )}
           </div>
         </div>
+        )}
 
-        {/* Match list */}
+        {/* Competiții view — list of leagues with quick switch */}
+        {view === 'competitii' && (
+          <div className="mt-4 pb-24 lg:pb-6">
+            <h2 className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'var(--dash-text-muted)' }}>
+              Competiții de top
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+              {SPORTURI_DISPONIBILE.map(s => {
+                const on = s.key === sport;
+                return (
+                  <button key={s.key} type="button"
+                    onClick={() => { setSport(s.key); setView('calendar'); }}
+                    className="flex items-center justify-between rounded-xl p-3.5 cursor-pointer transition-all hover:-translate-y-0.5"
+                    style={{
+                      background: on ? 'rgba(230,57,70,0.08)' : 'var(--dash-surface, #141414)',
+                      border: `1px solid ${on ? 'rgba(230,57,70,0.35)' : 'var(--dash-border)'}`,
+                    }}>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span className="text-2xl flex-shrink-0" aria-hidden>{s.icon}</span>
+                      <span className="font-bold text-sm truncate" style={{ color: 'var(--dash-text)' }}>{s.nume}</span>
+                    </div>
+                    <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--dash-text-muted)' }} />
+                  </button>
+                );
+              })}
+            </div>
+            <p className="text-xs mt-6 text-center" style={{ color: 'var(--dash-text-subtle)' }}>
+              Click pe o competiție ca să vezi toate meciurile cu cote live.
+            </p>
+          </div>
+        )}
+
+        {/* Social view — placeholder, feed live va veni odată cu Supersocial backend */}
+        {view === 'social' && (
+          <div className="mt-4 pb-24 lg:pb-6">
+            <div className="rounded-2xl p-10 sm:p-14 text-center"
+              style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border)' }}>
+              <Users2 className="w-12 h-12 mx-auto mb-4" style={{ color: 'var(--red, #e63946)' }} />
+              <h3 className="text-xl font-extrabold mb-2" style={{ color: 'var(--dash-text)' }}>
+                Social — în curând
+              </h3>
+              <p className="text-sm max-w-md mx-auto leading-relaxed" style={{ color: 'var(--dash-text-muted)' }}>
+                Bilete populare, mize mari ale altor pickeri, urmărire și copiere de pick-uri.
+                Lansăm feed-ul după ce trecem de pragul de 500 pickeri activi.
+              </p>
+              <span className="inline-block mt-5 px-3 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-widest"
+                style={{ background: 'rgba(230,57,70,0.12)', color: '#ff8a93' }}>
+                Beta · Q3 2026
+              </span>
+            </div>
+          </div>
+        )}
+
+        {/* Match list (Calendar view) */}
+        {view === 'calendar' && (
         <div className="mt-4 space-y-2.5 pb-24 lg:pb-6">
           {loadingEvents ? (
             <div className="flex items-center justify-center py-16 text-white/40 gap-2">
@@ -274,7 +356,7 @@ export default function PariuriPage() {
               </p>
             </div>
           ) : (
-            filteredEvents.map(ev => (
+            (filteredEvents).map(ev => (
               <MatchCard
                 key={ev.id}
                 event={ev}
@@ -284,6 +366,7 @@ export default function PariuriPage() {
             ))
           )}
         </div>
+        )}
 
         {/* History (collapsible) */}
         {showHistory && (
