@@ -143,33 +143,33 @@ export default function ReguliPage() {
   const [activeTab, setActiveTab] = useState<'challenge' | 'finantat'>('challenge');
 
   return (
-    <div className="min-h-screen py-32" style={{ background: 'var(--black-0)' }}>
+    <div className="min-h-screen py-32" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
       <div className="max-w-5xl mx-auto px-6">
 
         {/* Header */}
         <div className="mb-14">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8" style={{ background: 'var(--red)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--red)' }}>Regulament</span>
+            <span className="font-semibold text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--red)' }}>Regulament</span>
           </div>
-          <h1 className="font-bebas leading-none mb-6" style={{ fontSize: 'clamp(52px, 9vw, 110px)', letterSpacing: '0.03em' }}>
+          <h1 className="font-extrabold tracking-tight leading-none mb-6" style={{ fontSize: 'clamp(52px, 9vw, 110px)', letterSpacing: '0.03em' }}>
             REGULILE<br/>PLATFORMEI
           </h1>
-          <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'var(--white-mid)' }}>
+          <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'var(--text-muted, #64748b)' }}>
             Cunoaște regulile înainte să începi. Un bettor disciplinat care respectă regulile de risc ajunge finanțat — unul care le ignoră, nu.
           </p>
         </div>
 
         {/* Tab toggle */}
-        <div className="flex items-center gap-0 border mb-12 self-start w-fit" style={{ borderColor: 'rgba(255,255,255,0.1)' }}>
+        <div className="flex items-center gap-0 border mb-12 self-start w-fit" style={{ borderColor: 'var(--border, #e2e8f0)' }}>
           <button onClick={() => setActiveTab('challenge')}
-            className="font-mono text-xs tracking-[0.16em] uppercase px-7 py-3 transition-all duration-300"
-            style={{ background: activeTab === 'challenge' ? 'var(--red)' : 'transparent', color: activeTab === 'challenge' ? 'white' : 'var(--white-mid)' }}>
+            className="font-semibold text-xs tracking-[0.16em] uppercase px-7 py-3 transition-all duration-300"
+            style={{ background: activeTab === 'challenge' ? 'var(--red)' : 'transparent', color: activeTab === 'challenge' ? 'white' : 'var(--text-muted, #64748b)' }}>
             Evaluare
           </button>
           <button onClick={() => setActiveTab('finantat')}
-            className="font-mono text-xs tracking-[0.16em] uppercase px-7 py-3 transition-all duration-300"
-            style={{ background: activeTab === 'finantat' ? 'var(--red)' : 'transparent', color: activeTab === 'finantat' ? 'white' : 'var(--white-mid)', borderLeft: '1px solid rgba(255,255,255,0.1)' }}>
+            className="font-semibold text-xs tracking-[0.16em] uppercase px-7 py-3 transition-all duration-300"
+            style={{ background: activeTab === 'finantat' ? 'var(--red)' : 'transparent', color: activeTab === 'finantat' ? 'white' : 'var(--text-muted, #64748b)', borderLeft: '1px solid var(--border, #e2e8f0)' }}>
             Cont Finanțat
           </button>
         </div>
@@ -180,24 +180,24 @@ export default function ReguliPage() {
               <div key={cat.categorie}>
                 <div className="flex items-center gap-3 mb-5">
                   <span className="text-xl">{cat.icon}</span>
-                  <h2 className="font-bebas text-2xl tracking-wider" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>{cat.categorie}</h2>
-                  <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                  <h2 className="font-extrabold tracking-tight text-2xl tracking-wider" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.06em' }}>{cat.categorie}</h2>
+                  <div className="flex-1 h-px" style={{ background: 'var(--border, #e2e8f0)' }} />
                 </div>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {cat.reguli.map((r) => (
                     <div key={r.titlu} className="p-5 relative"
                       style={{
-                        background: 'var(--black-2)',
-                        border: `1px solid ${r.good ? 'rgba(34,197,94,0.12)' : r.val === 'INTERZIS' ? 'rgba(230,57,70,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                        background: '#ffffff',
+                        border: `1px solid ${r.good ? 'rgba(34,197,94,0.12)' : r.val === 'INTERZIS' ? 'rgba(230,57,70,0.2)' : 'var(--border, #e2e8f0)'}`,
                       }}>
                       <div className="flex items-start justify-between mb-3">
-                        <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>{r.titlu}</span>
-                        <span className="font-bebas text-xl ml-3 shrink-0"
-                          style={{ color: r.val === 'INTERZIS' ? 'var(--red)' : r.val === 'Permise' || r.val === 'Toate' || r.val === 'Nicio cerință' ? '#22c55e' : r.good ? '#22c55e' : 'var(--white-hi)', letterSpacing: '0.04em' }}>
+                        <span className="font-semibold text-[10px] tracking-widest uppercase" style={{ color: 'var(--text-muted, #64748b)' }}>{r.titlu}</span>
+                        <span className="font-extrabold tracking-tight text-xl ml-3 shrink-0"
+                          style={{ color: r.val === 'INTERZIS' ? 'var(--red)' : r.val === 'Permise' || r.val === 'Toate' || r.val === 'Nicio cerință' ? '#22c55e' : r.good ? '#22c55e' : 'var(--text, #0f172a)', letterSpacing: '0.04em' }}>
                           {r.val}
                         </span>
                       </div>
-                      <p className="text-xs leading-relaxed" style={{ color: 'var(--white-mid)' }}>{r.desc}</p>
+                      <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>{r.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -209,18 +209,18 @@ export default function ReguliPage() {
             {REGULI_CONT_FINANTAT.map((r) => (
               <div key={r.titlu} className="p-5 relative"
                 style={{
-                  background: 'var(--black-2)',
-                  border: `1px solid ${r.good ? 'rgba(201,168,76,0.2)' : 'rgba(255,255,255,0.06)'}`,
+                  background: '#ffffff',
+                  border: `1px solid ${r.good ? 'rgba(201,168,76,0.2)' : 'var(--border, #e2e8f0)'}`,
                 }}>
                 {r.good && <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, rgba(201,168,76,0.4), transparent)' }} />}
                 <div className="flex items-start justify-between mb-3">
-                  <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>{r.titlu}</span>
-                  <span className="font-bebas text-xl ml-3 shrink-0"
-                    style={{ color: r.good ? 'var(--gold)' : 'var(--white-hi)', letterSpacing: '0.04em' }}>
+                  <span className="font-semibold text-[10px] tracking-widest uppercase" style={{ color: 'var(--text-muted, #64748b)' }}>{r.titlu}</span>
+                  <span className="font-extrabold tracking-tight text-xl ml-3 shrink-0"
+                    style={{ color: r.good ? 'var(--gold)' : 'var(--text, #0f172a)', letterSpacing: '0.04em' }}>
                     {r.val}
                   </span>
                 </div>
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--white-mid)' }}>{r.desc}</p>
+                <p className="text-xs leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>{r.desc}</p>
               </div>
             ))}
           </div>
@@ -228,18 +228,18 @@ export default function ReguliPage() {
 
         {/* Violations summary */}
         <div className="mt-16 p-6" style={{ background: 'rgba(230,57,70,0.04)', border: '1px solid rgba(230,57,70,0.15)' }}>
-          <div className="font-bebas text-xl tracking-wider mb-4" style={{ color: 'var(--red)', letterSpacing: '0.06em' }}>CE SE ÎNTÂMPLĂ LA ÎNCĂLCAREA REGULILOR</div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs" style={{ color: 'var(--white-mid)' }}>
+          <div className="font-extrabold tracking-tight text-xl tracking-wider mb-4" style={{ color: 'var(--red)', letterSpacing: '0.06em' }}>CE SE ÎNTÂMPLĂ LA ÎNCĂLCAREA REGULILOR</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>
             <div>
-              <div className="font-semibold mb-2" style={{ color: 'var(--white-hi)' }}>Depășire limită risc</div>
+              <div className="font-semibold mb-2" style={{ color: 'var(--text, #0f172a)' }}>Depășire limită risc</div>
               <p>Evaluarea se încheie automat. Poți reîncerca cu o reducere de 20% la taxa inițială.</p>
             </div>
             <div>
-              <div className="font-semibold mb-2" style={{ color: 'var(--white-hi)' }}>Comportament interzis</div>
+              <div className="font-semibold mb-2" style={{ color: 'var(--text, #0f172a)' }}>Comportament interzis</div>
               <p>Suspendare permanentă a contului, fără drept de rambursare sau reîncercare.</p>
             </div>
             <div>
-              <div className="font-semibold mb-2" style={{ color: 'var(--white-hi)' }}>Neatingere target la timp (1-Step)</div>
+              <div className="font-semibold mb-2" style={{ color: 'var(--text, #0f172a)' }}>Neatingere target la timp (1-Step)</div>
               <p>Evaluarea expiră. Poți reîncerca cu o reducere de 20% la taxa inițială.</p>
             </div>
           </div>

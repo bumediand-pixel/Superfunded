@@ -1,31 +1,24 @@
 'use client';
+/**
+ * /afiliere — light brand theme. Hero + tiers + calculator + steps + FAQ.
+ * Rescris din varianta dark navy + mono/bebas + gold în paleta cremoasă + roșu + sans-serif.
+ */
 import { useState } from 'react';
+import { Check, ChevronDown, Users, Wallet, TrendingUp, Sparkles } from 'lucide-react';
 
 const TIERS = [
   {
-    name: 'BRONZE',
-    referrals: '1–9',
-    commission: '10%',
-    monthly: '€0 – €200',
-    color: '#CD7F32',
-    desc: 'Nivel de start. Câștigă 10% din taxa de evaluare a fiecărui trader pe care îl recomanzi.',
+    name: 'Bronze', referrals: '1–9', commission: '10%', accent: '#CD7F32',
+    desc: 'Nivel de start. Câștigi 10% din taxa de evaluare a fiecărui trader pe care îl recomanzi.',
     perks: ['Link afiliat dedicat', 'Dashboard basic', 'Plată lunară'],
   },
   {
-    name: 'SILVER',
-    referrals: '10–29',
-    commission: '15%',
-    monthly: '€200 – €800',
-    color: '#C0C0C0',
+    name: 'Silver', referrals: '10–29', commission: '15%', accent: '#94A3B8',
     desc: 'Crești cu noi. La 10 tranzacții confirmate lunare, comisionul tău crește la 15%.',
     perks: ['15% comision', 'Dashboard avansat', 'Suport prioritar', 'Materiale marketing'],
   },
   {
-    name: 'GOLD',
-    referrals: '30+',
-    commission: '20%',
-    monthly: '€800+',
-    color: 'var(--gold)',
+    name: 'Gold', referrals: '30+', commission: '20%', accent: '#D4A24C',
     desc: 'Cel mai bun program din industrie. 20% comision recurent pe fiecare trader activ.',
     perks: ['20% comision', 'Manager dedicat', 'Link personalizat', 'Bannere custom', 'Rapoarte avansate'],
     popular: true,
@@ -33,110 +26,133 @@ const TIERS = [
 ];
 
 const PASI = [
-  { nr: '01', titlu: 'Înregistrează-te', desc: 'Creează un cont gratuit pe SuperFunded și accesează secțiunea Afiliere din dashboard.' },
-  { nr: '02', titlu: 'Obține Link-ul Tău', desc: 'Primești un link de afiliat unic cu cookie de 30 de zile. Orice trader care cumpără prin link-ul tău îți generează comision.' },
-  { nr: '03', titlu: 'Promovează', desc: 'Distribuie link-ul pe social media, blog, YouTube, Telegram sau oricărui bettor care vrea capital. Foloseşte materialele noastre de marketing.' },
-  { nr: '04', titlu: 'Câștigă Lunar', desc: 'Comisioanele se calculează automat și se plătesc lunar (pe 15 ale lunii), via transfer bancar sau crypto (USDT/BTC).' },
+  { nr: '01', titlu: 'Înregistrează-te', desc: 'Creezi un cont gratuit pe SuperFunded și accesezi secțiunea Afiliere din dashboard.' },
+  { nr: '02', titlu: 'Obții link-ul tău', desc: 'Primești un link de afiliat unic cu cookie de 30 zile. Orice trader care cumpără prin link-ul tău îți generează comision.' },
+  { nr: '03', titlu: 'Promovezi', desc: 'Distribui link-ul pe social media, blog, YouTube, Telegram. Folosești materialele noastre de marketing.' },
+  { nr: '04', titlu: 'Câștigi lunar', desc: 'Comisioanele se calculează automat și se plătesc pe 15 ale lunii — transfer bancar sau crypto (USDT/BTC).' },
 ];
 
 const FAQ_AFILIERE = [
-  { q: 'Cât durează cookie-ul de afiliat?', a: '30 de zile calendaristice. Dacă un utilizator accesează platforma prin link-ul tău și cumpără în termen de 30 de zile, comisionul este al tău.' },
-  { q: 'Există o limită maximă de câștig?', a: 'Nu. Nu există plafon la câștigurile din afiliere. Cu cât mai mulți traderi recomanzi, cu atât câștigi mai mult.' },
-  { q: 'Cum se calculează comisionul?', a: 'Comisionul se calculează ca procent din taxa de evaluare plătită de traderul referit. Exemplu: taxa €139 × 20% = €27,80 comision per vânzare.' },
-  { q: 'Când și cum primesc plățile?', a: 'Plățile se procesează pe data de 15 a fiecărei luni, pentru comisioanele acumulate în luna precedentă. Metodele de plată: SEPA, SWIFT sau crypto (USDT TRC-20/BTC).' },
-  { q: 'Există cerință de sumă minimă pentru retragere?', a: 'Da. Suma minimă de retragere este €50. Comisioanele sub această sumă se reportează în luna următoare.' },
-  { q: 'Pot recomanda pe cineva din altă țară?', a: 'Da, programul de afiliere este disponibil global, cu excepția țărilor restricționate. Comisionul se plătește indiferent de țara traderului referit.' },
+  { q: 'Cât durează cookie-ul de afiliat?', a: '30 zile calendaristice. Dacă un utilizator accesează platforma prin link-ul tău și cumpără în următoarele 30 zile, comisionul este al tău.' },
+  { q: 'Există plafon pe câștiguri?', a: 'Nu. Cu cât recomanzi mai mulți traderi, cu atât câștigi mai mult — fără limită.' },
+  { q: 'Cum se calculează comisionul?', a: 'Procent din taxa de evaluare plătită de trader. Exemplu: taxa €294 × 20% = €58,80 comision per vânzare.' },
+  { q: 'Când și cum primesc plățile?', a: 'Pe 15 ale fiecărei luni, pentru luna precedentă. Metode: SEPA, SWIFT sau crypto (USDT TRC-20 / BTC).' },
+  { q: 'Există sumă minimă de retragere?', a: 'Da — €50. Comisioanele sub această sumă se reportează automat în luna următoare.' },
+  { q: 'Pot recomanda pe cineva din altă țară?', a: 'Da, programul e global, cu excepția țărilor restricționate. Comisionul se plătește indiferent de țara traderului.' },
 ];
+
+const RED = 'var(--red, #e63946)';
+const TEXT = 'var(--text, #0f172a)';
+const MUTED = 'var(--text-muted, #64748b)';
+const BORDER = 'var(--border, #e2e8f0)';
+const BG_ALT = 'var(--bg-alt, #fbf8f6)';
 
 export default function AfilierePage() {
   const [referrals, setReferrals] = useState(10);
-  const [planMediu, setPlanMediu] = useState(139);
+  const [planMediu, setPlanMediu] = useState(294);
   const [tier, setTier] = useState<'bronze' | 'silver' | 'gold'>('silver');
   const [faqOpen, setFaqOpen] = useState<number | null>(null);
 
-  const comision = tier === 'bronze' ? 0.10 : tier === 'silver' ? 0.15 : 0.20;
-  const castig = Math.round(referrals * planMediu * comision);
+  const commission = tier === 'bronze' ? 0.10 : tier === 'silver' ? 0.15 : 0.20;
+  const castig = Math.round(referrals * planMediu * commission);
+  const anual = castig * 12;
 
   return (
-    <div className="min-h-screen" style={{ background: 'var(--black-0)' }}>
+    <main className="min-h-screen" style={{ background: '#ffffff' }}>
 
       {/* Hero */}
-      <div className="relative py-32 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 60% 50% at 50% 0%, rgba(201,168,76,0.06) 0%, transparent 65%)' }} />
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-4">
-            <div className="h-px w-8" style={{ background: 'var(--gold)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--gold)' }}>Program Afiliere</span>
-          </div>
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-12">
-            <h1 className="font-bebas leading-none" style={{ fontSize: 'clamp(52px, 9vw, 110px)', letterSpacing: '0.03em' }}>
-              CÂȘTIGĂ<br/>RECOMANDÂND
+      <section className="pt-28 pb-16 sm:pt-32 sm:pb-20" style={{ background: BG_ALT }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-5"
+            style={{ background: '#fff1f2', color: RED, border: '1px solid #fecdd3' }}>
+            Program Afiliere
+          </span>
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-10">
+            <h1 className="font-extrabold tracking-tight leading-[1.02]"
+              style={{ fontSize: 'clamp(44px, 8vw, 88px)', color: TEXT }}>
+              Câștigă<br/><span style={{ color: RED }}>recomandând.</span>
             </h1>
-            <p className="max-w-sm text-sm leading-relaxed lg:mb-3" style={{ color: 'var(--white-mid)' }}>
-              Recomandă traderi pe SuperFunded și câștigă până la{' '}
-              <strong style={{ color: 'var(--gold)', fontWeight: 700 }}>20% comision</strong>{' '}
-              din fiecare taxă de evaluare. Plăți lunare garantate.
+            <p className="max-w-sm text-base sm:text-lg leading-relaxed lg:mb-3" style={{ color: MUTED }}>
+              Recomandă traderi pe SuperFunded și câștigi până la{' '}
+              <strong style={{ color: TEXT, fontWeight: 800 }}>20% comision</strong>{' '}
+              din fiecare taxă. Plăți lunare garantate.
             </p>
           </div>
 
-          {/* Quick stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
             {[
-              { val: '20%', label: 'Comision maxim' },
-              { val: '30 zile', label: 'Durata cookie' },
-              { val: 'Lunar', label: 'Frecvență plată' },
-              { val: '∞', label: 'Limita câștig' },
-            ].map((s) => (
-              <div key={s.label} className="px-5 py-4 text-center" style={{ background: 'var(--black-2)', border: '1px solid rgba(201,168,76,0.12)' }}>
-                <div className="font-bebas text-3xl mb-1" style={{ color: 'var(--gold)', letterSpacing: '0.04em' }}>{s.val}</div>
-                <div className="font-mono text-[9px] tracking-widest uppercase" style={{ color: 'rgba(255,255,255,0.3)' }}>{s.label}</div>
-              </div>
-            ))}
+              { val: '20%', label: 'Comision maxim', icon: TrendingUp },
+              { val: '30 zile', label: 'Durată cookie', icon: Sparkles },
+              { val: 'Lunar', label: 'Frecvență plată', icon: Wallet },
+              { val: '∞', label: 'Limită câștig', icon: Users },
+            ].map(s => {
+              const Icon = s.icon;
+              return (
+                <div key={s.label} className="rounded-2xl p-4 sm:p-5 text-center"
+                  style={{ background: '#ffffff', border: `1px solid ${BORDER}`, boxShadow: '0 1px 3px rgba(15,23,42,0.04)' }}>
+                  <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: RED }} />
+                  <div className="font-extrabold text-2xl sm:text-3xl mb-1" style={{ color: TEXT }}>{s.val}</div>
+                  <div className="text-[10px] sm:text-xs font-bold tracking-widest uppercase" style={{ color: MUTED }}>{s.label}</div>
+                </div>
+              );
+            })}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Tiers */}
-      <div className="py-20" style={{ background: 'var(--black-1)' }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-8" style={{ background: 'var(--gold)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--gold)' }}>Niveluri</span>
+      <section className="py-20 sm:py-24" style={{ background: '#ffffff' }}>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <span className="inline-flex text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
+              style={{ background: '#fff1f2', color: RED, border: '1px solid #fecdd3' }}>
+              Niveluri
+            </span>
+            <h2 className="font-extrabold tracking-tight leading-[1.05] mb-3"
+              style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: TEXT }}>
+              Structura comisioanelor
+            </h2>
+            <p className="text-base sm:text-lg" style={{ color: MUTED }}>
+              Cu cât aduci mai mulți traderi activi pe lună, cu atât crește procentul tău.
+            </p>
           </div>
-          <h2 className="font-bebas leading-none mb-10" style={{ fontSize: 'clamp(40px, 6vw, 80px)', letterSpacing: '0.03em' }}>
-            STRUCTURA COMISIOANELOR
-          </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {TIERS.map((t) => (
-              <div key={t.name} className="relative overflow-hidden"
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5">
+            {TIERS.map(t => (
+              <div key={t.name} className="relative rounded-2xl overflow-hidden transition-all hover:-translate-y-0.5"
                 style={{
-                  background: t.popular ? 'linear-gradient(145deg, rgba(201,168,76,0.08) 0%, var(--black-2) 100%)' : 'var(--black-2)',
-                  border: `1px solid ${t.popular ? 'rgba(201,168,76,0.35)' : 'rgba(255,255,255,0.06)'}`,
-                  boxShadow: t.popular ? '0 0 40px rgba(201,168,76,0.08)' : 'none',
+                  background: '#ffffff',
+                  border: `${t.popular ? '2px' : '1px'} solid ${t.popular ? RED : BORDER}`,
+                  boxShadow: t.popular
+                    ? '0 20px 50px rgba(230,57,70,0.10), 0 4px 12px rgba(15,23,42,0.06)'
+                    : '0 4px 12px rgba(15,23,42,0.05)',
                 }}>
-                {t.popular && <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />}
-                <div className="p-7">
-                  <div className="flex items-center justify-between mb-5">
-                    <div className="font-bebas text-3xl tracking-wider" style={{ color: t.color, letterSpacing: '0.06em' }}>{t.name}</div>
-                    {t.popular && <span className="font-mono text-[9px] tracking-widest uppercase px-2 py-0.5" style={{ background: 'var(--gold)', color: 'var(--black-0)' }}>RECOMANDAT</span>}
+                {t.popular && (
+                  <div className="absolute top-0 right-0 px-3 py-1 text-[10px] font-extrabold uppercase tracking-widest"
+                    style={{ background: RED, color: '#fff', borderBottomLeftRadius: 10 }}>
+                    Recomandat
+                  </div>
+                )}
+                <div className="p-7 sm:p-8">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-5"
+                    style={{ background: `${t.accent}18`, color: t.accent, border: `1px solid ${t.accent}40` }}>
+                    {t.name}
+                  </div>
+                  <div className="font-extrabold leading-none mb-1" style={{ fontSize: '56px', color: TEXT }}>{t.commission}</div>
+                  <div className="text-xs mb-5 font-semibold" style={{ color: MUTED }}>comision per vânzare</div>
+
+                  <div className="flex items-center justify-between px-3 py-2.5 mb-5 rounded-lg"
+                    style={{ background: BG_ALT, border: `1px solid ${BORDER}` }}>
+                    <span className="text-[10px] font-bold uppercase tracking-widest" style={{ color: MUTED }}>Referrals / lună</span>
+                    <span className="font-extrabold text-base" style={{ color: TEXT }}>{t.referrals}</span>
                   </div>
 
-                  <div className="font-bebas leading-none mb-1" style={{ fontSize: '56px', color: t.color, letterSpacing: '0.02em' }}>{t.commission}</div>
-                  <div className="font-mono text-xs mb-5" style={{ color: 'rgba(255,255,255,0.25)' }}>comision per vânzare</div>
-
-                  <div className="flex items-center justify-between px-3 py-2.5 mb-5"
-                    style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                    <span className="font-mono text-[9px] uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.3)' }}>Referrals / lună</span>
-                    <span className="font-bebas text-xl" style={{ color: 'var(--white-hi)', letterSpacing: '0.04em' }}>{t.referrals}</span>
-                  </div>
-
-                  <p className="text-xs leading-relaxed mb-5" style={{ color: 'var(--white-mid)' }}>{t.desc}</p>
+                  <p className="text-sm leading-relaxed mb-5" style={{ color: MUTED }}>{t.desc}</p>
 
                   <ul className="space-y-2">
-                    {t.perks.map((p) => (
-                      <li key={p} className="flex items-center gap-2 text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
-                        <span style={{ color: t.color, fontSize: '10px' }}>◆</span>
+                    {t.perks.map(p => (
+                      <li key={p} className="flex items-center gap-2 text-sm" style={{ color: TEXT }}>
+                        <Check className="w-4 h-4 flex-shrink-0" style={{ color: RED }} />
                         {p}
                       </li>
                     ))}
@@ -146,191 +162,168 @@ export default function AfilierePage() {
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Calculator */}
-      <div className="py-20" style={{ background: 'var(--black-0)' }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-8" style={{ background: 'var(--gold)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--gold)' }}>Calculator</span>
+      <section className="py-20 sm:py-24" style={{ background: BG_ALT }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <span className="inline-flex text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
+              style={{ background: '#fff1f2', color: RED, border: '1px solid #fecdd3' }}>
+              Calculator
+            </span>
+            <h2 className="font-extrabold tracking-tight leading-[1.05] mb-3"
+              style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: TEXT }}>
+              Cât poți câștiga
+            </h2>
+            <p className="text-base sm:text-lg" style={{ color: MUTED }}>
+              Mută slider-ele și vezi în timp real venitul lunar și anual potențial.
+            </p>
           </div>
-          <h2 className="font-bebas leading-none mb-10" style={{ fontSize: 'clamp(40px, 6vw, 80px)', letterSpacing: '0.03em' }}>
-            CÂT POȚI CÂȘTIGA
-          </h2>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
-            <div className="space-y-8">
-              {/* Referrals slider */}
+          <div className="rounded-2xl p-6 sm:p-8 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12"
+            style={{ background: '#ffffff', border: `1px solid ${BORDER}`, boxShadow: '0 8px 24px rgba(15,23,42,0.06)' }}>
+            <div className="space-y-7">
               <div>
-                <div className="flex justify-between mb-3">
-                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>Traderi referați / lună</span>
-                  <span className="font-bebas text-2xl" style={{ color: 'var(--white-hi)' }}>{referrals}</span>
+                <div className="flex justify-between mb-2">
+                  <label className="text-sm font-bold" style={{ color: TEXT }}>Traderi referați / lună</label>
+                  <span className="font-extrabold text-lg" style={{ color: RED }}>{referrals}</span>
                 </div>
                 <input type="range" min={1} max={100} value={referrals}
                   onChange={e => setReferrals(Number(e.target.value))}
-                  className="w-full h-1 appearance-none cursor-pointer"
-                  style={{ accentColor: 'var(--gold)', background: `linear-gradient(to right, var(--gold) 0%, var(--gold) ${referrals}%, rgba(255,255,255,0.1) ${referrals}%, rgba(255,255,255,0.1) 100%)` }} />
-                <div className="flex justify-between mt-1 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
+                  aria-label="Traderi referați pe lună"
+                  className="w-full h-2 appearance-none cursor-pointer rounded-full"
+                  style={{ background: `linear-gradient(to right, #e63946 0%, #e63946 ${referrals}%, #e2e8f0 ${referrals}%, #e2e8f0 100%)` }} />
+                <div className="flex justify-between mt-1 text-[11px] font-semibold" style={{ color: MUTED }}>
                   <span>1</span><span>100</span>
                 </div>
               </div>
 
-              {/* Plan price slider */}
               <div>
-                <div className="flex justify-between mb-3">
-                  <span className="font-mono text-xs uppercase tracking-widest" style={{ color: 'rgba(255,255,255,0.4)' }}>Taxă medie challenge</span>
-                  <span className="font-bebas text-2xl" style={{ color: 'var(--white-hi)' }}>€{planMediu}</span>
+                <div className="flex justify-between mb-2">
+                  <label className="text-sm font-bold" style={{ color: TEXT }}>Taxă medie pe challenge</label>
+                  <span className="font-extrabold text-lg" style={{ color: RED }}>€{planMediu}</span>
                 </div>
-                <input type="range" min={19} max={599} step={10} value={planMediu}
+                <input type="range" min={19} max={1250} step={5} value={planMediu}
                   onChange={e => setPlanMediu(Number(e.target.value))}
-                  className="w-full h-1 appearance-none cursor-pointer"
-                  style={{ accentColor: 'var(--gold)', background: `linear-gradient(to right, var(--gold) 0%, var(--gold) ${((planMediu - 19) / 580) * 100}%, rgba(255,255,255,0.1) ${((planMediu - 19) / 580) * 100}%, rgba(255,255,255,0.1) 100%)` }} />
-                <div className="flex justify-between mt-1 font-mono text-[9px]" style={{ color: 'rgba(255,255,255,0.2)' }}>
-                  <span>€19</span><span>€599</span>
+                  aria-label="Taxă medie pe challenge"
+                  className="w-full h-2 appearance-none cursor-pointer rounded-full"
+                  style={{ background: `linear-gradient(to right, #e63946 0%, #e63946 ${((planMediu - 19) / (1250 - 19)) * 100}%, #e2e8f0 ${((planMediu - 19) / (1250 - 19)) * 100}%, #e2e8f0 100%)` }} />
+                <div className="flex justify-between mt-1 text-[11px] font-semibold" style={{ color: MUTED }}>
+                  <span>€19</span><span>€1.250</span>
                 </div>
               </div>
 
-              {/* Tier selector */}
               <div>
-                <div className="font-mono text-xs uppercase tracking-widest mb-3" style={{ color: 'rgba(255,255,255,0.4)' }}>Nivel tău</div>
-                <div className="flex gap-2">
-                  {(['bronze', 'silver', 'gold'] as const).map((t) => (
-                    <button key={t} onClick={() => setTier(t)}
-                      className="flex-1 font-mono text-xs uppercase tracking-wider py-2.5 transition-all duration-200"
-                      style={{
-                        background: tier === t ? 'var(--gold)' : 'var(--black-2)',
-                        color: tier === t ? 'var(--black-0)' : 'rgba(255,255,255,0.4)',
-                        border: '1px solid rgba(201,168,76,0.2)',
-                        fontWeight: tier === t ? 700 : 400,
-                      }}>
-                      {t}
-                    </button>
-                  ))}
+                <label className="text-sm font-bold mb-2 block" style={{ color: TEXT }}>Nivelul tău</label>
+                <div className="flex p-1 rounded-lg gap-1" style={{ background: BG_ALT, border: `1px solid ${BORDER}` }}>
+                  {(['bronze', 'silver', 'gold'] as const).map(t => {
+                    const on = tier === t;
+                    return (
+                      <button key={t} type="button" onClick={() => setTier(t)}
+                        className="flex-1 py-2 text-xs font-bold rounded-md cursor-pointer transition-all capitalize"
+                        style={on
+                          ? { background: '#ffffff', color: TEXT, boxShadow: '0 1px 3px rgba(15,23,42,0.08)' }
+                          : { background: 'transparent', color: MUTED }
+                        }>
+                        {t}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </div>
 
-            {/* Result */}
-            <div className="flex flex-col items-center justify-center p-10 relative"
-              style={{ background: 'linear-gradient(145deg, rgba(201,168,76,0.08) 0%, var(--black-2) 100%)', border: '1px solid rgba(201,168,76,0.25)' }}>
-              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: 'linear-gradient(90deg, transparent, var(--gold), transparent)' }} />
-              <div className="font-mono text-[10px] tracking-widest uppercase mb-4 text-center" style={{ color: 'rgba(255,255,255,0.3)' }}>Estimare câștig lunar</div>
-              <div className="font-bebas leading-none text-center mb-2" style={{ fontSize: 'clamp(60px, 10vw, 100px)', color: 'var(--gold)', letterSpacing: '0.02em' }}>
+            <div className="flex flex-col justify-center rounded-2xl p-6 sm:p-8"
+              style={{ background: BG_ALT, border: `1px dashed ${BORDER}` }}>
+              <div className="text-xs font-bold tracking-[0.18em] uppercase mb-2" style={{ color: MUTED }}>
+                Venit estimat / lună
+              </div>
+              <div className="font-extrabold leading-none mb-1"
+                style={{ fontSize: 'clamp(48px, 7vw, 80px)', color: RED }}>
                 €{castig.toLocaleString('ro-RO')}
               </div>
-              <div className="font-mono text-xs text-center mb-6" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                {referrals} traderi × €{planMediu} × {Math.round(comision * 100)}%
+              <div className="text-sm mb-6" style={{ color: MUTED }}>
+                ≈ <strong style={{ color: TEXT }}>€{anual.toLocaleString('ro-RO')}</strong> pe an
               </div>
-              <div className="text-xs text-center leading-relaxed" style={{ color: 'rgba(255,255,255,0.3)' }}>
-                * Estimare orientativă. Câștigul real depinde de conversii și planurile achiziționate.
+              <div className="text-xs leading-relaxed" style={{ color: MUTED }}>
+                {referrals} traderi × €{planMediu} × {Math.round(commission * 100)}% comision
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* How it works */}
-      <div className="py-20" style={{ background: 'var(--black-1)' }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="h-px w-8" style={{ background: 'var(--gold)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--gold)' }}>Proces</span>
+      {/* Steps */}
+      <section className="py-20 sm:py-24" style={{ background: '#ffffff' }}>
+        <div className="max-w-5xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10 max-w-2xl mx-auto">
+            <span className="inline-flex text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
+              style={{ background: '#fff1f2', color: RED, border: '1px solid #fecdd3' }}>
+              Cum încep
+            </span>
+            <h2 className="font-extrabold tracking-tight leading-[1.05]"
+              style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: TEXT }}>
+              Patru pași până la primul comision
+            </h2>
           </div>
-          <h2 className="font-bebas leading-none mb-10" style={{ fontSize: 'clamp(40px, 6vw, 80px)', letterSpacing: '0.03em' }}>
-            CUM FUNCȚIONEAZĂ
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            {PASI.map((pas) => (
-              <div key={pas.nr} className="p-6" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <div className="font-bebas text-4xl mb-4" style={{ color: 'rgba(201,168,76,0.15)', letterSpacing: '0.02em' }}>{pas.nr}</div>
-                <div className="font-bebas text-lg tracking-wider mb-3" style={{ color: 'var(--white-hi)', letterSpacing: '0.06em' }}>{pas.titlu}</div>
-                <p className="text-xs leading-relaxed" style={{ color: 'var(--white-mid)' }}>{pas.desc}</p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
+            {PASI.map(p => (
+              <div key={p.nr} className="rounded-2xl p-6 transition-all hover:-translate-y-0.5"
+                style={{ background: BG_ALT, border: `1px solid ${BORDER}` }}>
+                <div className="font-extrabold leading-none mb-3" style={{ fontSize: '36px', color: RED }}>{p.nr}</div>
+                <h3 className="font-extrabold text-lg mb-2" style={{ color: TEXT }}>{p.titlu}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: MUTED }}>{p.desc}</p>
               </div>
             ))}
           </div>
         </div>
-      </div>
-
-      {/* Materials */}
-      <div className="py-20" style={{ background: 'var(--black-0)' }}>
-        <div className="max-w-5xl mx-auto px-6">
-          <h2 className="font-bebas leading-none mb-8" style={{ fontSize: 'clamp(40px, 6vw, 80px)', letterSpacing: '0.03em' }}>
-            MATERIALE MARKETING
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {[
-              { titlu: 'Bannere web', desc: 'Bannere optimizate pentru blog, site și anunțuri display. Formate: 300×250, 728×90, 160×600, 320×50.', icon: '🖼️' },
-              { titlu: 'Conținut social media', desc: 'Postări gata de folosit pentru Instagram, Facebook, X (Twitter) și TikTok. Actualizate lunar.', icon: '📱' },
-              { titlu: 'Texte și copy', desc: 'Texte de vânzare testate: email templates, bio pentru social media, scripts pentru video.', icon: '✍️' },
-              { titlu: 'Link tracking', desc: 'Link-uri scurte cu tracking complet: clicuri, conversii, sursa traficului. Dashboard în timp real.', icon: '🔗' },
-              { titlu: 'Materiale video', desc: 'Intro-uri animate, story templates și overlay-uri pentru streameri și creatori de conținut.', icon: '🎬' },
-              { titlu: 'Manager dedicat', desc: 'La nivelul Gold, primești un manager de cont dedicat care te ajută să îți maximizezi câștigurile.', icon: '👤' },
-            ].map((m) => (
-              <div key={m.titlu} className="flex gap-4 p-5" style={{ background: 'var(--black-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <span className="text-2xl shrink-0">{m.icon}</span>
-                <div>
-                  <div className="font-semibold text-sm mb-2" style={{ color: 'var(--white-hi)' }}>{m.titlu}</div>
-                  <p className="text-xs leading-relaxed" style={{ color: 'var(--white-mid)' }}>{m.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
+      </section>
 
       {/* FAQ */}
-      <div className="py-20" style={{ background: 'var(--black-1)' }}>
-        <div className="max-w-3xl mx-auto px-6">
-          <h2 className="font-bebas leading-none mb-10" style={{ fontSize: 'clamp(40px, 6vw, 80px)', letterSpacing: '0.03em' }}>
-            ÎNTREBĂRI FRECVENTE
-          </h2>
-          <div className="space-y-2">
-            {FAQ_AFILIERE.map((item, i) => (
-              <div key={i} className="border transition-all duration-300"
-                style={{
-                  borderColor: faqOpen === i ? 'rgba(201,168,76,0.35)' : 'rgba(255,255,255,0.06)',
-                  background: faqOpen === i ? 'rgba(201,168,76,0.04)' : 'var(--black-2)',
-                }}>
-                <button className="w-full text-left px-6 py-5 flex items-center justify-between gap-6"
-                  onClick={() => setFaqOpen(faqOpen === i ? null : i)}>
-                  <span className="font-jakarta font-semibold text-sm leading-snug" style={{ color: faqOpen === i ? 'var(--white-hi)' : 'rgba(255,255,255,0.75)' }}>
-                    {item.q}
-                  </span>
-                  <span className="font-mono text-lg shrink-0 transition-transform duration-300"
-                    style={{ color: 'var(--gold)', transform: faqOpen === i ? 'rotate(45deg)' : 'rotate(0deg)' }}>
-                    +
-                  </span>
-                </button>
-                {faqOpen === i && (
-                  <div className="px-6 pb-6 border-t" style={{ borderColor: 'rgba(201,168,76,0.12)' }}>
-                    <p className="text-sm leading-relaxed pt-4" style={{ color: 'var(--white-mid)' }}>{item.a}</p>
-                  </div>
-                )}
-              </div>
-            ))}
+      <section className="py-20 sm:py-24" style={{ background: BG_ALT }}>
+        <div className="max-w-3xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-10">
+            <span className="inline-flex text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
+              style={{ background: '#fff1f2', color: RED, border: '1px solid #fecdd3' }}>
+              Întrebări frecvente
+            </span>
+            <h2 className="font-extrabold tracking-tight leading-[1.05]"
+              style={{ fontSize: 'clamp(32px, 5vw, 52px)', color: TEXT }}>
+              FAQ Afiliere
+            </h2>
+          </div>
+
+          <div className="space-y-3">
+            {FAQ_AFILIERE.map((f, i) => {
+              const open = faqOpen === i;
+              return (
+                <div key={f.q} className="rounded-xl overflow-hidden"
+                  style={{ background: '#ffffff', border: `1px solid ${BORDER}` }}>
+                  <button type="button" onClick={() => setFaqOpen(open ? null : i)}
+                    className="w-full flex items-center justify-between px-5 py-4 text-left cursor-pointer">
+                    <span className="text-sm sm:text-base font-bold" style={{ color: TEXT }}>{f.q}</span>
+                    <ChevronDown className="w-4 h-4 transition-transform flex-shrink-0"
+                      style={{ color: MUTED, transform: open ? 'rotate(180deg)' : 'none' }} />
+                  </button>
+                  {open && (
+                    <div className="px-5 pb-5 text-sm leading-relaxed" style={{ color: MUTED }}>{f.a}</div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-10">
+            <a href="/dashboard/afiliere"
+              className="inline-flex items-center gap-2 font-extrabold text-sm px-6 py-3 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5"
+              style={{ background: RED, color: '#fff', boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}>
+              Înrolează-te ca afiliat →
+            </a>
           </div>
         </div>
-      </div>
-
-      {/* CTA */}
-      <div className="py-24 text-center relative overflow-hidden" style={{ background: 'var(--black-0)' }}>
-        <div className="absolute inset-0 pointer-events-none" style={{ background: 'radial-gradient(ellipse 50% 60% at 50% 50%, rgba(201,168,76,0.06) 0%, transparent 70%)' }} />
-        <div className="relative max-w-2xl mx-auto px-6">
-          <div className="font-bebas leading-none mb-4" style={{ fontSize: 'clamp(40px, 7vw, 88px)', letterSpacing: '0.03em' }}>
-            GATA SĂ CÂȘTIGI?
-          </div>
-          <p className="text-sm leading-relaxed mb-10" style={{ color: 'var(--white-mid)' }}>
-            Înregistrează-te gratuit și obține link-ul tău de afiliat în mai puțin de 2 minute.
-          </p>
-          <a href="/autentificare/register"
-            className="inline-block font-bold text-sm tracking-[0.14em] uppercase px-12 py-4 transition-all duration-300 hover:shadow-[0_0_40px_rgba(201,168,76,0.4)]"
-            style={{ background: 'var(--gold)', color: 'var(--black-0)', clipPath: 'polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%)' }}>
-            Devino Afiliat
-          </a>
-        </div>
-      </div>
-
-    </div>
+      </section>
+    </main>
   );
 }

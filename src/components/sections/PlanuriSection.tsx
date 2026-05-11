@@ -1,248 +1,221 @@
 'use client';
+/**
+ * /planuri — TFP-style: pill row pentru mărimea contului + comparație
+ * 1-Step vs 2-Step side-by-side, în paleta noastră (light + roșu).
+ *
+ * Numerele de reguli mirror src/lib/stripe.ts rulesForMode().
+ */
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { CheckCircle2, ShieldCheck, Clock, RefreshCw, Wallet, Trophy } from 'lucide-react';
-import CheckoutDisclaimer from '@/components/CheckoutDisclaimer';
+import { Zap, Trophy, Info } from 'lucide-react';
+import { PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
 
-type PlanId =
-  | 'STARTER_500'
-  | 'BASIC_1000'
-  | 'STANDARD_5000'
-  | 'ADVANCED_10000'
-  | 'PRO_25000'
-  | 'ELITE_50000';
-
-type Plan = {
-  id: PlanId;
-  size: string;
-  sizeShort: string;
-  capital: string;
-  taxa1: string;
-  taxa2: string;
-  split1: string;
-  split2: string;
-  popular: boolean;
-};
-
-const PLANS: Plan[] = [
-  { id: 'STARTER_500',    size: '€500',    sizeShort: '€500',  capital: '€500',    taxa1: '€29',  taxa2: '€19',  split1: '70%', split2: '80%', popular: false },
-  { id: 'BASIC_1000',     size: '€1.000',  sizeShort: '€1K',   capital: '€1.000',  taxa1: '€49',  taxa2: '€35',  split1: '70%', split2: '80%', popular: false },
-  { id: 'STANDARD_5000',  size: '€5.000',  sizeShort: '€5K',   capital: '€5.000',  taxa1: '€99',  taxa2: '€74',  split1: '70%', split2: '80%', popular: false },
-  { id: 'ADVANCED_10000', size: '€10.000', sizeShort: '€10K',  capital: '€10.000', taxa1: '€179', taxa2: '€139', split1: '75%', split2: '80%', popular: true  },
-  { id: 'PRO_25000',      size: '€25.000', sizeShort: '€25K',  capital: '€25.000', taxa1: '€349', taxa2: '€269', split1: '75%', split2: '80%', popular: false },
-  { id: 'ELITE_50000',    size: '€50.000', sizeShort: '€50K',  capital: '€50.000', taxa1: '€599', taxa2: '€449', split1: '80%', split2: '80%', popular: false },
+const SIZES: { id: PlanId; label: string; popular?: boolean }[] = [
+  { id: 'STARTER_500',    label: '€500' },
+  { id: 'BASIC_1000',     label: '€1k' },
+  { id: 'STANDARD_5000',  label: '€5k' },
+  { id: 'ADVANCED_10000', label: '€10k', popular: true },
+  { id: 'PRO_25000',      label: '€25k' },
+  { id: 'ELITE_50000',    label: '€50k' },
 ];
 
-const FEATURES_1STEP = [
-  { icon: Trophy,     label: 'Target profit', value: '40%' },
-  { icon: Clock,      label: 'Durată evaluare', value: '30 zile' },
-  { icon: ShieldCheck,label: 'Max drawdown', value: '8%' },
-  { icon: ShieldCheck,label: 'Pierdere zilnică', value: '5%' },
-  { icon: Wallet,     label: 'Retrageri', value: 'Săptămânal' },
+const RULES_1STEP = [
+  { faza: 'Faza 1',   target: '40%', drawdown: '8%', daily: '5%', time: '30 zile' },
+  { faza: 'Finanțat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
 ];
 
-const FEATURES_2STEP = [
-  { icon: Trophy,     label: 'Faza 1 target', value: '30%' },
-  { icon: Trophy,     label: 'Faza 2 target', value: '20%' },
-  { icon: Clock,      label: 'Durată per fază', value: '30 zile' },
-  { icon: ShieldCheck,label: 'Max drawdown', value: '8%' },
-  { icon: ShieldCheck,label: 'Pierdere zilnică', value: '5%' },
-  { icon: RefreshCw,  label: 'Taxă', value: 'Rambursată' },
+const RULES_2STEP = [
+  { faza: 'Faza 1',   target: '30%', drawdown: '8%', daily: '5%', time: '30 zile' },
+  { faza: 'Faza 2',   target: '20%', drawdown: '8%', daily: '5%', time: '60 zile' },
+  { faza: 'Finanțat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
 ];
 
 export default function PlanuriSection() {
-  const router = useRouter();
-  const [loading, setLoading] = useState<string | null>(null);
-  const [mode, setMode] = useState<'1step' | '2step'>('2step');
-  const [selectedId, setSelectedId] = useState<PlanId>('ADVANCED_10000');
-  const [showDisclaimer, setShowDisclaimer] = useState(false);
-
-  const features = mode === '1step' ? FEATURES_1STEP : FEATURES_2STEP;
-  const selected = PLANS.find(p => p.id === selectedId)!;
-  const fee = mode === '1step' ? selected.taxa1 : selected.taxa2;
-  const split = mode === '1step' ? selected.split1 : selected.split2;
-  const refundEligible = ['ADVANCED_10000', 'PRO_25000', 'ELITE_50000'].includes(selectedId);
-
-  const handleConfirmedCheckout = async () => {
-    setShowDisclaimer(false);
-    setLoading(selectedId);
-    try {
-      const res = await fetch('/api/stripe/checkout', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ plan: selectedId, mode }),
-      });
-      const data = await res.json();
-      if (data.url) window.location.href = data.url;
-      else if (data.error === 'Neautentificat') router.push('/autentificare/login');
-    } finally {
-      setLoading(null);
-    }
-  };
-
-  const handleCheckout = () => setShowDisclaimer(true);
+  const [planId, setPlanId] = useState<PlanId>('STANDARD_5000');
+  const capitalLabel = SIZES.find(s => s.id === planId)?.label ?? '';
 
   return (
-    <section id="planuri" className="py-24" style={{ background: 'var(--bg-alt)' }}>
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+    <section id="planuri" className="py-20 sm:py-24" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6">
 
-        {/* Header */}
-        <div className="text-center mb-10">
-          <span className="inline-block text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
-            style={{ background: '#fff1f2', color: 'var(--red)' }}>
-            Planuri & Prețuri
+        <div className="text-center mb-10 max-w-2xl mx-auto">
+          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
+            style={{ background: '#fff1f2', color: 'var(--red, #e63946)', border: '1px solid #fecdd3' }}>
+            Planuri
           </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
-            Alege challenge-ul tău
+          <h2 className="font-extrabold tracking-tight leading-[1.05] mb-3"
+            style={{ fontSize: 'clamp(32px, 5vw, 56px)', color: 'var(--text, #0f172a)' }}>
+            Alege-ți capitalul. <span style={{ color: 'var(--red, #e63946)' }}>Taxă unică.</span>
           </h2>
-          <p className="text-lg" style={{ color: 'var(--text-muted)' }}>
-            Taxă unică · Fără abonament · Rambursată la prima retragere
+          <p className="text-base sm:text-lg" style={{ color: 'var(--text-muted, #64748b)' }}>
+            Selectează mărimea contului. Compari 1-Step vs 2-Step și alegi varianta care ți se potrivește.
           </p>
         </div>
 
-        {/* 1-Step / 2-Step toggle */}
-        <div className="flex justify-center mb-8">
-          <div className="inline-flex rounded-full border p-1" style={{ borderColor: 'var(--border)', background: 'white' }}>
-            {(['1step', '2step'] as const).map(m => (
-              <button key={m} onClick={() => setMode(m)}
-                className="relative px-6 py-2.5 rounded-full text-sm font-bold transition-all duration-200 cursor-pointer"
-                style={mode === m
-                  ? { background: 'var(--red)', color: 'white', boxShadow: '0 4px 14px rgba(230,57,70,0.32)' }
-                  : { background: 'transparent', color: 'var(--text-muted)' }}>
-                {m === '1step' ? '1-Step Challenge' : '2-Step Challenge'}
-                {m === '2step' && (
-                  <span className="ml-2 text-[10px] px-1.5 py-0.5 rounded-full font-semibold"
-                    style={{ background: mode === '2step' ? 'rgba(255,255,255,0.25)' : '#fff1f2', color: mode === '2step' ? 'white' : 'var(--red)' }}>
-                    Recomandat
-                  </span>
-                )}
-              </button>
-            ))}
+        {/* Size pill row */}
+        <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 mb-10 flex justify-center">
+          <div className="inline-flex rounded-full p-1.5 shadow-sm gap-1.5"
+            style={{ background: '#ffffff', border: '1px solid var(--border, #e2e8f0)' }}>
+            {SIZES.map(s => {
+              const on = s.id === planId;
+              return (
+                <button key={s.id} type="button" onClick={() => setPlanId(s.id)}
+                  className="relative inline-flex items-center justify-center px-5 sm:px-6 h-11 rounded-full text-sm font-bold cursor-pointer transition-all whitespace-nowrap"
+                  style={on
+                    ? { background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 6px 18px rgba(230,57,70,0.32)' }
+                    : { background: 'transparent', color: 'var(--text, #0f172a)' }
+                  }>
+                  {s.label}
+                  {s.popular && !on && (
+                    <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider"
+                      style={{ background: 'var(--red, #e63946)', color: '#fff' }}>
+                      Top
+                    </span>
+                  )}
+                </button>
+              );
+            })}
           </div>
         </div>
 
-        {/* Account size selector */}
-        <div className="flex flex-wrap justify-center gap-2 mb-10">
-          {PLANS.map(p => (
-            <button key={p.id} onClick={() => setSelectedId(p.id)}
-              className="relative px-5 py-2.5 rounded-full text-sm font-bold transition-all duration-200 cursor-pointer"
-              style={selectedId === p.id
-                ? { background: 'var(--text)', color: 'white', boxShadow: '0 4px 14px rgba(15,23,42,0.18)' }
-                : { background: 'white', color: 'var(--text)', border: '1px solid var(--border)' }}>
-              {p.sizeShort}
-              {p.popular && selectedId !== p.id && (
-                <span className="absolute -top-2 -right-2 text-[9px] px-1.5 py-0.5 rounded-full font-bold tracking-wider"
-                  style={{ background: 'var(--red)', color: 'white' }}>
-                  TOP
-                </span>
-              )}
-            </button>
-          ))}
+        {/* Side-by-side comparison */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 sm:gap-6">
+          <PlanCard mode="1step" planId={planId} capitalLabel={capitalLabel}
+            price={priceFor(planId, '1step')} split={splitFor(planId, '1step')} rules={RULES_1STEP} />
+          <PlanCard mode="2step" planId={planId} capitalLabel={capitalLabel}
+            price={priceFor(planId, '2step')} split={splitFor(planId, '2step')} rules={RULES_2STEP} recommended />
         </div>
 
-        {/* Single plan card — TFP style */}
-        <div className="relative rounded-3xl overflow-hidden"
-          style={{
-            background: 'white',
-            border: selected.popular ? '2px solid var(--red)' : '1px solid var(--border)',
-            boxShadow: selected.popular ? '0 12px 40px rgba(230,57,70,0.18)' : '0 8px 30px rgba(15,23,42,0.06)',
-          }}>
-
-          {selected.popular && (
-            <div className="text-center py-2 text-xs font-bold tracking-widest text-white"
-              style={{ background: 'var(--red)' }}>
-              ⭐ MOST POPULAR
-            </div>
-          )}
-
-          <div className="grid md:grid-cols-2">
-
-            {/* Left — pricing */}
-            <div className="p-8 md:p-10 md:border-r" style={{ borderColor: 'var(--border)' }}>
-              <div className="text-xs font-bold tracking-widest uppercase mb-3" style={{ color: 'var(--text-muted)' }}>
-                Cont {mode === '1step' ? '1-Step' : '2-Step'}
-              </div>
-              <div className="text-5xl md:text-6xl font-extrabold mb-1" style={{ color: 'var(--text)' }}>
-                {selected.capital}
-              </div>
-              <div className="text-sm mb-8" style={{ color: 'var(--text-subtle)' }}>capital alocat pentru picks</div>
-
-              <div className="flex items-baseline gap-2 mb-2">
-                <span className="text-5xl font-extrabold" style={{ color: 'var(--red)' }}>{fee}</span>
-                <span className="text-base" style={{ color: 'var(--text-muted)' }}>taxă unică</span>
-              </div>
-              {refundEligible && (
-                <div className="inline-flex items-center gap-1.5 text-xs font-semibold px-2.5 py-1 rounded-full mb-6"
-                  style={{ background: '#dcfce7', color: '#15803d' }}>
-                  <RefreshCw className="w-3 h-3" />
-                  Rambursată la prima retragere
-                </div>
-              )}
-
-              <div className="flex items-center justify-between p-4 rounded-xl mt-6"
-                style={{ background: '#fff1f2', border: '1px solid #fecdd3' }}>
-                <div>
-                  <div className="text-xs font-semibold uppercase tracking-wider" style={{ color: 'var(--text-muted)' }}>Profit Split</div>
-                  <div className="text-3xl font-extrabold mt-1" style={{ color: 'var(--red)' }}>{split}</div>
-                </div>
-                <Trophy className="w-10 h-10" style={{ color: 'var(--red)', opacity: 0.4 }} />
-              </div>
-
-              <button onClick={handleCheckout} disabled={loading === selectedId}
-                className="w-full mt-6 font-bold text-sm py-4 rounded-xl transition-all duration-200 cursor-pointer disabled:opacity-50"
-                style={{ background: 'var(--red)', color: 'white', boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#c0202d'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'var(--red)'; }}>
-                {loading === selectedId ? 'Se procesează...' : `Cumpără ${selected.size} ${mode === '1step' ? '1-Step' : '2-Step'}`}
-              </button>
-            </div>
-
-            {/* Right — features */}
-            <div className="p-8 md:p-10" style={{ background: 'var(--bg-alt2)' }}>
-              <div className="text-xs font-bold tracking-widest uppercase mb-5" style={{ color: 'var(--text-muted)' }}>
-                Ce primești
-              </div>
-              <ul className="space-y-3.5">
-                {features.map((f, i) => {
-                  const Icon = f.icon;
-                  return (
-                    <li key={i} className="flex items-center gap-3 text-sm">
-                      <span className="flex items-center justify-center w-9 h-9 rounded-lg"
-                        style={{ background: 'white', border: '1px solid var(--border)' }}>
-                        <Icon className="w-4 h-4" style={{ color: 'var(--red)' }} />
-                      </span>
-                      <span className="flex-1 font-medium" style={{ color: 'var(--text)' }}>{f.label}</span>
-                      <span className="font-extrabold" style={{ color: 'var(--text)' }}>{f.value}</span>
-                    </li>
-                  );
-                })}
-                <li className="flex items-center gap-3 text-sm pt-2 mt-2 border-t" style={{ borderColor: 'var(--border)' }}>
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--red)' }} />
-                  <span className="font-medium" style={{ color: 'var(--text)' }}>Toate sporturile permise (NBA, NFL, EPL, UFC, ATP)</span>
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--red)' }} />
-                  <span className="font-medium" style={{ color: 'var(--text)' }}>Acces Discord & calculatoare profesionale</span>
-                </li>
-                <li className="flex items-center gap-3 text-sm">
-                  <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--red)' }} />
-                  <span className="font-medium" style={{ color: 'var(--text)' }}>Plată în 24-48h (transfer bancar / crypto)</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <p className="text-center text-xs mt-6" style={{ color: 'var(--text-subtle)' }}>
-          Plățile securizate prin Stripe · KYC verificat prin Sumsub · Fără abonament, niciodată
+        <p className="text-center text-xs sm:text-sm mt-10" style={{ color: 'var(--text-muted, #64748b)' }}>
+          Toate planurile includ acces la dashboard, retrageri săptămânale și suport Discord.
+          Plata unică, fără reînnoiri.
         </p>
       </div>
-      <CheckoutDisclaimer
-        open={showDisclaimer}
-        planLabel={`${selected.size} · ${mode === '1step' ? '1-Step' : '2-Step'} · ${fee} taxă unică`}
-        onConfirm={handleConfirmedCheckout}
-        onCancel={() => setShowDisclaimer(false)}
-      />
     </section>
+  );
+}
+
+type CardProps = {
+  mode: ChallengeMode;
+  planId: PlanId;
+  capitalLabel: string;
+  price: number;
+  split: number;
+  rules: typeof RULES_1STEP;
+  recommended?: boolean;
+};
+
+function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId }: CardProps) {
+  const phases = rules.map(r => r.faza);
+  const [activePhase, setActivePhase] = useState(phases[0]);
+  const phaseRule = rules.find(r => r.faza === activePhase) ?? rules[0];
+
+  const isOneStep = mode === '1step';
+  const Icon = isOneStep ? Zap : Trophy;
+  const fee = (price / 100).toFixed(price % 100 === 0 ? 0 : 2);
+
+  const handleBuy = async () => {
+    try {
+      const res = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planId, mode }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert(data.error || 'Nu am putut iniția plata. Asigură-te că ești autentificat.');
+    } catch { alert('Eroare de rețea.'); }
+  };
+
+  return (
+    <div className="relative rounded-2xl overflow-hidden transition-all"
+      style={{
+        background: '#ffffff',
+        border: `${recommended ? '2px' : '1px'} solid ${recommended ? 'var(--red, #e63946)' : 'var(--border, #e2e8f0)'}`,
+        boxShadow: recommended
+          ? '0 20px 50px rgba(230,57,70,0.12), 0 4px 12px rgba(15,23,42,0.06)'
+          : '0 4px 12px rgba(15,23,42,0.05)',
+      }}>
+
+      {recommended && (
+        <div className="absolute top-0 right-0 px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest"
+          style={{ background: 'var(--red, #e63946)', color: '#fff', borderBottomLeftRadius: 12 }}>
+          Cel mai popular
+        </div>
+      )}
+
+      <div className="p-6 sm:p-8">
+        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
+          style={{ background: '#fff1f2', color: 'var(--red, #e63946)', border: '1px solid #fecdd3' }}>
+          <Icon className="w-3.5 h-3.5" />
+          {isOneStep ? '1 Pas' : '2 Pași'}
+        </span>
+
+        <h3 className="font-extrabold text-2xl sm:text-3xl mb-2 leading-tight" style={{ color: 'var(--text, #0f172a)' }}>
+          Challenge {isOneStep ? '1-Pas' : '2-Pași'} · {capitalLabel}
+        </h3>
+
+        <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-muted, #64748b)' }}>
+          {isOneStep
+            ? 'Cel mai rapid drum către finanțare. Atinge target-ul de 40% într-o singură fază, păstrezi 70% din profit.'
+            : 'Două faze realizabile, targeturi mai mici. Risc mai mic, split de profit mai mare — păstrezi 80% odată finanțat.'}
+        </p>
+
+        <div className="flex rounded-lg p-1 gap-1 mb-5"
+          style={{ background: 'var(--bg-alt, #fbf8f6)', border: '1px solid var(--border, #e2e8f0)' }}>
+          {phases.map(p => {
+            const on = p === activePhase;
+            return (
+              <button key={p} type="button" onClick={() => setActivePhase(p)}
+                className="flex-1 py-2 text-xs font-bold rounded-md cursor-pointer transition-all"
+                style={on
+                  ? { background: '#ffffff', color: 'var(--text, #0f172a)', boxShadow: '0 1px 3px rgba(15,23,42,0.08)' }
+                  : { background: 'transparent', color: 'var(--text-muted, #64748b)' }
+                }>
+                {p}
+              </button>
+            );
+          })}
+        </div>
+
+        <ul className="divide-y mb-6" style={{ borderColor: 'var(--border, #e2e8f0)' }}>
+          <Row label="Țintă profit" value={phaseRule.target} />
+          <Row label="Drawdown maxim" value={phaseRule.drawdown} />
+          <Row label="Pierdere zilnică maximă" value={phaseRule.daily} />
+          <Row label="Limită de timp" value={phaseRule.time} />
+          <Row label="Split profit" value={`${split}%`} highlight />
+        </ul>
+
+        <div className="mb-5">
+          <div className="font-extrabold leading-none" style={{ fontSize: 'clamp(36px, 5vw, 48px)', color: 'var(--text, #0f172a)' }}>
+            €{fee}
+          </div>
+          <div className="text-xs font-semibold mt-1.5" style={{ color: 'var(--text-muted, #64748b)' }}>
+            Taxă unică · fără abonament
+          </div>
+        </div>
+
+        <button type="button" onClick={handleBuy}
+          className="w-full font-extrabold text-sm py-3.5 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5"
+          style={{ background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}>
+          Cumpără acum →
+        </button>
+
+        <div className="flex items-start gap-1.5 mt-3 text-[11px]" style={{ color: 'var(--text-muted, #64748b)' }}>
+          <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
+          <span>După plată primești instant acces în dashboard și poți începe să plasezi pick-uri.</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function Row({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
+  return (
+    <li className="flex items-center justify-between py-3">
+      <span className="text-sm" style={{ color: 'var(--text-muted, #64748b)' }}>{label}</span>
+      <span className="text-sm font-extrabold" style={{ color: highlight ? 'var(--red, #e63946)' : 'var(--text, #0f172a)' }}>
+        {value}
+      </span>
+    </li>
   );
 }

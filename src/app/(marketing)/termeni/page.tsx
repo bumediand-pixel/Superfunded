@@ -13,23 +13,23 @@ export const metadata = {
  */
 export default function TermeniPage() {
   return (
-    <div className="min-h-screen py-32" style={{ background: 'var(--black-0)' }}>
+    <div className="min-h-screen py-32" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
       <div className="max-w-4xl mx-auto px-6">
 
         <div className="mb-14">
           <div className="flex items-center gap-3 mb-4">
             <div className="h-px w-8" style={{ background: 'var(--red)' }} />
-            <span className="font-mono text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--red)' }}>Centru legal</span>
+            <span className="font-semibold text-xs tracking-[0.22em] uppercase" style={{ color: 'var(--red)' }}>Centru legal</span>
           </div>
-          <h1 className="font-bebas leading-none mb-4" style={{ fontSize: 'clamp(48px, 8vw, 96px)', letterSpacing: '0.03em' }}>
+          <h1 className="font-extrabold tracking-tight leading-none mb-4" style={{ fontSize: 'clamp(48px, 8vw, 96px)', letterSpacing: '0.03em' }}>
             TERMENI ȘI<br/>CONDIȚII
           </h1>
-          <p className="font-mono text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
+          <p className="font-semibold text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>
             Te rugăm să citești acești termeni cu atenție înainte de a folosi platforma. Ultima actualizare: 9 mai 2026.
           </p>
         </div>
 
-        <div className="space-y-12 text-sm leading-relaxed" style={{ color: 'var(--white-mid)' }}>
+        <div className="space-y-12 text-sm leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>
 
           <section>
             <p>
@@ -209,17 +209,17 @@ export default function TermeniPage() {
 
 export function H2({ children }: { children: React.ReactNode }) {
   return (
-    <h2 className="font-bebas text-2xl tracking-wider mb-4" style={{ color: 'var(--white-hi)', letterSpacing: '0.05em' }}>
+    <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>
       {children}
     </h2>
   );
 }
 export function H3({ children }: { children: React.ReactNode }) {
-  return <h3 className="font-bold text-base mt-5 mb-2" style={{ color: 'var(--white-hi)' }}>{children}</h3>;
+  return <h3 className="font-bold text-base mt-5 mb-2" style={{ color: 'var(--text, #0f172a)' }}>{children}</h3>;
 }
 export function P({ children, className }: { children: React.ReactNode; className?: string }) {
   return <p className={`mb-3${className ? ` ${className}` : ''}`}>{children}</p>;
 }
 export function Mail() {
-  return <a href="mailto:support@thesuperfunded.com" className="font-mono" style={{ color: 'var(--red)' }}>support@thesuperfunded.com</a>;
+  return <a href="mailto:support@thesuperfunded.com" className="font-semibold" style={{ color: 'var(--red)' }}>support@thesuperfunded.com</a>;
 }
