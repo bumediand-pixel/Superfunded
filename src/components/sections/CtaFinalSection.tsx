@@ -20,11 +20,11 @@ export default function CtaFinalSection() {
         </div>
 
         <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-          Pariezi cu banii noștri.<br />Tu câștigi.
+          Faci pick-uri cu capitalul nostru.<br />Tu câștigi.
         </h2>
 
         <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.8)' }}>
-          Alătură-te celor <strong className="text-white">2.400+</strong> bettori finanțați.
+          Alătură-te celor <strong className="text-white">2.400+</strong> pickeri finanțați.
           Capital până la <strong className="text-white">€50.000</strong>. Profit săptămânal.
         </p>
 

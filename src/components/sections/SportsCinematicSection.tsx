@@ -39,7 +39,7 @@ const SCENES = [
     sport: 'Baschet',
     headline: 'Jocul mare cere capital mare',
     sub: 'NBA · Euroleague · competiții naționale',
-    stat: '2.400+', statLabel: 'bettori finanțați activ',
+    stat: '2.400+', statLabel: 'pickeri finanțați activ',
     accent: '#ea580c',
     img: 'https://images.unsplash.com/photo-1577471488278-16eec37ffcc2?auto=format&fit=crop&w=1800&q=80',
     fallback: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1800&q=80',

@@ -22,7 +22,7 @@ export default function PlatformScrollSection() {
             <h2 className="font-bodoni text-4xl md:text-5xl lg:text-6xl text-white leading-tight">
               Dashboard-ul tău
               <br />
-              <span className="italic" style={{ color: 'var(--gold)' }}>de bettor finanțat</span>
+              <span className="italic" style={{ color: 'var(--gold)' }}>de picker finanțat</span>
             </h2>
           </div>
         }

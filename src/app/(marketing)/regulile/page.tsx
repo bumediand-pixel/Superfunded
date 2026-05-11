@@ -156,7 +156,7 @@ export default function ReguliPage() {
             REGULILE<br/>PLATFORMEI
           </h1>
           <p className="text-sm leading-relaxed max-w-xl" style={{ color: 'var(--text-muted, #64748b)' }}>
-            Cunoaște regulile înainte să începi. Un bettor disciplinat care respectă regulile de risc ajunge finanțat — unul care le ignoră, nu.
+            Cunoaște regulile înainte să începi. Un picker disciplinat care respectă regulile de risc ajunge finanțat — unul care le ignoră, nu.
           </p>
         </div>
 

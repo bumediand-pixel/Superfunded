@@ -7,7 +7,7 @@ export const metadata = {
 
 /**
  * /termeni — Termeni și Condiții complete (RO).
- * Adaptate din modelul TFP, ajustate pentru SuperFunded SRL (România).
+ * Adaptate din modelul TFP, ajustate pentru TheSuperFunded (România).
  * NOTĂ: secțiunea 17 conține placeholder pentru adresa și UIC-ul firmei.
  * Înlocuiește valorile [TBD] înainte de lansare.
  */

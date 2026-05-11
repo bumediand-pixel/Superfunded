@@ -40,7 +40,7 @@ export default function ResponsibleGamblingFooter() {
           {/* REPLACE: ONJN license / disclaimer */}
           <span style={{ color: 'rgba(255,255,255,0.45)' }}>
             {/* TODO: înlocuiește cu numărul real al licenței ONJN sau cu disclaimerul aprobat de avocat. */}
-            Statut ONJN: în curs de clarificare juridică · Operator: SuperFunded SRL · România
+            Statut ONJN: în curs de clarificare juridică · Operator: TheSuperFunded · România
           </span>
         </div>
 

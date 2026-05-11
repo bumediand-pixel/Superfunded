@@ -54,7 +54,7 @@ export default function Footer() {
               SUPER<span className="text-[color:var(--color-gold-400)]">FUNDED</span>
             </p>
             <p className="mt-3 max-w-sm text-sm text-[color:var(--color-mist-400)]">
-              Platforma de betting prop firm pentru pariori funded. Capital propriu, plată
+              Platformă de evaluare a predicțiilor sportive pentru pariori funded. Capital propriu, plată
               săptămânală, suport în română.
             </p>
 

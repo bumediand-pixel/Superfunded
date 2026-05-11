@@ -168,12 +168,12 @@ export default function SectionsFinal() {
       <section>
         <H2>17. Date de contact și informații despre companie</H2>
 
-        <P>SuperFunded este deținut și operat de SuperFunded SRL, o companie înregistrată în România. Pentru orice întrebări,
+        <P>SuperFunded este deținut și operat de TheSuperFunded, o companie înregistrată în România. Pentru orice întrebări,
           îngrijorări sau feedback privind acești Termeni sau orice aspect al Serviciului, ne poți contacta folosind
           informațiile de mai jos:</P>
 
         <ul className="space-y-2 mb-3">
-          <li><strong className="text-white">Denumire companie:</strong> SuperFunded SRL (operator al SuperFunded)</li>
+          <li><strong className="text-white">Denumire companie:</strong> TheSuperFunded (operator al SuperFunded)</li>
           <li><strong className="text-white">Adresă înregistrată:</strong> [a se completa de către administrator]</li>
           <li><strong className="text-white">CUI / Înregistrare comerțul:</strong> [a se completa de către administrator]</li>
           <li><strong className="text-white">Email:</strong> <Mail /></li>
@@ -186,7 +186,7 @@ export default function SectionsFinal() {
           întrebările generale. Pentru orice problemă contractuală sau gravă, contactarea directă este canalul corect.</P>
 
         <H3>Notificări legale</H3>
-        <P>Orice notificare legală sau act de procedură către SuperFunded SRL trebuie trimisă la adresa înregistrată. Te rugăm
+        <P>Orice notificare legală sau act de procedură către TheSuperFunded trebuie trimisă la adresa înregistrată. Te rugăm
           să trimiți și o copie electronică la emailul nostru de suport pentru procesare mai rapidă. Solicitările generale nu
           sunt considerate notificări legale.</P>
 

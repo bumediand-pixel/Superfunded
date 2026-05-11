@@ -19,7 +19,7 @@ const STEPS = [
     step: '03',
     title: 'Primești Capital & Câștigi',
     icon: Wallet,
-    description: 'Treci evaluarea și pariezi cu banii noștri. Păstrezi 70–80% din fiecare câștig. Simplu.',
+    description: 'Treci evaluarea și faci pick-uri cu capitalul nostru. Păstrezi 70–80% din fiecare câștig. Simplu.',
   },
 ];
 
@@ -49,7 +49,7 @@ export default function CumFunctioneazaSection() {
             <span style={{ color: 'var(--red)' }}>capital finanțat</span>
           </h2>
           <p className="text-lg max-w-xl mx-auto" style={{ color: 'var(--text-muted)' }}>
-            De la zero la bettor finanțat cu capital până la €50.000.
+            De la zero la picker finanțat cu capital până la €50.000.
           </p>
         </div>
 

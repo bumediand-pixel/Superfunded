@@ -5,7 +5,7 @@ import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { TrendingUp, Shield, Zap, Trophy, CheckCircle } from 'lucide-react';
 
 const STATS = [
-  { n: '2.400+', l: 'Bettori Activi', icon: TrendingUp },
+  { n: '2.400+', l: 'Pickeri Activi', icon: TrendingUp },
   { n: '€1.2M+', l: 'Profit Plătit', icon: Trophy },
   { n: '9', l: 'Sporturi', icon: Zap },
   { n: '48h', l: 'Aprobare KYC', icon: Shield },

@@ -41,7 +41,7 @@ export default function LeaderboardSection() {
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
             Leaderboard
           </h2>
-          <p className="text-base" style={{ color: 'var(--text-muted)' }}>Top bettori · ultimele 30 de zile</p>
+          <p className="text-base" style={{ color: 'var(--text-muted)' }}>Top pickeri · ultimele 30 de zile</p>
         </div>
 
         <div className="rounded-2xl overflow-hidden border" style={{ background: 'white', borderColor: 'var(--border)' }}>

@@ -4,7 +4,7 @@
  * stays consistent and is easy to update if legal counsel changes it.
  */
 
-export const ENTITY_NAME      = 'SuperFunded SRL';
+export const ENTITY_NAME      = 'TheSuperFunded';
 export const ENTITY_COUNTRY   = 'România';
 export const ENTITY_CUI       = 'RO00000000'; // TODO: replace with real CUI after registration
 export const ENTITY_REG_NO    = 'J40/0/0000'; // TODO: replace with Reg. Com.

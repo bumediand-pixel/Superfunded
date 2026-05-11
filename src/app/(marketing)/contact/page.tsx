@@ -161,7 +161,7 @@ export default function ContactPage() {
                 <MapPin className="w-3.5 h-3.5" />
                 Operator
               </div>
-              <div className="text-sm font-bold mb-1" style={{ color: 'var(--text)' }}>SuperFunded SRL</div>
+              <div className="text-sm font-bold mb-1" style={{ color: 'var(--text)' }}>TheSuperFunded</div>
               <div className="text-xs leading-relaxed" style={{ color: 'var(--text-muted)' }}>
                 CUI: RO00000000<br />
                 București, România<br />

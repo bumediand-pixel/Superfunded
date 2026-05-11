@@ -153,7 +153,7 @@ export default function SectionsRest() {
         <H2>9. Drepturi de proprietate intelectuală</H2>
 
         <P>Tot conținutul și materialele de pe site-ul și serviciile SuperFunded — inclusiv text, sigle, grafice, imagini, software
-          și elemente de design — sunt proprietatea intelectuală a SuperFunded SRL sau a licențiatorilor săi și sunt protejate de
+          și elemente de design — sunt proprietatea intelectuală a TheSuperFunded sau a licențiatorilor săi și sunt protejate de
           legi privind drepturile de autor, mărcile și alte drepturi de proprietate intelectuală aplicabile.</P>
 
         <P>Folosind Site-ul, SuperFunded îți acordă o licență limitată, neexclusivă, netransferabilă și revocabilă pentru a accesa
@@ -205,7 +205,7 @@ export default function SectionsRest() {
       <section>
         <H2>11. Limitarea răspunderii</H2>
 
-        <P>În măsura maximă permisă de lege, SuperFunded SRL și afiliații, ofițerii, angajații, agenții, partenerii și
+        <P>În măsura maximă permisă de lege, TheSuperFunded și afiliații, ofițerii, angajații, agenții, partenerii și
           licențiatorii săi nu sunt responsabili pentru daune indirecte, incidentale, speciale, consecvente sau punitive
           rezultate din sau legate de utilizarea (sau imposibilitatea de a utiliza) Serviciul. Aceasta include pierderi de
           profit, venit, date, întreruperi de afaceri sau alte intangibile, chiar dacă am fost avizați de posibilitatea acestora.</P>
@@ -237,7 +237,7 @@ export default function SectionsRest() {
       <section>
         <H2>12. Despăgubiri</H2>
 
-        <P>Ești de acord să despăgubești, să aperi și să exonerezi SuperFunded SRL și societatea-mamă, afiliații, partenerii,
+        <P>Ești de acord să despăgubești, să aperi și să exonerezi TheSuperFunded și societatea-mamă, afiliații, partenerii,
           ofițerii, directorii, agenții, angajații și reprezentanții săi împotriva oricăror pretenții, cereri, cauze de acțiune,
           răspunderi, pierderi sau cheltuieli (inclusiv onorarii rezonabile de avocați și costuri) rezultate din: (a) folosirea
           Site-ului sau Serviciului; (b) încălcarea oricărei prevederi a acestor Termeni; (c) încălcarea oricărei legi sau a

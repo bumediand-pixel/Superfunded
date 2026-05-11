@@ -5,7 +5,7 @@ const TESTIMONIALE = [
   { nume: 'Andrei M.', loc: 'Cluj-Napoca', sport: 'Fotbal', roi: '+24%', text: 'Am trecut evaluarea în 18 zile pariind exclusiv pe Premier League. Retragerea de €800 a ajuns în cont în 24 ore.', initiale: 'AM' },
   { nume: 'Cristina P.', loc: 'București', sport: 'Tenis', roi: '+31%', text: 'Ca analistă de tenis, platforma mi-a oferit capitalul de care aveam nevoie fără riscul personal. Recomand tuturor!', initiale: 'CP' },
   { nume: 'Mihai D.', loc: 'Timișoara', sport: 'Baschet', roi: '+19%', text: 'Procesul de KYC a durat 2 zile, apoi am primit contul de €10.000. Suportul răspunde în minute.', initiale: 'MD' },
-  { nume: 'Radu T.', loc: 'Iași', sport: 'MMA', roi: '+42%', text: 'Cel mai bun ROI în luna UFC 300. Am retras €1.680 profit în prima săptămână ca bettor finanțat.', initiale: 'RT' },
+  { nume: 'Radu T.', loc: 'Iași', sport: 'MMA', roi: '+42%', text: 'Cel mai bun ROI în luna UFC 300. Am retras €1.680 profit în prima săptămână ca picker finanțat.', initiale: 'RT' },
   { nume: 'Elena V.', loc: 'Brașov', sport: 'Fotbal', roi: '+28%', text: 'Regulile sunt clare și corecte. Nu există surprize neplăcute. Exact ce căutam de ani de zile.', initiale: 'EV' },
   { nume: 'Bogdan L.', loc: 'Constanța', sport: 'Rugby', roi: '+35%', text: 'Am luat planul Elite și a meritat fiecare euro. Capitalul de €50K mi-a permis să aplic strategii noi.', initiale: 'BL' },
 ];
@@ -20,7 +20,7 @@ export default function TestimonialeSection() {
             Testimoniale
           </span>
           <h2 className="text-4xl md:text-5xl font-extrabold tracking-tight mb-4" style={{ color: 'var(--text)' }}>
-            Bettori finanțați reali
+            Pickeri finanțați reali
           </h2>
           <p className="text-lg" style={{ color: 'var(--text-muted)' }}>
             Rezultate reale de la comunitatea SuperFunded

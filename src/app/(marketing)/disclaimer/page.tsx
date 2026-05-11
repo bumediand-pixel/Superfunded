@@ -90,7 +90,7 @@ export default function DisclaimerPage() {
 
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>6. LIMITAREA RĂSPUNDERII</h2>
-            <p>În măsura maximă permisă de lege, SuperFunded SRL exclude orice răspundere pentru:</p>
+            <p>În măsura maximă permisă de lege, TheSuperFunded exclude orice răspundere pentru:</p>
             <ul className="list-none mt-3 space-y-2">
               {[
                 'Pierderi financiare cauzate de decizii luate pe baza informațiilor de pe platformă',
@@ -109,7 +109,7 @@ export default function DisclaimerPage() {
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>7. CONTACT</h2>
             <div className="p-4 font-semibold text-xs space-y-1" style={{ background: '#ffffff', border: '1px solid var(--border, #e2e8f0)', color: 'var(--text-muted, #64748b)' }}>
-              <div>SuperFunded SRL</div>
+              <div>TheSuperFunded</div>
               <div>Email: support@thesuperfunded.com</div>
               <div>România</div>
             </div>

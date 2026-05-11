@@ -1,9 +1,9 @@
 const ITEMS = [
   'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
-  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
+  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Pickeri Activi',
   'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
   'Fotbal', '€1.2M+ Profit Plătit', 'Tenis', 'Capital până la €50.000',
-  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Bettori Activi',
+  'Baschet', '80% Split Profit', 'MMA / UFC', '2.400+ Pickeri Activi',
   'Rugby', 'Fără Limită de Timp', 'Hochei', 'Retrageri Săptămânale',
 ];
 

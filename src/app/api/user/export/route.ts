@@ -35,7 +35,7 @@ export async function GET() {
     exportType: 'GDPR Article 20 — Data Portability',
     exportedAt: new Date().toISOString(),
     operator: {
-      name: 'SuperFunded SRL',
+      name: 'TheSuperFunded',
       country: 'România',
       contact: 'gdpr@thesuperfunded.com',
     },

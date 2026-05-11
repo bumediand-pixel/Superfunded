@@ -50,7 +50,7 @@ export default function RegisterPage() {
             <span className="font-black text-white text-lg">SuperFunded</span>
           </Link>
           <h1 className="text-3xl font-black text-white">Creează cont</h1>
-          <p className="text-white/50 mt-2">Alătură-te celor 2.400+ bettori finanțați</p>
+          <p className="text-white/50 mt-2">Alătură-te celor 2.400+ pickeri finanțați</p>
         </div>
 
         <div className="bg-[#141414] border border-white/10 rounded-2xl p-8">

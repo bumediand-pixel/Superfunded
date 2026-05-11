@@ -11,7 +11,8 @@
  * (only one pick per match in the slip).
  */
 import type { OddsEvent } from '@/lib/odds-api';
-import { Clock } from 'lucide-react';
+import { Clock, ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 export type Pick = {
   eventId: string;
@@ -66,7 +67,7 @@ export default function MatchCard({ event, selectedSelection, onPick }: Props) {
     <div className="rounded-xl p-3 sm:p-4 transition-colors hover:bg-white/[0.03]"
       style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
 
-      {/* Header: teams + kickoff */}
+      {/* Header: teams + kickoff + details link */}
       <div className="flex items-center justify-between gap-3 mb-3">
         <div className="min-w-0 flex-1">
           <div className="text-white font-semibold text-sm sm:text-[15px] truncate">{eveniment}</div>
@@ -77,6 +78,14 @@ export default function MatchCard({ event, selectedSelection, onPick }: Props) {
             <span className="truncate">{event.sport_title}</span>
           </div>
         </div>
+        <Link
+          href={`/dashboard/pariuri/${event.id}?sport=${event.sport_key}`}
+          aria-label="Vezi detalii meci"
+          className="flex-shrink-0 inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-md transition-colors"
+          style={{ color: 'var(--dash-text-muted)', background: 'var(--dash-overlay-4)' }}>
+          Detalii
+          <ChevronRight className="w-3 h-3" />
+        </Link>
       </div>
 
       {/* Market row 1: 1X2 */}

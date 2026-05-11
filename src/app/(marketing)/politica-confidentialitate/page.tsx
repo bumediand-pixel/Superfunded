@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Politica de Confidențialitate — SuperFunded',
   description:
-    'Politica GDPR a SuperFunded SRL: operatorul de date, temeiurile legale Art. 6 GDPR, categorii de date, persoane împuternicite, drepturi ANSPDCP, retenție și DPO.',
+    'Politica GDPR a TheSuperFunded: operatorul de date, temeiurile legale Art. 6 GDPR, categorii de date, persoane împuternicite, drepturi ANSPDCP, retenție și DPO.',
 };
 
 const LAST_UPDATED = new Date().toISOString().slice(0, 10); // dynamic per build
@@ -37,7 +37,7 @@ export default function PoliticaConfidentialitatePage() {
         <section>
           <h2>1. Operatorul de date</h2>
           <p>
-            <strong>SuperFunded SRL</strong> — societate cu răspundere limitată, înregistrată în
+            <strong>TheSuperFunded</strong> — societate cu răspundere limitată, înregistrată în
             România, cu sediul social în [REPLACE: adresă completă], CUI [REPLACE], înregistrată
             la Registrul Comerțului sub J[REPLACE]. Suntem operatorul de date personale în
             sensul Regulamentului (UE) 2016/679 („GDPR”) și al Legii 190/2018 pentru toate

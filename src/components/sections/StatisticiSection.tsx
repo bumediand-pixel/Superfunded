@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { useCounterAnimation } from '@/components/animations/useScrollAnimations';
 
 const STATS = [
-  { count: 2400,    suffix: '+',  label: 'Bettori Activi',   sub: 'conturi active' },
+  { count: 2400,    suffix: '+',  label: 'Pickeri Activi',   sub: 'conturi active' },
   { count: 1200000, suffix: '€',  label: 'Profit Plătit',    sub: 'total distribuit', highlight: true },
   { count: 9,       suffix: '',   label: 'Sporturi',          sub: 'piețe disponibile' },
   { count: 94,      suffix: '%',  label: 'Rată Satisfacție',  sub: 'sondaj intern 2024' },

@@ -37,7 +37,7 @@ export default function TermeniSiConditiiPage() {
         <section>
           <h2>1. Părțile contractului</h2>
           <p>
-            Prezentele condiții reglementează raportul juridic dintre <strong>SuperFunded SRL</strong>,
+            Prezentele condiții reglementează raportul juridic dintre <strong>TheSuperFunded</strong>,
             persoană juridică română cu sediul în [REPLACE], CUI [REPLACE], înregistrată la
             Registrul Comerțului sub J[REPLACE] („SuperFunded”, „noi”) și utilizatorul persoană
             fizică majoră („Utilizatorul”, „tu”) care accesează platforma <em>thesuperfunded.com</em>.
@@ -199,7 +199,7 @@ export default function TermeniSiConditiiPage() {
             </li>
             <li>
               <strong>Instanțe de drept comun</strong> — judecătorul competent este cel de
-              la sediul SuperFunded SRL, fără a se aduce atingere drepturilor imperative ale
+              la sediul TheSuperFunded, fără a se aduce atingere drepturilor imperative ale
               consumatorului român de a sesiza instanța de la domiciliul său.
             </li>
           </ul>
