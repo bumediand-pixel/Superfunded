@@ -37,7 +37,7 @@ export default function SectionsFinal() {
         <H3>Scop informațional general</H3>
         <P>Conținutul și informațiile oferite de SuperFunded (pe site, blog, comunicări etc.) sunt exclusiv în scopuri
           informaționale și educaționale generale. Nimic de pe platformă nu reprezintă o recomandare specifică, susținere sau
-          promovare a unei investiții, strategii de pariere sau a unui instrument financiar anume. Nu oferim consiliere
+          promovare a unei investiții, strategii de predicție sau a unui instrument financiar anume. Nu oferim consiliere
           personalizată de investiții ori de pariere; orice decizii pe care le iei în challenge-uri sau în pariurile reale sunt
           exclusiv responsabilitatea ta.</P>
 
@@ -57,7 +57,7 @@ export default function SectionsFinal() {
         <H3>Nu este o ofertă de investiție</H3>
         <P>Nimic de pe Site nu reprezintă o solicitare sau ofertă din partea SuperFunded de a cumpăra ori vinde un instrument
           financiar, de a face o investiție sau de a participa la pariere ori tranzacționare reală cu bani. Challenge-urile
-          oferite sunt simulări și nu implică plasarea efectivă de bani pe pariuri reale prin platforma noastră. Orice mențiune
+          oferite sunt simulări și nu implică plasarea efectivă de bani pe pick-uri simulate prin platforma noastră. Orice mențiune
           de „recompense” sau plăți se referă la plățile noastre către utilizatori la finalizarea cu succes a etapelor de
           evaluare, nu la câștiguri din pariuri plasate.</P>
 
@@ -90,7 +90,7 @@ export default function SectionsFinal() {
 
         <H3>Nu este o ofertă unde este interzis</H3>
         <P>Informațiile și serviciile SuperFunded sunt nule unde sunt interzise de lege. Dacă te afli într-o locație unde
-          utilizarea serviciului este ilegală sau challenge-urile noastre ar fi considerate jocuri de noroc neautorizate
+          utilizarea serviciului este ilegală sau challenge-urile noastre ar fi considerate servicii de evaluare neautorizate
           conform legilor locale, NU folosi Site-ul. Este responsabilitatea ta să te asiguri că folosirea SuperFunded respectă
           legile aplicabile ție.</P>
 
@@ -113,7 +113,7 @@ export default function SectionsFinal() {
           oprește-te și caută sprijin. Bunăstarea ta e mai importantă decât orice challenge.</P>
 
         <P>Recunoscând acest Avertisment de Risc, confirmi că ai citit și înțeles riscurile implicate de serviciile SuperFunded
-          și de pariurile sportive în general. Pariază responsabil. Dacă tu sau cineva pe care îl cunoști are o problemă cu
+          și de pariurile sportive în general. Folosește responsabil platforma. Dacă tu sau cineva pe care îl cunoști are o problemă cu
           jocurile de noroc, te îndemnăm să cauți ajutor de la organizații profesioniste de sprijin (de ex.
           jocresponsabil.ro).</P>
       </section>

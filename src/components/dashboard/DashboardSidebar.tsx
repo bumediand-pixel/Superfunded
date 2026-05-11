@@ -3,13 +3,14 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
-  LayoutDashboard, Target, BarChart3, Wallet, Users, ShieldCheck, Settings, LogOut, Menu, X,
+  LayoutDashboard, Target, Ticket, BarChart3, Wallet, Users, ShieldCheck, Settings, LogOut, Menu, X,
 } from 'lucide-react';
 import BrandLogo from '@/components/BrandLogo';
 
 const NAV = [
   { href: '/dashboard',           label: 'Dashboard',  icon: LayoutDashboard },
-  { href: '/dashboard/pariuri',   label: 'Picks',      icon: Target },
+  { href: '/dashboard/pariuri',   label: 'Pariuri',    icon: Target },
+  { href: '/dashboard/bilete',    label: 'Bilete',     icon: Ticket },
   { href: '/dashboard/statistici',label: 'Statistici', icon: BarChart3 },
   { href: '/dashboard/retrageri', label: 'Retrageri',  icon: Wallet },
   { href: '/dashboard/afiliere',  label: 'Afiliere',   icon: Users },

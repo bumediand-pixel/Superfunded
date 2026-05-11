@@ -62,11 +62,11 @@ export default function SectionsRest() {
 
         <H3>Scopuri ilegale</H3>
         <P>Nu folosi SuperFunded pentru orice scop ilegal sau pentru a sprijini orice activitate ilegală — inclusiv eludarea
-          legilor de jocuri de noroc, fraudă sau infracțiuni prin platforma noastră.</P>
+          legilor de servicii de evaluare, fraudă sau infracțiuni prin platforma noastră.</P>
 
         <H3>Solicitarea de fapte ilegale</H3>
         <P>Nu solicita și nu încuraja pe alții să comită ori să participe la fapte ilegale. De exemplu, nu poți folosi forumurile
-          noastre (dacă există) pentru a încuraja jocuri de noroc ilegale sau partajarea de informații confidențiale.</P>
+          noastre (dacă există) pentru a încuraja servicii de evaluare ilegale sau partajarea de informații confidențiale.</P>
 
         <H3>Încălcări regulamentare</H3>
         <P>Nu folosi Site-ul într-un mod care ar încălca legi sau regulamente locale, naționale ori internaționale. Tu ești
@@ -213,7 +213,7 @@ export default function SectionsRest() {
         <P>În particular, SuperFunded nu va răspunde pentru:</P>
         <ul className="list-disc pl-6 space-y-1.5 mb-3">
           <li>Eșecul tău de a finaliza un challenge sau revocarea unui cont finanțat din cauza încălcării regulilor.</li>
-          <li>Orice decizie pe care o iei pe baza informațiilor obținute prin Site (inclusiv în pariuri reale în afara SuperFunded).</li>
+          <li>Orice decizie pe care o iei pe baza informațiilor obținute prin Site (inclusiv în pick-uri simulate în afara SuperFunded).</li>
           <li>Suspendarea sau închiderea contului în conformitate cu acești Termeni.</li>
           <li>Down-time, erori de server, pierdere de date sau întreruperi care îți pot afecta capacitatea de a folosi Serviciul.</li>
           <li>Evenimente în afara controlului nostru rezonabil — calamități, întreruperi de curent, atacuri cibernetice, război,

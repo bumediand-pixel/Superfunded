@@ -58,7 +58,10 @@ export default function PariuriPage() {
   const [loadingEvents, setLoadingEvents] = useState(true);
   // Superbet-style sub-tab (Calendar / Competiții / Social) + filters
   const [view, setView] = useState<'calendar' | 'competitii' | 'social'>('calendar');
-  const [dateFilter, setDateFilter] = useState<'live' | 'today' | 'tomorrow' | 'all'>('all');
+  // Date filter: 'yday' | 'today' | 'tomorrow' | 'd+2' | 'd+3' | 'd+4' | 'all'
+  const [dateFilter, setDateFilter] = useState<'yday' | 'today' | 'tomorrow' | 'd+2' | 'd+3' | 'd+4' | 'all'>('all');
+  // Status filter overlays: 'rezultate' | 'live' | 'urmeaza' | '' (none)
+  const [statusFilter, setStatusFilter] = useState<'' | 'rezultate' | 'live' | 'urmeaza'>('');
   const [query, setQuery] = useState('');
 
   const [picks, setPicks] = useState<Pick[]>([]);
@@ -149,28 +152,44 @@ export default function PariuriPage() {
     return map;
   }, [picks]);
 
-  // Apply date filter + free-text team search to events.
+  // Apply date filter + status filter + free-text team search to events.
   const filteredEvents = useMemo(() => {
     const now = Date.now();
-    const startOfToday    = new Date(); startOfToday.setHours(0, 0, 0, 0);
-    const startOfTomorrow = new Date(startOfToday); startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
-    const endOfTomorrow   = new Date(startOfTomorrow); endOfTomorrow.setDate(endOfTomorrow.getDate() + 1);
+    const startOfToday = new Date(); startOfToday.setHours(0, 0, 0, 0);
+    const dayMs = 86_400_000;
     const q = query.trim().toLowerCase();
+
+    // Determine date range [from, to) based on dateFilter.
+    let from = -Infinity;
+    let to = Infinity;
+    const day = (offset: number) => startOfToday.getTime() + offset * dayMs;
+    if      (dateFilter === 'yday')     { from = day(-1); to = day(0); }
+    else if (dateFilter === 'today')    { from = day(0);  to = day(1); }
+    else if (dateFilter === 'tomorrow') { from = day(1);  to = day(2); }
+    else if (dateFilter === 'd+2')      { from = day(2);  to = day(3); }
+    else if (dateFilter === 'd+3')      { from = day(3);  to = day(4); }
+    else if (dateFilter === 'd+4')      { from = day(4);  to = day(5); }
 
     return events.filter(ev => {
       const t = new Date(ev.commence_time).getTime();
-      if (dateFilter === 'live') {
-        // Heuristic: kickoff already happened but is within last 3h.
+      if (t < from || t >= to) return false;
+
+      // Status overlay (independent of date pick).
+      if (statusFilter === 'rezultate') {
+        // Already finished — kickoff >3h in the past.
+        if (!(t < now - 3 * 60 * 60 * 1000)) return false;
+      } else if (statusFilter === 'live') {
+        // In play: kickoff within the last 3h.
         if (!(t <= now && now - t < 3 * 60 * 60 * 1000)) return false;
-      } else if (dateFilter === 'today') {
-        if (t < startOfToday.getTime() || t >= startOfTomorrow.getTime()) return false;
-      } else if (dateFilter === 'tomorrow') {
-        if (t < startOfTomorrow.getTime() || t >= endOfTomorrow.getTime()) return false;
+      } else if (statusFilter === 'urmeaza') {
+        // Future kickoff.
+        if (t <= now) return false;
       }
+
       if (q && !`${ev.home_team} ${ev.away_team}`.toLowerCase().includes(q)) return false;
       return true;
     });
-  }, [events, dateFilter, query]);
+  }, [events, dateFilter, statusFilter, query]);
 
   /* ---------- Render ---------- */
 
@@ -224,24 +243,60 @@ export default function PariuriPage() {
           })}
         </div>
 
-        {/* Filter strip: date chips + search — only for Calendar view */}
+        {/* Filter strip: date chips + status chips + search — only for Calendar view */}
         {view === 'calendar' && (
-        <div className="mt-3 flex items-center gap-2 flex-wrap">
-          <div className="flex gap-1.5 -mx-1 sm:mx-0 overflow-x-auto px-1 sm:px-0">
-            {([
-              { key: 'live',     label: 'Live',    icon: Zap },
-              { key: 'today',    label: 'Astăzi',  icon: Calendar },
-              { key: 'tomorrow', label: 'Mâine',   icon: Calendar },
-              { key: 'all',      label: 'Toate',   icon: null },
-            ] as const).map(f => {
+        <>
+        {/* Date row */}
+        <div className="mt-3 -mx-4 sm:mx-0 px-4 sm:px-0 overflow-x-auto">
+          <div className="flex gap-1.5 min-w-max">
+            {(() => {
+              const today = new Date();
+              const dayLabel = (offset: number) => {
+                const d = new Date(today); d.setDate(today.getDate() + offset);
+                return d.toLocaleDateString('ro-RO', { weekday: 'short', day: '2-digit', month: 'short' });
+              };
+              return [
+                { key: 'yday',     label: 'Ieri' },
+                { key: 'today',    label: 'Astăzi' },
+                { key: 'tomorrow', label: 'Mâine' },
+                { key: 'd+2',      label: dayLabel(2) },
+                { key: 'd+3',      label: dayLabel(3) },
+                { key: 'd+4',      label: dayLabel(4) },
+                { key: 'all',      label: 'Toate' },
+              ] as const;
+            })().map(f => {
               const on = dateFilter === f.key;
-              const Icon = f.icon;
               return (
                 <button key={f.key} type="button" onClick={() => setDateFilter(f.key)}
-                  className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all"
+                  className="inline-flex items-center px-3.5 h-8 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all"
                   style={on
                     ? { background: 'rgba(230,57,70,0.15)', color: '#ff8a93', border: '1px solid rgba(230,57,70,0.35)' }
                     : { background: 'var(--dash-overlay-3)', color: 'var(--dash-text-60)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }
+                  }>
+                  {f.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Status row */}
+        <div className="mt-2 flex items-center gap-2 flex-wrap">
+          <div className="flex gap-1.5 -mx-1 sm:mx-0 overflow-x-auto px-1 sm:px-0">
+            {([
+              { key: 'rezultate', label: 'Rezultate', icon: null },
+              { key: 'live',      label: 'Live',      icon: Zap },
+              { key: 'urmeaza',   label: 'Urmează',   icon: Calendar },
+            ] as const).map(f => {
+              const on = statusFilter === f.key;
+              const Icon = f.icon;
+              return (
+                <button key={f.key} type="button"
+                  onClick={() => setStatusFilter(on ? '' : f.key)}
+                  className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all"
+                  style={on
+                    ? { background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 4px 12px rgba(230,57,70,0.28)' }
+                    : { background: 'var(--dash-overlay-3)', color: 'var(--dash-text-60)', border: '1px solid var(--dash-border)' }
                   }>
                   {Icon && <Icon className="w-3 h-3" />}
                   {f.label}
@@ -267,6 +322,7 @@ export default function PariuriPage() {
             )}
           </div>
         </div>
+        </>
         )}
 
         {/* Competiții view — list of leagues with quick switch */}

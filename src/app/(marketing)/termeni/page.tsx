@@ -83,11 +83,11 @@ export default function TermeniPage() {
               susținut de capitalul SuperFunded — pariezi cu capitalul firmei și împarți profitul, fără să-ți riști banii proprii.</P>
 
             <H3>Nu suntem casă de pariuri sau platformă de investiții</H3>
-            <P>SuperFunded NU este o casă de pariuri, cazino sau operator de jocuri de noroc și nu acceptă, nici nu facilitează
+            <P>SuperFunded NU este o casă de pariuri, cazino sau operator de servicii de evaluare și nu acceptă, nici nu facilitează
               pariuri pe bani reali pe platforma proprie. Toate activitățile pe SuperFunded în fazele de evaluare se desfășoară cu
               valută virtuală (de ex. „profit points”) într-un mediu simulat care folosește cote sportive în timp real pentru
-              realism. Niciun pariu real nu este plasat prin SuperFunded — platforma e strict pentru evaluare și scop educațional.
-              Prin urmare, SuperFunded nu este reglementată ca serviciu de jocuri de noroc, iar pentru challenge-urile noastre nu
+              realism. Niciun pick simulat nu este plasat prin SuperFunded — platforma e strict pentru evaluare și scop educațional.
+              Prin urmare, SuperFunded nu este reglementată ca serviciu de servicii de evaluare, iar pentru challenge-urile noastre nu
               este necesară licență ONJN. Participarea la un challenge SuperFunded nu implică sfaturi de investiții sau servicii
               financiare.</P>
 
@@ -170,7 +170,7 @@ export default function TermeniPage() {
 
             <H3>Utilizare ilegală sau frauduloasă</H3>
             <P>Nu folosi SuperFunded pentru scopuri ilegale, inclusiv (fără limitare) spălare de bani, fraudă sau alte activități
-              criminale. Nu folosi platforma pentru a facilita ori promova jocuri de noroc ilegale.</P>
+              criminale. Nu folosi platforma pentru a facilita ori promova servicii de evaluare ilegale.</P>
 
             <H3>Exploatarea platformei</H3>
             <P>Nu exploata bug-uri, vulnerabilități, portițe sau erori. Folosirea de scripturi automate, bots, crawlere sau alte
