@@ -64,7 +64,7 @@ export default function MatchCard({ event, selectedSelection, onPick }: Props) {
 
   return (
     <div className="rounded-xl p-3 sm:p-4 transition-colors hover:bg-white/[0.03]"
-      style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
 
       {/* Header: teams + kickoff */}
       <div className="flex items-center justify-between gap-3 mb-3">
@@ -153,19 +153,19 @@ function OddBtn({ label, sub, price, active, onClick }: {
       onClick={onClick}
       className="flex items-center justify-between gap-2 rounded-lg px-3 py-2 transition-all cursor-pointer disabled:opacity-40 disabled:cursor-not-allowed"
       style={{
-        background: active ? 'var(--red, #e63946)' : 'rgba(255,255,255,0.04)',
+        background: active ? 'var(--red, #e63946)' : 'var(--dash-overlay-4)',
         color: '#fff',
-        border: `1px solid ${active ? 'var(--red, #e63946)' : 'rgba(255,255,255,0.08)'}`,
+        border: `1px solid ${active ? 'var(--red, #e63946)' : 'var(--dash-overlay-8)'}`,
         boxShadow: active ? '0 6px 16px rgba(230,57,70,0.32)' : 'none',
       }}>
       <div className="flex flex-col items-start min-w-0">
         <span className="text-[11px] font-semibold leading-tight truncate max-w-full text-left"
-          style={{ color: active ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.55)' }}>
+          style={{ color: active ? 'var(--dash-text-85)' : 'rgba(255,255,255,0.55)' }}>
           {label}
         </span>
         {sub && (
           <span className="text-[9px] uppercase tracking-wider leading-tight truncate max-w-full text-left"
-            style={{ color: active ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.4)' }}>
+            style={{ color: active ? 'var(--dash-text-70)' : 'var(--dash-text-40)' }}>
             {sub}
           </span>
         )}

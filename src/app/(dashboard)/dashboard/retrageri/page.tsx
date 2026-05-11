@@ -34,7 +34,7 @@ export default function RetrageriPage() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-3xl">
-        <div className="bg-[#141414] border border-white/10 rounded-2xl p-6">
+        <div className=" border border-white/10 rounded-2xl p-6">
           <h2 className="text-white font-black text-lg mb-6">Cerere Retragere</h2>
           <form onSubmit={handleRetragere} className="space-y-4">
             {msg && <div className={`rounded-xl p-3 text-sm ${msg.startsWith('Eroare') ? 'bg-red-500/10 border border-red-500/20 text-red-400' : 'bg-green-500/10 border border-green-500/20 text-green-400'}`}>{msg}</div>}
@@ -64,7 +64,7 @@ export default function RetrageriPage() {
             { icon: '💰', title: 'Minimum €50', desc: 'Suma minimă per retragere este de €50.' },
             { icon: '🔄', title: 'Prima retragere = rambursare taxă', desc: 'Prima retragere include automat taxa de evaluare plătită.' },
           ].map(item => (
-            <div key={item.title} className="bg-[#141414] border border-white/10 rounded-2xl p-5 flex gap-4">
+            <div key={item.title} className=" border border-white/10 rounded-2xl p-5 flex gap-4">
               <span className="text-2xl shrink-0">{item.icon}</span>
               <div>
                 <div className="text-white font-bold text-sm mb-1">{item.title}</div>

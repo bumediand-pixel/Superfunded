@@ -154,7 +154,7 @@ export default async function DashboardPage() {
 
         <Card title="Ultimele picks">
           {utilizator?.pariuri?.length ? (
-            <div className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+            <div className="divide-y" style={{ borderColor: 'var(--dash-overlay-5)' }}>
               {utilizator.pariuri.map(p => (
                 <div key={p.id} className="flex items-center justify-between py-2.5">
                   <div className="min-w-0 flex-1">
@@ -195,16 +195,16 @@ function KpiCard({
 }) {
   return (
     <div className="rounded-xl p-4"
-      style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
       <div className="flex items-center justify-between mb-2.5">
         <span className="text-[10px] font-bold tracking-widest uppercase text-white/40">{label}</span>
         <span className="w-7 h-7 rounded-md inline-flex items-center justify-center"
-          style={{ background: bg ?? 'rgba(255,255,255,0.04)', color: color ?? 'rgba(255,255,255,0.4)' }}>
+          style={{ background: bg ?? 'var(--dash-overlay-4)', color: color ?? 'var(--dash-text-40)' }}>
           <Icon className="w-3.5 h-3.5" />
         </span>
       </div>
       <div className="text-base sm:text-lg font-extrabold leading-tight"
-        style={{ color: muted ? 'rgba(255,255,255,0.5)' : color ?? '#fff' }}>
+        style={{ color: muted ? 'var(--dash-text-50)' : color ?? '#fff' }}>
         {value}
       </div>
       {sub && <div className="text-[11px] text-white/30 mt-1">{sub}</div>}
@@ -217,7 +217,7 @@ function Card({ title, subtitle, pulse, children }: {
 }) {
   return (
     <div className="rounded-2xl p-5 sm:p-6"
-      style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
       <div className="flex items-center justify-between mb-4">
         <h2 className="font-extrabold text-base text-white">{title}</h2>
         {subtitle && (

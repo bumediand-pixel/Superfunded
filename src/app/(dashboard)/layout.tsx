@@ -39,7 +39,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
       <DashboardSidebar email={user.email ?? ''} />
       <div className="lg:pl-64 flex flex-col min-h-screen">
         <header className="sticky top-0 z-30 flex items-center justify-between gap-3 px-4 lg:px-6 h-14 border-b backdrop-blur-md"
-          style={{ background: 'var(--dash-surface, rgba(13,13,13,0.85))', borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
+          style={{ background: 'var(--dash-surface, rgba(13,13,13,0.85))', borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
           {/* Spacer for mobile menu button (in DashboardSidebar) */}
           <div className="lg:hidden w-10" />
           <Link href="/dashboard" className="flex-1 lg:flex-none flex items-center gap-2 min-w-0">

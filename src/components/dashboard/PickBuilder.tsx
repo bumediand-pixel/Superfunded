@@ -127,10 +127,10 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
       onClick={onClose}>
       <div className="rounded-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto"
-        style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)' }}
+        style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border-2, var(--dash-overlay-10))' }}
         onClick={e => e.stopPropagation()}>
 
-        <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+        <div className="flex items-center justify-between p-5 border-b" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-8))' }}>
           <h2 className="text-xl font-extrabold text-white">Pick nou</h2>
           <button onClick={onClose} aria-label="Închide"
             className="text-white/40 hover:text-white p-1 cursor-pointer transition-colors">
@@ -157,7 +157,7 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
                 <select value={form.contId} onChange={e => setForm({ ...form, contId: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
                   {conturi.map(c => (
-                    <option key={c.id} value={c.id} className="bg-[#141414]">
+                    <option key={c.id} value={c.id} className="">
                       {c.plan} — €{c.capitalCurent.toFixed(2)} ({c.statusEvaluare})
                     </option>
                   ))}
@@ -168,13 +168,13 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
                 <DarkField label="Sport">
                   <select value={form.sport} onChange={e => setForm({ ...form, sport: e.target.value })}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
-                    {SPORTS.map(s => <option key={s.key} value={s.key} className="bg-[#141414]">{s.label}</option>)}
+                    {SPORTS.map(s => <option key={s.key} value={s.key} className="">{s.label}</option>)}
                   </select>
                 </DarkField>
                 <DarkField label="Tip pariu">
                   <select value={form.tipPariu} onChange={e => setForm({ ...form, tipPariu: e.target.value as typeof form.tipPariu })}
                     className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
-                    {TIPURI.map(t => <option key={t.val} value={t.val} className="bg-[#141414]">{t.label}</option>)}
+                    {TIPURI.map(t => <option key={t.val} value={t.val} className="">{t.label}</option>)}
                   </select>
                 </DarkField>
               </div>
@@ -182,7 +182,7 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
               <DarkField label="Piață">
                 <select value={form.piata} onChange={e => setForm({ ...form, piata: e.target.value })}
                   className="w-full bg-white/5 border border-white/10 rounded-lg px-3 py-2.5 text-white outline-none focus:border-red-500">
-                  {MARKETS.map(m => <option key={m} value={m} className="bg-[#141414]">{m}</option>)}
+                  {MARKETS.map(m => <option key={m} value={m} className="">{m}</option>)}
                 </select>
               </DarkField>
 
@@ -256,7 +256,7 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
               </div>
 
               {/* Live preview */}
-              <div className="rounded-xl p-4" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="rounded-xl p-4" style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
                 <div className="flex items-center gap-2 mb-3 text-xs font-bold text-white/40 uppercase tracking-widest">
                   <Calculator className="w-3.5 h-3.5" />
                   Preview

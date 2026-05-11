@@ -13,7 +13,7 @@ type Props = {
 export default function SportTabs({ active, onChange }: Props) {
   return (
     <div className="-mx-4 sm:-mx-6 px-4 sm:px-6 overflow-x-auto sticky top-0 z-20 backdrop-blur"
-      style={{ background: 'rgba(13,13,13,0.85)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'rgba(13,13,13,0.85)', borderBottom: '1px solid var(--dash-overlay-6)' }}>
       <div className="flex gap-1.5 py-3 min-w-max">
         {SPORTURI_DISPONIBILE.map(s => {
           const on = s.key === active;
@@ -25,7 +25,7 @@ export default function SportTabs({ active, onChange }: Props) {
               className="inline-flex items-center gap-2 px-3.5 h-9 rounded-full text-sm font-semibold whitespace-nowrap transition-all cursor-pointer"
               style={on
                 ? { background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 6px 18px rgba(230,57,70,0.32)' }
-                : { background: 'rgba(255,255,255,0.04)', color: 'rgba(255,255,255,0.7)', border: '1px solid rgba(255,255,255,0.08)' }
+                : { background: 'var(--dash-overlay-4)', color: 'var(--dash-text-70)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }
               }>
               <span aria-hidden>{s.icon}</span>
               {s.nume}

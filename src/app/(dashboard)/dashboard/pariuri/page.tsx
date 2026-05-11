@@ -185,7 +185,7 @@ export default function PariuriPage() {
             type="button"
             onClick={() => setShowHistory(v => !v)}
             className="inline-flex items-center gap-2 font-semibold text-xs sm:text-sm px-3 py-2 rounded-lg cursor-pointer"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff' }}>
+            style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))', color: '#fff' }}>
             <History className="w-4 h-4" />
             <span className="hidden sm:inline">Istoric</span>
             <span className="px-1.5 py-0.5 rounded text-[10px] font-extrabold"
@@ -214,7 +214,7 @@ export default function PariuriPage() {
                   className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all"
                   style={on
                     ? { background: 'rgba(230,57,70,0.15)', color: '#ff8a93', border: '1px solid rgba(230,57,70,0.35)' }
-                    : { background: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.06)' }
+                    : { background: 'var(--dash-overlay-3)', color: 'var(--dash-text-60)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }
                   }>
                   {Icon && <Icon className="w-3 h-3" />}
                   {f.label}
@@ -223,7 +223,7 @@ export default function PariuriPage() {
             })}
           </div>
           <div className="ml-auto flex items-center gap-2 flex-1 sm:flex-initial sm:w-64 rounded-full px-3 h-8"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }}>
             <Search className="w-3.5 h-3.5 text-white/40 flex-shrink-0" />
             <input
               type="text"
@@ -250,7 +250,7 @@ export default function PariuriPage() {
             </div>
           ) : filteredEvents.length === 0 ? (
             <div className="rounded-2xl p-12 text-center"
-              style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
               <div className="text-4xl mb-3">
                 {oddsStatus === 'unconfigured' ? '🔌'
                   : oddsStatus === 'upstream_error' ? '⚠️'
@@ -292,7 +292,7 @@ export default function PariuriPage() {
               <h2 className="text-white font-black text-lg">Istoric pick-uri</h2>
               <Link href="/api/pariuri/export" prefetch={false}
                 className="inline-flex items-center gap-2 font-semibold text-xs px-3 py-1.5 rounded-lg cursor-pointer"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff' }}>
+                style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))', color: '#fff' }}>
                 <Download className="w-3.5 h-3.5" />
                 Export CSV
               </Link>
@@ -302,8 +302,8 @@ export default function PariuriPage() {
                 Niciun pick plasat încă.
               </div>
             ) : (
-              <div className="rounded-xl overflow-hidden" style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
-                <ul className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+              <div className="rounded-xl overflow-hidden" style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
+                <ul className="divide-y" style={{ borderColor: 'var(--dash-overlay-5)' }}>
                   {pariuri.map(b => (
                     <li key={b.id} className="px-4 py-3 flex items-center gap-3">
                       <div className="flex-1 min-w-0">

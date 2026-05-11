@@ -93,7 +93,7 @@ export default function AccountActions({ cont }: { cont: Cont }) {
               style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}
               onClick={() => setShowScale(false)}>
               <div className="rounded-2xl max-w-md w-full p-6"
-                style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)' }}
+                style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border-2, var(--dash-overlay-10))' }}
                 onClick={e => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="text-lg font-extrabold text-white">Alege noul cont</h3>
@@ -108,7 +108,7 @@ export default function AccountActions({ cont }: { cont: Cont }) {
                   {upgradeTargets.map(t => (
                     <button key={t} onClick={() => handleScale(t)} disabled={busy === 'scale'}
                       className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-white cursor-pointer disabled:opacity-50 transition-colors"
-                      style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                      style={{ background: 'var(--dash-overlay-5)', border: '1px solid var(--dash-border-2, var(--dash-overlay-10))' }}>
                       <span className="font-bold">{TIER_LABEL[t]} cont</span>
                       <span className="text-xs text-white/50">→</span>
                     </button>

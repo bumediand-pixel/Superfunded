@@ -51,13 +51,13 @@ export default function StatisticiPage() {
           <p className="text-white/40 text-sm mt-1">Performanța ta pe pick-urile evaluate</p>
         </div>
         <div className="flex p-1 rounded-xl"
-          style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
           {(['7d', '30d', 'all'] as const).map(r => (
             <button key={r} onClick={() => setRange(r)}
               className="px-3 sm:px-4 py-2 text-xs font-bold rounded-lg cursor-pointer transition-all"
               style={range === r
                 ? { background: 'var(--red, #e63946)', color: 'white' }
-                : { background: 'transparent', color: 'rgba(255,255,255,0.5)' }}>
+                : { background: 'transparent', color: 'var(--dash-text-50)' }}>
               {r === '7d' ? '7 zile' : r === '30d' ? '30 zile' : 'Tot'}
             </button>
           ))}
@@ -78,13 +78,13 @@ export default function StatisticiPage() {
           const Icon = k.icon;
           return (
             <div key={k.label} className="rounded-xl p-3 sm:p-4"
-              style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
               <div className="flex items-center justify-between mb-2">
                 <span className="text-[9px] sm:text-[10px] font-bold tracking-widest uppercase text-white/40">{k.label}</span>
                 <Icon className="w-3.5 h-3.5 text-white/30" />
               </div>
               {loading ? (
-                <div className="h-7 w-14 rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+                <div className="h-7 w-14 rounded animate-pulse" style={{ background: 'var(--dash-overlay-5)' }} />
               ) : (
                 <div className="text-base sm:text-xl font-extrabold leading-tight"
                   style={{ color: k.color ?? '#fff' }}>{k.val}</div>
@@ -97,16 +97,16 @@ export default function StatisticiPage() {
 
       {/* Profit evolution */}
       <div className="rounded-2xl p-5 sm:p-6 mb-4"
-        style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+        style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
         <div className="flex items-center justify-between mb-5">
           <h2 className="font-extrabold text-base text-white">Evoluție profit</h2>
           <span className="text-xs text-white/40 uppercase tracking-wider">EUR · {range === '7d' ? '7 zile' : range === '30d' ? '30 zile' : 'Tot'}</span>
         </div>
         <div className="flex items-end gap-px h-40 sm:h-48 pb-px"
-          style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+          style={{ borderBottom: '1px solid var(--dash-overlay-6)' }}>
           {loading ? (
             Array.from({ length: 30 }).map((_, i) => (
-              <div key={i} className="flex-1 rounded-t" style={{ height: '20%', background: 'rgba(255,255,255,0.04)', minWidth: 3 }} />
+              <div key={i} className="flex-1 rounded-t" style={{ height: '20%', background: 'var(--dash-overlay-4)', minWidth: 3 }} />
             ))
           ) : evo.length === 0 ? (
             <div className="flex items-center justify-center w-full text-sm text-white/30">
@@ -149,7 +149,7 @@ export default function StatisticiPage() {
                     <span className="text-white/60 capitalize">{sport.replace(/_/g, ' ')}</span>
                     <span className="font-bold text-white">{t} <span className="text-white/40">({pct}%)</span></span>
                   </div>
-                  <div className="h-1.5 rounded-full" style={{ background: 'rgba(255,255,255,0.06)' }}>
+                  <div className="h-1.5 rounded-full" style={{ background: 'var(--dash-overlay-6)' }}>
                     <div className="h-full rounded-full" style={{ width: `${pct}%`, background: 'var(--red, #e63946)', transition: 'width 1s ease' }} />
                   </div>
                 </div>
@@ -164,7 +164,7 @@ export default function StatisticiPage() {
           ) : topPiete.length === 0 ? (
             <Empty text="Niciun pick înregistrat încă." />
           ) : (
-            <div className="divide-y" style={{ borderColor: 'rgba(255,255,255,0.05)' }}>
+            <div className="divide-y" style={{ borderColor: 'var(--dash-overlay-5)' }}>
               {topPiete.map(({ piata, count, pct }) => (
                 <div key={piata} className="flex items-center justify-between py-2.5 text-sm">
                   <span className="text-white/70">{piata}</span>
@@ -178,7 +178,7 @@ export default function StatisticiPage() {
 
       {!loading && !s && (
         <div className="mt-6 rounded-xl p-4 text-center text-xs text-white/40"
-          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid var(--dash-overlay-5)' }}>
           Statisticile se populează automat pe măsură ce plasezi picks. Mergi la <span className="text-white/70 font-bold">Picks</span> ca să începi.
         </div>
       )}
@@ -189,7 +189,7 @@ export default function StatisticiPage() {
 function Panel({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-2xl p-5 sm:p-6"
-      style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
+      style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
       <h2 className="font-extrabold text-base text-white mb-4">{title}</h2>
       {children}
     </div>
@@ -200,7 +200,7 @@ function SkeletonRows() {
   return (
     <div className="space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="h-6 rounded animate-pulse" style={{ background: 'rgba(255,255,255,0.05)' }} />
+        <div key={i} className="h-6 rounded animate-pulse" style={{ background: 'var(--dash-overlay-5)' }} />
       ))}
     </div>
   );

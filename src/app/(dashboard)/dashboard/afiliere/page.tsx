@@ -46,7 +46,7 @@ export default function AfiliereDashboard() {
   if (!afiliat) {
     return (
       <div className="p-4 sm:p-8">
-        <div className="bg-[#141414] border border-white/10 rounded-2xl p-6 sm:p-10 max-w-xl mx-auto text-center">
+        <div className=" border border-white/10 rounded-2xl p-6 sm:p-10 max-w-xl mx-auto text-center">
           <div className="text-5xl mb-4">🤝</div>
           <h1 className="text-2xl font-black text-white mb-3">Devino afiliat SuperFunded</h1>
           <p className="text-white/60 text-sm mb-6 leading-relaxed">
@@ -73,7 +73,7 @@ export default function AfiliereDashboard() {
       <p className="text-white/40 text-sm mb-6 sm:mb-8">Cod: <strong className="text-white font-mono">{afiliat.codReferral}</strong></p>
 
       {/* Link */}
-      <div className="bg-[#141414] border border-white/10 rounded-2xl p-4 sm:p-6 mb-5 sm:mb-6">
+      <div className=" border border-white/10 rounded-2xl p-4 sm:p-6 mb-5 sm:mb-6">
         <div className="flex items-center gap-2 text-xs font-bold tracking-widest uppercase text-white/40 mb-3">
           <LinkIcon className="w-3.5 h-3.5" />
           Link-ul tău de afiliat
@@ -104,7 +104,7 @@ export default function AfiliereDashboard() {
           const Icon = c.icon;
           return (
             <div key={c.label} className="rounded-xl p-3.5 sm:p-5"
-              style={{ background: '#141414', border: c.accent ? '1px solid rgba(34,197,94,0.3)' : '1px solid rgba(255,255,255,0.08)' }}>
+              style={{ background: 'var(--dash-surface, #141414)', border: c.accent ? '1px solid rgba(34,197,94,0.3)' : '1px solid var(--dash-overlay-8)' }}>
               <div className="flex items-center justify-between mb-1.5 sm:mb-2">
                 <span className="text-[10px] font-bold tracking-widest uppercase text-white/40">{c.label}</span>
                 <Icon className="w-3.5 h-3.5 text-white/30" />
@@ -117,7 +117,7 @@ export default function AfiliereDashboard() {
       </div>
 
       {/* Commission history */}
-      <div className="bg-[#141414] border border-white/10 rounded-2xl overflow-hidden">
+      <div className=" border border-white/10 rounded-2xl overflow-hidden">
         <div className="px-5 py-3 border-b border-white/5">
           <h2 className="text-white font-bold text-sm">Istoric comisioane</h2>
         </div>

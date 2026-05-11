@@ -109,7 +109,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
   const Body = (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-center justify-between px-4 h-12 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+      <div className="flex items-center justify-between px-4 h-12 border-b" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
         <div className="flex items-center gap-2">
           <span className="font-extrabold text-white text-sm">Bilet</span>
           {!empty && (
@@ -135,7 +135,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
             <p className="text-white/40 text-sm">Apasă pe o cotă pentru a adăuga pe bilet</p>
           </div>
         ) : picks.map(p => (
-          <div key={p.eventId} className="rounded-lg p-3" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div key={p.eventId} className="rounded-lg p-3" style={{ background: 'var(--dash-overlay-3)', border: '1px solid var(--dash-overlay-5)' }}>
             <div className="flex items-start justify-between gap-2 mb-1">
               <div className="text-xs text-white/50 truncate">{p.eveniment}</div>
               <button onClick={() => onRemove(p.eventId)} className="text-white/30 hover:text-red-400 cursor-pointer flex-shrink-0">
@@ -152,7 +152,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
 
       {/* Footer / submit */}
       {!empty && (
-        <div className="border-t p-4 space-y-3" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+        <div className="border-t p-4 space-y-3" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
           {/* Cont selector */}
           {conturi.length > 0 ? (
             <select
@@ -160,9 +160,9 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
               onChange={e => setContId(e.target.value)}
               aria-label="Selectează cont"
               className="w-full px-3 py-2 rounded-lg text-sm text-white"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+              style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }}>
               {conturi.map(c => (
-                <option key={c.id} value={c.id} className="bg-[#0d0d0d]">
+                <option key={c.id} value={c.id} className="">
                   {c.plan} · €{Number(c.capitalCurent).toLocaleString('ro-RO')}
                 </option>
               ))}
@@ -185,7 +185,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
               onChange={e => setStake(e.target.value)}
               placeholder="0.00"
               className="w-full px-3 py-2.5 rounded-lg text-base text-white font-bold"
-              style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+              style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }}
             />
           </div>
 
@@ -196,17 +196,17 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
                 key={v}
                 onClick={() => setStake(String(v))}
                 className="py-1.5 rounded text-xs font-semibold text-white/70 cursor-pointer hover:text-white"
-                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                style={{ background: 'var(--dash-overlay-4)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }}>
                 {v}€
               </button>
             ))}
           </div>
 
           {/* Summary */}
-          <div className="rounded-lg p-3 text-sm space-y-1.5" style={{ background: 'rgba(255,255,255,0.03)' }}>
+          <div className="rounded-lg p-3 text-sm space-y-1.5" style={{ background: 'var(--dash-overlay-3)' }}>
             <Row label="Cotă totală" value={totalCota.toFixed(2)} />
             <Row label="Sumă" value={`€${stakeNum.toFixed(2)}`} />
-            <div className="border-t pt-1.5 mt-1.5" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            <div className="border-t pt-1.5 mt-1.5" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
               <Row label="Câștig potențial" value={`€${potential.toFixed(2)}`} bold />
             </div>
           </div>
@@ -233,7 +233,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
     <>
       {/* Desktop right rail */}
       <aside className="hidden lg:flex flex-col fixed top-0 right-0 h-screen w-[340px] z-30"
-        style={{ background: '#0d0d0d', borderLeft: '1px solid rgba(255,255,255,0.06)' }}>
+        style={{ background: 'var(--dash-surface, #0d0d0d)', borderLeft: '1px solid var(--dash-overlay-6)' }}>
         {Body}
       </aside>
 
@@ -258,7 +258,7 @@ export default function BetSlip({ picks, onRemove, onClear, conturi, onPlaced }:
           <>
             <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-30" onClick={() => setOpenMobile(false)} />
             <div className="relative z-40 rounded-t-2xl max-h-[85vh] flex flex-col"
-              style={{ background: '#0d0d0d', border: '1px solid rgba(255,255,255,0.06)' }}>
+              style={{ background: 'var(--dash-surface, #0d0d0d)', border: '1px solid var(--dash-border, var(--dash-overlay-6))' }}>
               <button
                 onClick={() => setOpenMobile(false)}
                 aria-label="Închide bilet"

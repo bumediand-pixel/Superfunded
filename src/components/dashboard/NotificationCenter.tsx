@@ -80,9 +80,9 @@ export default function NotificationCenter() {
       {open && (
         <div className="fixed inset-0 z-[150]" onClick={() => setOpen(false)}>
           <div className="absolute right-4 top-16 w-80 max-w-[calc(100vw-2rem)] rounded-2xl overflow-hidden"
-            style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}
+            style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border-2, var(--dash-overlay-10))', boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}
             onClick={e => e.stopPropagation()}>
-            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.06)' }}>
+            <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
               <h3 className="text-sm font-bold text-white">Notificări</h3>
               <button onClick={() => setOpen(false)} aria-label="Închide" className="text-white/40 hover:text-white p-1 cursor-pointer">
                 <X className="w-4 h-4" />
@@ -93,7 +93,7 @@ export default function NotificationCenter() {
                 <div className="p-8 text-center text-white/40 text-sm">Nicio notificare încă.</div>
               ) : (
                 items.map(n => (
-                  <div key={n.id} className="px-4 py-3 border-b last:border-0" style={{ borderColor: 'rgba(255,255,255,0.04)' }}>
+                  <div key={n.id} className="px-4 py-3 border-b last:border-0" style={{ borderColor: 'var(--dash-overlay-4)' }}>
                     <div className="text-sm font-bold text-white">{n.title}</div>
                     <div className="text-xs text-white/60 mt-0.5">{n.body}</div>
                     <div className="text-[10px] text-white/30 mt-1">{new Date(n.ts).toLocaleString('ro-RO')}</div>
@@ -110,7 +110,7 @@ export default function NotificationCenter() {
         <div className="fixed bottom-4 right-4 z-[180] max-w-sm pointer-events-none"
           style={{ animation: 'sf-toast 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
           <div className="rounded-2xl p-4"
-            style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.1)', boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}>
+            style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border-2, var(--dash-overlay-10))', boxShadow: '0 24px 60px rgba(0,0,0,0.6)' }}>
             <div className="text-sm font-bold text-white">{toast.title}</div>
             <div className="text-xs text-white/60 mt-1">{toast.body}</div>
           </div>

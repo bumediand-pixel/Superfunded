@@ -53,7 +53,7 @@ export default function WelcomeTour({ hasActiveAccount = false }: { hasActiveAcc
     <div className="fixed inset-0 z-[200] flex items-center justify-center p-4"
       style={{ background: 'rgba(0,0,0,0.7)', backdropFilter: 'blur(4px)' }}>
       <div className="rounded-3xl max-w-md w-full p-6 sm:p-8 mx-auto"
-        style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.08)' }}>
+        style={{ background: 'var(--dash-surface, #141414)', border: '1px solid var(--dash-border, var(--dash-overlay-8))' }}>
 
         <div className="flex justify-end mb-2">
           <button onClick={dismiss} aria-label="Închide tutorial"
@@ -92,7 +92,7 @@ export default function WelcomeTour({ hasActiveAccount = false }: { hasActiveAcc
           {step > 0 && (
             <button onClick={() => setStep(step - 1)}
               className="flex-1 py-3 text-sm font-bold rounded-xl text-white cursor-pointer"
-              style={{ background: 'rgba(255,255,255,0.05)' }}>
+              style={{ background: 'var(--dash-overlay-5)' }}>
               Înapoi
             </button>
           )}

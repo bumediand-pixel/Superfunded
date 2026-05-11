@@ -38,7 +38,7 @@ export default function DashboardSidebar({ email }: { email: string }) {
         onClick={() => setOpen(true)}
         aria-label="Deschide meniu"
         className="lg:hidden fixed top-2.5 left-3 z-40 w-9 h-9 inline-flex items-center justify-center rounded-lg border"
-        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, rgba(255,255,255,0.1))' }}>
+        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, var(--dash-overlay-10))' }}>
         <Menu className="w-4 h-4 text-white" />
       </button>
 
@@ -55,11 +55,11 @@ export default function DashboardSidebar({ email }: { email: string }) {
       <aside
         className={`fixed top-0 left-0 z-50 h-screen w-64 flex flex-col border-r transition-transform duration-300 ease-out
           ${open ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0`}
-        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
+        style={{ background: 'var(--dash-surface, #0d0d0d)', borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
 
         {/* Header */}
         <div className="flex items-center justify-between px-5 h-16 border-b"
-          style={{ borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
+          style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
           <Link href="/dashboard" className="flex items-center" aria-label="SuperFunded — dashboard">
             <BrandLogo size={28} text variant="dark" />
           </Link>
@@ -82,7 +82,7 @@ export default function DashboardSidebar({ email }: { email: string }) {
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold transition-all"
                 style={active
                   ? { background: 'rgba(230,57,70,0.12)', color: '#fff', boxShadow: 'inset 2px 0 0 var(--red, #e63946)' }
-                  : { color: 'rgba(255,255,255,0.6)' }}>
+                  : { color: 'var(--dash-text-60)' }}>
                 <Icon className="w-4 h-4 flex-shrink-0" />
                 {item.label}
               </Link>
@@ -91,12 +91,12 @@ export default function DashboardSidebar({ email }: { email: string }) {
         </nav>
 
         {/* Footer / user */}
-        <div className="p-3 border-t" style={{ borderColor: 'var(--dash-border, rgba(255,255,255,0.06))' }}>
+        <div className="p-3 border-t" style={{ borderColor: 'var(--dash-border, var(--dash-overlay-6))' }}>
           <div className="px-3 py-2 mb-2 truncate text-xs text-white/40" title={email}>{email}</div>
           <form action="/api/auth/logout" method="POST">
             <button type="submit"
               className="w-full inline-flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-semibold cursor-pointer transition-colors"
-              style={{ color: 'rgba(255,255,255,0.6)' }}>
+              style={{ color: 'var(--dash-text-60)' }}>
               <LogOut className="w-4 h-4" />
               Logout
             </button>
