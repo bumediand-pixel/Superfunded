@@ -51,8 +51,9 @@ const SCENES = [
     sub: 'UFC · Bellator · ONE Championship · PFL',
     stat: '€1.2M+', statLabel: 'profit total plătit',
     accent: '#E63946',
-    img: 'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&w=1800&q=80',
-    fallback: 'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?auto=format&fit=crop&w=1800&q=80',
+    // Boxer in the ring under stage lighting — dramatic, unambiguously combat sport.
+    img: 'https://images.unsplash.com/photo-1591117207239-788bf8de6c3b?auto=format&fit=crop&w=1800&q=80',
+    fallback: 'https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&w=1800&q=80',
     icon: '🥊',
   },
 ];
@@ -228,9 +229,6 @@ export default function SportsCinematicSection() {
               }} />
           ))}
         </div>
-        <span className="text-[11px] uppercase tracking-[0.18em] font-semibold" style={{ color: 'rgba(255,255,255,0.5)' }}>
-          {paused ? 'pauză' : `auto · ${AUTOPLAY_MS / 1000}s`} · scroll ←→
-        </span>
       </div>
 
       {/* Desktop arrow buttons */}

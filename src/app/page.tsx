@@ -9,6 +9,7 @@ import MarqueeSection from '@/components/sections/MarqueeSection';
 import StatisticiSection from '@/components/sections/StatisticiSection';
 import CumFunctioneazaSection from '@/components/sections/CumFunctioneazaSection';
 import SportsCinematicSection from '@/components/sections/SportsCinematicSection';
+import DeCeSuperFundedSection from '@/components/sections/DeCeSuperFundedSection';
 import PlanuriSection from '@/components/sections/PlanuriSection';
 import LeaderboardSection from '@/components/sections/LeaderboardSection';
 import TestimonialeSection from '@/components/sections/TestimonialeSection';
@@ -49,6 +50,7 @@ export default function Home() {
         <StatisticiSection />
         <CumFunctioneazaSection />
         <SportsCinematicSection />
+        <DeCeSuperFundedSection />
         <PlanuriSection />
         <ScalingRoadmap />
         <TrustBadges />
