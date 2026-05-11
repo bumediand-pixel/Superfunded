@@ -217,8 +217,8 @@ export function H2({ children }: { children: React.ReactNode }) {
 export function H3({ children }: { children: React.ReactNode }) {
   return <h3 className="font-bold text-base mt-5 mb-2" style={{ color: 'var(--white-hi)' }}>{children}</h3>;
 }
-export function P({ children }: { children: React.ReactNode }) {
-  return <p className="mb-3">{children}</p>;
+export function P({ children, className }: { children: React.ReactNode; className?: string }) {
+  return <p className={`mb-3${className ? ` ${className}` : ''}`}>{children}</p>;
 }
 export function Mail() {
   return <a href="mailto:support@thesuperfunded.com" className="font-mono" style={{ color: 'var(--red)' }}>support@thesuperfunded.com</a>;
