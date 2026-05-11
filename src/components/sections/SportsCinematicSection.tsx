@@ -197,9 +197,9 @@ export default function SportsCinematicSection() {
   const accent = SCENES[activeIdx].accent;
 
   return (
-    <section className="relative" style={{ background: '#080808' }}>
+    <section className="relative" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
       <div className="absolute top-0 left-0 right-0 h-20 z-20 pointer-events-none"
-        style={{ background: 'linear-gradient(to bottom, #ffffff, transparent)' }} />
+        style={{ background: 'linear-gradient(to bottom, var(--bg-alt, #fbf8f6), transparent)' }} />
 
       <div
         ref={scrollerRef}
@@ -248,7 +248,7 @@ export default function SportsCinematicSection() {
       )}
 
       <div className="absolute bottom-0 left-0 right-0 h-20 z-10 pointer-events-none"
-        style={{ background: 'linear-gradient(to top, #ffffff, transparent)' }} />
+        style={{ background: 'linear-gradient(to top, var(--bg-alt, #fbf8f6), transparent)' }} />
     </section>
   );
 }
