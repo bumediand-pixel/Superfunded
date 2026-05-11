@@ -15,7 +15,7 @@
  */
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import Link from 'next/link';
-import { Loader2, History, Download, X } from 'lucide-react';
+import { Loader2, History, Download, X, Search, Calendar, Zap } from 'lucide-react';
 import SportTabs from '@/components/pariuri/SportTabs';
 import MatchCard, { type Pick } from '@/components/pariuri/MatchCard';
 import BetSlip from '@/components/pariuri/BetSlip';
@@ -55,6 +55,9 @@ export default function PariuriPage() {
   const [events, setEvents] = useState<OddsEvent[]>([]);
   const [oddsStatus, setOddsStatus] = useState<'ok' | 'empty' | 'unconfigured' | 'upstream_error'>('ok');
   const [loadingEvents, setLoadingEvents] = useState(true);
+  // Superbet-style filters
+  const [dateFilter, setDateFilter] = useState<'live' | 'today' | 'tomorrow' | 'all'>('all');
+  const [query, setQuery] = useState('');
 
   const [picks, setPicks] = useState<Pick[]>([]);
   const [conturi, setConturi] = useState<Cont[]>([]);
@@ -144,6 +147,29 @@ export default function PariuriPage() {
     return map;
   }, [picks]);
 
+  // Apply date filter + free-text team search to events.
+  const filteredEvents = useMemo(() => {
+    const now = Date.now();
+    const startOfToday    = new Date(); startOfToday.setHours(0, 0, 0, 0);
+    const startOfTomorrow = new Date(startOfToday); startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
+    const endOfTomorrow   = new Date(startOfTomorrow); endOfTomorrow.setDate(endOfTomorrow.getDate() + 1);
+    const q = query.trim().toLowerCase();
+
+    return events.filter(ev => {
+      const t = new Date(ev.commence_time).getTime();
+      if (dateFilter === 'live') {
+        // Heuristic: kickoff already happened but is within last 3h.
+        if (!(t <= now && now - t < 3 * 60 * 60 * 1000)) return false;
+      } else if (dateFilter === 'today') {
+        if (t < startOfToday.getTime() || t >= startOfTomorrow.getTime()) return false;
+      } else if (dateFilter === 'tomorrow') {
+        if (t < startOfTomorrow.getTime() || t >= endOfTomorrow.getTime()) return false;
+      }
+      if (q && !`${ev.home_team} ${ev.away_team}`.toLowerCase().includes(q)) return false;
+      return true;
+    });
+  }, [events, dateFilter, query]);
+
   /* ---------- Render ---------- */
 
   return (
@@ -172,6 +198,49 @@ export default function PariuriPage() {
         {/* Sport tabs (sticky) */}
         <SportTabs active={sport} onChange={setSport} />
 
+        {/* Filter strip: date chips + search */}
+        <div className="mt-3 flex items-center gap-2 flex-wrap">
+          <div className="flex gap-1.5 -mx-1 sm:mx-0 overflow-x-auto px-1 sm:px-0">
+            {([
+              { key: 'live',     label: 'Live',    icon: Zap },
+              { key: 'today',    label: 'Astăzi',  icon: Calendar },
+              { key: 'tomorrow', label: 'Mâine',   icon: Calendar },
+              { key: 'all',      label: 'Toate',   icon: null },
+            ] as const).map(f => {
+              const on = dateFilter === f.key;
+              const Icon = f.icon;
+              return (
+                <button key={f.key} type="button" onClick={() => setDateFilter(f.key)}
+                  className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full text-xs font-bold whitespace-nowrap cursor-pointer transition-all"
+                  style={on
+                    ? { background: 'rgba(230,57,70,0.15)', color: '#ff8a93', border: '1px solid rgba(230,57,70,0.35)' }
+                    : { background: 'rgba(255,255,255,0.03)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.06)' }
+                  }>
+                  {Icon && <Icon className="w-3 h-3" />}
+                  {f.label}
+                </button>
+              );
+            })}
+          </div>
+          <div className="ml-auto flex items-center gap-2 flex-1 sm:flex-initial sm:w-64 rounded-full px-3 h-8"
+            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+            <Search className="w-3.5 h-3.5 text-white/40 flex-shrink-0" />
+            <input
+              type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="Caută echipă…"
+              aria-label="Caută meci"
+              className="bg-transparent text-white text-xs placeholder:text-white/30 outline-none w-full"
+            />
+            {query && (
+              <button type="button" onClick={() => setQuery('')} aria-label="Șterge căutarea" className="text-white/40 hover:text-white">
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
+        </div>
+
         {/* Match list */}
         <div className="mt-4 space-y-2.5 pb-24 lg:pb-6">
           {loadingEvents ? (
@@ -179,17 +248,19 @@ export default function PariuriPage() {
               <Loader2 className="w-4 h-4 animate-spin" />
               <span className="text-sm">Se încarcă cotele live…</span>
             </div>
-          ) : events.length === 0 ? (
+          ) : filteredEvents.length === 0 ? (
             <div className="rounded-2xl p-12 text-center"
               style={{ background: '#141414', border: '1px solid rgba(255,255,255,0.06)' }}>
               <div className="text-4xl mb-3">
                 {oddsStatus === 'unconfigured' ? '🔌'
                   : oddsStatus === 'upstream_error' ? '⚠️'
+                  : events.length > 0 ? '🔍'
                   : '📭'}
               </div>
               <h3 className="text-white font-extrabold text-lg mb-1">
                 {oddsStatus === 'unconfigured' ? 'Cotele live nu sunt încă configurate'
                   : oddsStatus === 'upstream_error' ? 'Furnizorul de cote nu răspunde'
+                  : events.length > 0 ? 'Niciun meci care să corespundă filtrului'
                   : 'Niciun meci disponibil'}
               </h3>
               <p className="text-white/40 text-sm">
@@ -197,11 +268,13 @@ export default function PariuriPage() {
                   ? 'Setează ODDS_API_KEY în mediul Vercel pentru a porni feed-ul.'
                   : oddsStatus === 'upstream_error'
                   ? 'Reîncearcă în câteva minute.'
+                  : events.length > 0
+                  ? 'Schimbă filtrul de dată sau șterge căutarea.'
                   : 'Încearcă alt sport sau revino mai târziu.'}
               </p>
             </div>
           ) : (
-            events.map(ev => (
+            filteredEvents.map(ev => (
               <MatchCard
                 key={ev.id}
                 event={ev}

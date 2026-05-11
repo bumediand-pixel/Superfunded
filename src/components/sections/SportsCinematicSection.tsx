@@ -8,6 +8,12 @@ import { motion } from 'framer-motion';
  * Photos are sourced from Unsplash (free, royalty-free) and served via
  * their CDN with width/quality params to keep page weight reasonable.
  */
+/**
+ * NOTE on photos: each `img` is a primary Unsplash URL + a `fallback` we swap to
+ * if the primary 404s (Unsplash occasionally retires photos). All URLs were
+ * verified live before commit. If both fail, the panel still renders with the
+ * dark gradient + accent wash, never blank.
+ */
 const SCENES = [
   {
     sport: 'Fotbal',
@@ -15,8 +21,9 @@ const SCENES = [
     sub: 'Premier League · Champions League · La Liga',
     stat: '€50K', statLabel: 'capital maxim disponibil',
     accent: '#16a34a',
-    img: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=1800&q=80',
-    // ⚽ player striking a ball, packed stadium
+    img: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1800&q=80',
+    fallback: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1800&q=80',
+    icon: '⚽',
   },
   {
     sport: 'Tenis',
@@ -24,8 +31,9 @@ const SCENES = [
     sub: 'ATP · WTA · Wimbledon · Roland Garros',
     stat: '80%', statLabel: 'din profit îl păstrezi tu',
     accent: '#0284c7',
-    img: 'https://images.unsplash.com/photo-1622279457486-28f993f78165?auto=format&fit=crop&w=1800&q=80',
-    // 🎾 tennis player mid-serve under stadium lights
+    img: 'https://images.unsplash.com/photo-1554068865-24cecd4e34b8?auto=format&fit=crop&w=1800&q=80',
+    fallback: 'https://images.unsplash.com/photo-1622163642998-1ea32b0bbc67?auto=format&fit=crop&w=1800&q=80',
+    icon: '🎾',
   },
   {
     sport: 'Baschet',
@@ -33,8 +41,9 @@ const SCENES = [
     sub: 'NBA · Euroleague · competiții naționale',
     stat: '2.400+', statLabel: 'bettori finanțați activ',
     accent: '#ea580c',
-    img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1800&q=80',
-    // 🏀 player going up for a dunk
+    img: 'https://images.unsplash.com/photo-1577471488278-16eec37ffcc2?auto=format&fit=crop&w=1800&q=80',
+    fallback: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1800&q=80',
+    icon: '🏀',
   },
   {
     sport: 'MMA / UFC',
@@ -42,8 +51,9 @@ const SCENES = [
     sub: 'UFC · Bellator · ONE Championship · PFL',
     stat: '€1.2M+', statLabel: 'profit total plătit',
     accent: '#E63946',
-    img: 'https://images.unsplash.com/photo-1615117972428-28de87cd9082?auto=format&fit=crop&w=1800&q=80',
-    // 🥊 boxing/MMA gloves and fighter silhouette
+    img: 'https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&w=1800&q=80',
+    fallback: 'https://images.unsplash.com/photo-1599058917765-a780eda07a3e?auto=format&fit=crop&w=1800&q=80',
+    icon: '🥊',
   },
 ];
 
@@ -54,13 +64,21 @@ function SportPanel({ scene, active }: { scene: typeof SCENES[0]; active: boolea
     <div className="relative overflow-hidden flex-shrink-0 w-full snap-center"
       style={{ height: 'min(75vh, 720px)' }}>
 
-      {/* Real photo background — Ken-Burns zoom while active */}
-      <motion.div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${scene.img})` }}
+      {/* Real photo background — <img> with onError fallback so a dead Unsplash
+          URL silently swaps to the secondary photo instead of going blank. */}
+      <motion.img
+        src={scene.img}
+        alt=""
+        aria-hidden="true"
+        loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
         initial={false}
         animate={{ scale: active ? 1.08 : 1 }}
         transition={{ duration: 7, ease: 'easeOut' }}
+        onError={(e) => {
+          const img = e.currentTarget as HTMLImageElement;
+          if (scene.fallback && img.src !== scene.fallback) img.src = scene.fallback;
+        }}
       />
 
       {/* Cinematic dark overlays */}
@@ -70,9 +88,11 @@ function SportPanel({ scene, active }: { scene: typeof SCENES[0]; active: boolea
       <div className="absolute inset-0" style={{
         background: 'radial-gradient(ellipse 80% 70% at 50% 55%, transparent 30%, rgba(0,0,0,0.6) 100%)',
       }} />
-      {/* Accent color wash */}
+      {/* Accent color wash (TFP-style glow swoosh) */}
       <div className="absolute inset-0" style={{
-        background: `radial-gradient(ellipse 55% 45% at 50% 60%, ${scene.accent}33 0%, transparent 70%)`,
+        background: `radial-gradient(ellipse 55% 45% at 50% 60%, ${scene.accent}3a 0%, transparent 70%),
+                     radial-gradient(ellipse 30% 80% at 0% 100%, ${scene.accent}33 0%, transparent 60%),
+                     radial-gradient(ellipse 30% 80% at 100% 0%, ${scene.accent}33 0%, transparent 60%)`,
       }} />
 
       {/* Foreground content */}

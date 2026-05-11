@@ -109,7 +109,7 @@ First Load JS — verify it lands under ~110KB total (Next.js framework + the
   `src/app/layout.tsx` — no new fonts or providers added.
 - `lucide-react` was already a dependency (`^1.14.0`); no new packages required.
 - Tailwind v4 `@theme` tokens are global, but only consumed under
-  `.landing-dark` via `bg-[color:var(...)]` arbitrary values, so the rest of
+  `.landing-dark` via `bg-` arbitrary-value tokens, so the rest of
   the app still renders against `:root` light theme.
 - JSON-LD `Organization` and `FAQPage` are emitted at the bottom of `page.tsx`
   to enrich SERP appearance.
