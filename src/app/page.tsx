@@ -10,6 +10,7 @@ import StatisticiSection from '@/components/sections/StatisticiSection';
 import CumFunctioneazaSection from '@/components/sections/CumFunctioneazaSection';
 import SportsCinematicSection from '@/components/sections/SportsCinematicSection';
 import DeCeSuperFundedSection from '@/components/sections/DeCeSuperFundedSection';
+import ChapterLabel from '@/components/sections/ChapterLabel';
 import PlanuriSection from '@/components/sections/PlanuriSection';
 import LeaderboardSection from '@/components/sections/LeaderboardSection';
 import TestimonialeSection from '@/components/sections/TestimonialeSection';
@@ -45,20 +46,39 @@ export default function Home() {
     <>
       <Nav />
       <main>
+        {/* ── PILON 1 — Ce-ți oferim ── */}
         <HeroSection />
         <MarqueeSection />
+
+        {/* ── PILON 2 — De ce contează pentru tine ── */}
+        <ChapterLabel
+          number="02"
+          title="De ce să-ți pese"
+          sub="Pentru că nu mai pariezi cu banii tăi. Capitalul nostru elimină riscul, păstrezi controlul, iar profitul ajunge la tine în 24-48h."
+          variant="light"
+        />
         <StatisticiSection />
-        <CumFunctioneazaSection />
-        <SportsCinematicSection />
         <DeCeSuperFundedSection />
+        <SportsCinematicSection />
+
+        {/* ── PILON 3 — Ce urmează ── */}
+        <ChapterLabel
+          number="03"
+          title="Ce urmează după ce te înscrii"
+          sub="Trei pași clari: cumperi challenge-ul, treci evaluarea cu pick-uri câștigătoare, primești cont finanțat. Mai jos vezi exact cum decurge."
+          variant="light"
+        />
+        <CumFunctioneazaSection />
         <PlanuriSection />
         <ScalingRoadmap />
+        <CtaFinalSection />
+
+        {/* ── Detalii suplimentare (anti-obiecții) ── */}
         <TrustBadges />
         <LeaderboardSection />
         <ReviewsWidget />
         <TestimonialeSection />
         <FAQSection />
-        <CtaFinalSection />
       </main>
       <Footer />
       <PayoutTicker />
