@@ -38,6 +38,9 @@ export default function BrandLogo({ size = 32, text = false, variant = 'dark', c
 
   return (
     <span className={`inline-flex items-center gap-3 ${className}`}>
+      {/* Matches /public/favicon.svg + /src/app/icon.svg exactly — single
+          source of truth for the brand mark across browser tab, Google
+          snippet, OG cards, and in-page usage. */}
       <svg
         width={size}
         height={size}
@@ -45,29 +48,14 @@ export default function BrandLogo({ size = 32, text = false, variant = 'dark', c
         xmlns="http://www.w3.org/2000/svg"
         aria-label="SuperFunded"
         role="img">
-        {/* Hexagonal frame */}
-        <polygon
-          points="32,3 57,17 57,47 32,61 7,47 7,17"
-          fill="none"
-          stroke={superColor}
-          strokeWidth="4"
-          strokeLinejoin="miter"
-        />
-        {/* Upper hook of the S — angular bracket opening right */}
-        <path
-          d="M20 17 L44 17 L44 23 L28 23 L28 31 L20 31 Z"
-          fill={superColor}
-        />
-        {/* Lower hook of the S — angular bracket opening left */}
-        <path
-          d="M44 47 L20 47 L20 41 L36 41 L36 33 L44 33 Z"
-          fill={superColor}
-        />
-        {/* Red diagonal accent slashing through the centre */}
-        <path
-          d="M19 38 L45 22 L48 28 L22 44 Z"
-          fill={RED}
-        />
+        {/* Rounded dark tile */}
+        <rect width="64" height="64" rx="14" fill={variant === 'light' ? '#0a0a0a' : '#0a0a0a'} />
+        {/* Upper S hook */}
+        <path d="M16 16 H46 V24 H26 V30 H18 Z" fill="#ffffff" />
+        {/* Lower S hook (mirrored) */}
+        <path d="M48 48 H18 V40 H38 V34 H46 Z" fill="#ffffff" />
+        {/* Red diagonal wedge slicing through the centre */}
+        <path d="M14 42 L50 18 L53 24 L17 48 Z" fill={RED} />
       </svg>
 
       {text && (

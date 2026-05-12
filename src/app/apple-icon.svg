@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180" width="180" height="180" role="img" aria-label="TheSuperFunded">
+  <rect width="180" height="180" rx="40" fill="#0a0a0a"/>
+  <g transform="translate(22 22) scale(2.125)">
+    <path d="M16 16 H46 V24 H26 V30 H18 Z" fill="#ffffff"/>
+    <path d="M48 48 H18 V40 H38 V34 H46 Z" fill="#ffffff"/>
+    <path d="M14 42 L50 18 L53 24 L17 48 Z" fill="#E63946"/>
+  </g>
+</svg>

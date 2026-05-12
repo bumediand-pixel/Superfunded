@@ -32,18 +32,18 @@ export const metadata: Metadata = {
     locale: "ro_RO",
     url: SITE,
     siteName: "SuperFunded",
-    images: [{ url: "/og-image.svg", width: 1200, height: 630, alt: "SuperFunded — Faci pick-uri cu capitalul nostru" }],
+    // og-image is now generated dynamically by app/opengraph-image.tsx as PNG
+    // (some platforms — Twitter, LinkedIn — don't render SVG OG cards reliably).
+    // Next.js auto-wires it; we leave images empty here so the framework wins.
   },
   twitter: {
     card: "summary_large_image",
     title: "SuperFunded — Faci pick-uri cu capitalul nostru",
     description: "Capital până la €50.000. 80% profit split. 24-48h retrageri.",
-    images: ["/og-image.svg"],
   },
-  icons: {
-    icon: [{ url: "/favicon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/logo.svg" }],
-  },
+  // icons are auto-discovered from app/icon.svg + app/apple-icon.svg, so we
+  // don't override here. Keep this commented stub in case future PNG fallbacks
+  // need to be wired manually.
   robots: {
     index: true,
     follow: true,
