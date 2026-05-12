@@ -1,7 +1,25 @@
+/**
+ * Server-only Stripe client. Wrapped lazily so client components that
+ * import the pricing constants below don't trigger SDK instantiation in the
+ * browser (which crashes: "Neither apiKey nor config.authenticator provided").
+ *
+ * Use `getStripe()` from API routes / webhooks. The legacy `stripe` export is
+ * a Proxy that only resolves to the real client on first property access,
+ * which never happens in the browser.
+ */
 import Stripe from 'stripe';
 
-export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-04-22.dahlia' as any,
+let _stripe: Stripe | null = null;
+export function getStripe(): Stripe {
+  if (!_stripe) {
+    _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2026-04-22.dahlia' as any,
+    });
+  }
+  return _stripe;
+}
+export const stripe = new Proxy({} as Stripe, {
+  get(_t, prop) { return (getStripe() as any)[prop]; },
 });
 
 export type PlanId =
