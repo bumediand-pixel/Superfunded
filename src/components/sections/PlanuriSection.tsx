@@ -115,14 +115,15 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
 
   const handleBuy = async () => {
     try {
-      const res = await fetch('/api/checkout', {
+      const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planId, mode }),
       });
       const data = await res.json();
       if (data.url) window.location.href = data.url;
-      else alert(data.error || 'Nu am putut iniția plata. Asigură-te că ești autentificat.');
+      else if (res.status === 401) window.location.href = '/autentificare?redirect=/planuri';
+      else alert(data.error || 'Nu am putut iniția plata. Încearcă din nou.');
     } catch { alert('Eroare de rețea.'); }
   };
 
