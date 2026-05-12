@@ -6,7 +6,7 @@
  * Numerele de reguli mirror src/lib/stripe.ts rulesForMode().
  */
 import { useState } from 'react';
-import { Zap, Trophy, Info } from 'lucide-react';
+import { Zap, Trophy, Info, Bitcoin, CreditCard } from 'lucide-react';
 import { PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
 
 const SIZES: { id: PlanId; label: string; popular?: boolean }[] = [
@@ -126,6 +126,19 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
     } catch { alert('Eroare de rețea.'); }
   };
 
+  const handleCryptoBuy = async () => {
+    try {
+      const res = await fetch('/api/crypto/create-payment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planId, mode }),
+      });
+      const data = await res.json();
+      if (data.url) window.location.href = data.url;
+      else alert(data.error || 'Plata crypto nu e disponibilă momentan.');
+    } catch { alert('Eroare de rețea.'); }
+  };
+
   return (
     <div className="relative rounded-2xl overflow-hidden transition-all"
       style={{
@@ -195,9 +208,21 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
         </div>
 
         <button type="button" onClick={handleBuy}
-          className="w-full font-extrabold text-sm py-3.5 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5"
+          className="w-full inline-flex items-center justify-center gap-2 font-extrabold text-sm py-3.5 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5"
           style={{ background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}>
-          Cumpără acum →
+          <CreditCard className="w-4 h-4" />
+          Plătește cu cardul
+        </button>
+
+        <button type="button" onClick={handleCryptoBuy}
+          className="w-full inline-flex items-center justify-center gap-2 font-bold text-xs py-2.5 mt-2 rounded-xl cursor-pointer transition-all"
+          style={{
+            background: 'transparent',
+            color: 'var(--text, #0f172a)',
+            border: '1px solid var(--border, #e2e8f0)',
+          }}>
+          <Bitcoin className="w-4 h-4" style={{ color: '#f7931a' }} />
+          Plătește cu crypto (USDT, BTC, ETH)
         </button>
 
         <div className="flex items-start gap-1.5 mt-3 text-[11px]" style={{ color: 'var(--text-muted, #64748b)' }}>
