@@ -4,6 +4,8 @@
  * 6 carduri (3×2 desktop / 1 col mobile) + jucător decorativ pe lateral,
  * estompat la 25% opacity ca să nu fure atenția de la conținut.
  */
+import { useState } from 'react';
+import Image from 'next/image';
 import { Zap, Shield, Layers, Maximize2, Wallet, Users } from 'lucide-react';
 
 const CARDS = [
@@ -44,20 +46,20 @@ const PLAYER_IMG = 'https://images.unsplash.com/photo-1574629810360-7efbbe195018
 const PLAYER_IMG_FALLBACK = 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=900&q=80';
 
 export default function DeCeSuperFundedSection() {
+  const [playerSrc, setPlayerSrc] = useState(PLAYER_IMG);
   return (
     <section className="relative overflow-hidden py-20 sm:py-24" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
       {/* Decorative player silhouette on the right edge — desktop only, faded into the light bg */}
       <div className="hidden lg:block absolute top-0 right-0 bottom-0 w-1/2 pointer-events-none select-none"
         aria-hidden="true">
-        <img
-          src={PLAYER_IMG}
+        <Image
+          src={playerSrc}
           alt=""
-          className="absolute right-0 top-0 h-full w-full object-cover object-left"
+          fill
+          sizes="50vw"
+          className="object-cover object-left"
           style={{ opacity: 0.18, filter: 'grayscale(0.6) contrast(1.1)' }}
-          onError={(e) => {
-            const img = e.currentTarget as HTMLImageElement;
-            if (img.src !== PLAYER_IMG_FALLBACK) img.src = PLAYER_IMG_FALLBACK;
-          }}
+          onError={() => { if (playerSrc !== PLAYER_IMG_FALLBACK) setPlayerSrc(PLAYER_IMG_FALLBACK); }}
         />
         {/* Soft gradient mask so the photo fades into the light background */}
         <div className="absolute inset-0" style={{

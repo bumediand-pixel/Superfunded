@@ -31,6 +31,14 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'plus.unsplash.com' },
+    ],
+    // 1y cache on Vercel image optimizer — saves bandwidth for repeat visitors.
+    minimumCacheTTL: 31_536_000,
+  },
   async headers() {
     return [
       {

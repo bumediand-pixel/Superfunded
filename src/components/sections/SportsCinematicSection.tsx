@@ -1,5 +1,6 @@
 'use client';
 import { useRef, useState, useEffect } from 'react';
+import NextImage from 'next/image';
 import { motion } from 'framer-motion';
 
 /**
@@ -60,27 +61,31 @@ const SCENES = [
 
 const AUTOPLAY_MS = 5500;
 
-function SportPanel({ scene, active }: { scene: typeof SCENES[0]; active: boolean }) {
+function SportPanel({ scene, active, priority }: { scene: typeof SCENES[0]; active: boolean; priority?: boolean }) {
+  const [src, setSrc] = useState(scene.img);
   return (
     <div className="relative overflow-hidden flex-shrink-0 w-full snap-center"
       style={{ height: 'min(75vh, 720px)' }}>
 
-      {/* Real photo background — <img> with onError fallback so a dead Unsplash
-          URL silently swaps to the secondary photo instead of going blank. */}
-      <motion.img
-        src={scene.img}
-        alt=""
-        aria-hidden="true"
-        loading="lazy"
-        className="absolute inset-0 w-full h-full object-cover"
+      {/* Real photo background — next/image via Vercel optimizer, with onError
+          fallback so a dead Unsplash URL silently swaps to the secondary photo
+          instead of going blank. */}
+      <motion.div
+        className="absolute inset-0"
         initial={false}
         animate={{ scale: active ? 1.08 : 1 }}
-        transition={{ duration: 7, ease: 'easeOut' }}
-        onError={(e) => {
-          const img = e.currentTarget as HTMLImageElement;
-          if (scene.fallback && img.src !== scene.fallback) img.src = scene.fallback;
-        }}
-      />
+        transition={{ duration: 7, ease: 'easeOut' }}>
+        <NextImage
+          src={src}
+          alt=""
+          aria-hidden="true"
+          fill
+          priority={priority}
+          sizes="100vw"
+          className="object-cover"
+          onError={() => { if (scene.fallback && src !== scene.fallback) setSrc(scene.fallback); }}
+        />
+      </motion.div>
 
       {/* Cinematic dark overlays */}
       <div className="absolute inset-0" style={{
@@ -183,11 +188,6 @@ export default function SportsCinematicSection() {
     return () => document.removeEventListener('visibilitychange', onVis);
   }, []);
 
-  // Preload all images on mount so transitions are instant.
-  useEffect(() => {
-    SCENES.forEach(s => { const img = new Image(); img.src = s.img; });
-  }, []);
-
   const scrollTo = (i: number) => {
     const el = scrollerRef.current;
     if (!el) return;
@@ -211,7 +211,7 @@ export default function SportsCinematicSection() {
         className="flex overflow-x-auto snap-x snap-mandatory scroll-smooth"
         style={{ scrollbarWidth: 'none', WebkitOverflowScrolling: 'touch' }}
         aria-label="Sporturi disponibile">
-        {SCENES.map((scene, i) => <SportPanel key={i} scene={scene} active={i === activeIdx} />)}
+        {SCENES.map((scene, i) => <SportPanel key={i} scene={scene} active={i === activeIdx} priority={i === 0} />)}
       </div>
 
       <style>{`[data-sports-scroller]::-webkit-scrollbar { display: none; }`}</style>
