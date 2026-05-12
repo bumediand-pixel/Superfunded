@@ -5,6 +5,7 @@ import CookieBanner from "@/components/CookieBanner";
 import AgeGate from "@/components/AgeGate";
 import Analytics from "@/components/Analytics";
 import ResponsibleGamblingFooter from "@/components/ResponsibleGamblingFooter";
+import { Toaster } from "@/components/Toaster";
 
 // Reduced from 5 fonts to 3 — saves ~280KB of font payload + ~200ms LCP.
 // Bodoni / Jost weren't used in the rendered output.
@@ -95,6 +96,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <ResponsibleGamblingFooter />
         <AgeGate />
         <CookieBanner />
+        <Toaster />
         <Analytics />
       </body>
     </html>

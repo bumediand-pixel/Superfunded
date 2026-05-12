@@ -8,6 +8,7 @@
 import { useState } from 'react';
 import { Zap, Trophy, Info, Bitcoin, CreditCard } from 'lucide-react';
 import { PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
+import { toast } from '@/components/Toaster';
 
 const SIZES: { id: PlanId; label: string; popular?: boolean }[] = [
   { id: 'STARTER_500',    label: '€500' },
@@ -120,11 +121,11 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planId, mode }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
       else if (res.status === 401) window.location.href = '/autentificare?redirect=/planuri';
-      else alert(data.error || 'Nu am putut iniția plata. Încearcă din nou.');
-    } catch { alert('Eroare de rețea.'); }
+      else toast.error(data.error || 'Nu am putut iniția plata. Încearcă din nou.');
+    } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
   };
 
   const handleCryptoBuy = async () => {
@@ -134,10 +135,11 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ plan: planId, mode }),
       });
-      const data = await res.json();
+      const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
-      else alert(data.error || 'Plata crypto nu e disponibilă momentan.');
-    } catch { alert('Eroare de rețea.'); }
+      else if (res.status === 401) window.location.href = '/autentificare?redirect=/planuri';
+      else toast.error(data.error || 'Plata crypto nu e disponibilă momentan.');
+    } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
   };
 
   return (

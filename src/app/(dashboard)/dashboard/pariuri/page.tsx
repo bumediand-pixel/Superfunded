@@ -18,6 +18,7 @@ import Link from 'next/link';
 import { Loader2, History, Download, X, Search, Calendar, Zap, Trophy, Users2, ChevronRight, MessageCircle } from 'lucide-react';
 import SportTabs from '@/components/pariuri/SportTabs';
 import MatchCard, { type Pick } from '@/components/pariuri/MatchCard';
+import { toast } from '@/components/Toaster';
 import BetSlip from '@/components/pariuri/BetSlip';
 import type { OddsEvent } from '@/lib/odds-api';
 import { SPORTURI_DISPONIBILE } from '@/lib/odds-api';
@@ -134,10 +135,12 @@ export default function PariuriPage() {
   const cancelBet = async (id: string) => {
     if (!confirm('Anulezi pickul? Doar dacă a fost plasat în ultimele 5 minute.')) return;
     const res = await fetch(`/api/pariuri/${id}`, { method: 'DELETE' });
-    if (res.ok) loadHistory();
-    else {
-      const data = await res.json();
-      alert(data.error || 'Anulare eșuată');
+    if (res.ok) {
+      toast.success('Pick anulat');
+      loadHistory();
+    } else {
+      const data = await res.json().catch(() => ({}));
+      toast.error(data.error || 'Anulare eșuată');
     }
   };
 
