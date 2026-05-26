@@ -73,29 +73,86 @@ export default function TermeniPage() {
 
           {/* 2 ─────────────────────────────────────────────────────── */}
           <section>
-            <H2>2. Descrierea serviciului — conturi finanțate</H2>
+            <H2>2. Operator, jurisdicție și descrierea serviciului</H2>
 
-            <H3>Ce oferă SuperFunded</H3>
-            <P>SuperFunded oferă o platformă de evaluare a abilităților de pick-uri sportive, destinată utilizatorilor care vor
-              să-și demonstreze strategiile pentru a opera un „cont finanțat”. Serviciul îți permite să intri în provocări
-              (challenge-uri) simulate, în care plasezi pick-uri virtuale în condiții de piață reală. Dacă atingi cu succes toate
-              criteriile de performanță (țintă de profit, reguli de drawdown), poți obține dreptul de a opera un cont finanțat
-              susținut de capitalul SuperFunded — pariezi cu capitalul firmei și împarți profitul, fără să-ți riști banii proprii.</P>
+            <H3>Operator și jurisdicție</H3>
+            <P>Serviciul este operat de <strong>TheSuperFunded Ltd.</strong>, societate înregistrată în
+              <strong> Republica Cipru</strong> (NACE 62.01 — Computer programming activities), cu sediul în Limassol. Toate
+              raporturile juridice dintre tine și TheSuperFunded sunt guvernate de <strong>legislația Republicii Cipru</strong>;
+              instanțele competente pentru soluționarea oricăror dispute sunt cele din Limassol, Cipru — vezi Secțiunea 16
+              pentru detalii privind alegerea legii și forul competent.</P>
 
-            <H3>Nu suntem casă de pariuri sau platformă de investiții</H3>
-            <P>SuperFunded NU este o casă de pariuri, cazino sau operator de servicii de evaluare și nu acceptă, nici nu facilitează
-              pariuri pe bani reali pe platforma proprie. Toate activitățile pe SuperFunded în fazele de evaluare se desfășoară cu
-              valută virtuală (de ex. „profit points”) într-un mediu simulat care folosește cote sportive în timp real pentru
-              realism. Niciun pick simulat nu este plasat prin SuperFunded — platforma e strict pentru evaluare și scop educațional.
-              Prin urmare, SuperFunded nu este reglementată ca serviciu de servicii de evaluare, iar pentru challenge-urile noastre nu
-              este necesară licență ONJN. Participarea la un challenge SuperFunded nu implică sfaturi de investiții sau servicii
-              financiare.</P>
+            <H3>Ce oferă TheSuperFunded</H3>
+            <P>TheSuperFunded oferă un program structurat de <strong>evaluare a abilităților analitice sportive</strong>,
+              destinat utilizatorilor care doresc să-și demonstreze competențele de analiză a evenimentelor sportive (formă,
+              statistici, value detection, management al bankroll-ului virtual, criterii Kelly). Serviciul îți permite să
+              participi la sesiuni de evaluare („challenge-uri”) în care trimiți analize sportive simulate („pick-uri”)
+              într-un mediu care folosește cote reale ca date de referință. Dacă demonstrezi performanță conform criteriilor
+              analitice predefinite (ROI ponderat, consistență, respectarea regulilor de management al riscului), poți accede
+              la programul de pickeri finanțați și primi recompense pentru analizele tale ulterioare, conform unui contract de
+              prestări servicii.</P>
 
-            <H3>Scop educațional și de divertisment</H3>
-            <P>Toate informațiile, conținutul și serviciile oferite de SuperFunded sunt destinate exclusiv scopurilor educaționale
-              și de divertisment. Nimic din ce este pe Site nu garantează succes viitor în pariurile sportive sau câștiguri
-              financiare. Recunoști că orice succes în challenge-urile simulate nu garantează succesul în pariurile reale, care
-              vin cu propriile riscuri.</P>
+            <H3>Capital virtual · pick-uri simulate · NU se plasează pariuri reale</H3>
+            <P>Toate sumele afișate ca „capital”, „bankroll”, „balanță” sau „profit demonstrat” sunt
+              <strong> exclusiv virtuale</strong>. Utilizatorii NU plasează pariuri cu bani reali pe TheSuperFunded; platforma
+              NU intermediază pariuri către operatori reali; nu colectează mize și nu redistribuie câștiguri din pariuri.
+              Cotele afișate sunt furnizate de surse terțe (The Odds API, ESPN, Yahoo Sports) și servesc EXCLUSIV ca input
+              pentru evaluarea abilităților analitice — nu ca instrument de pariere reală.</P>
+
+            <H3>NU suntem operator de jocuri de noroc · niciun regim de licență aplicabil</H3>
+            <P>TheSuperFunded NU este casă de pariuri, cazino sau operator de jocuri de noroc nici în sensul Cyprus Betting Law
+              N. 37(I)/2019 (Cipru), nici în sensul OUG nr. 77/2009 (România). Cyprus Betting Law definește „betting”-ul ca
+              acceptarea unei mize cu posibilitate de câștig sau pierdere — situație care NU se aplică serviciului nostru:
+              taxa este o contraprestație fixă pentru un serviciu de evaluare, nu o miză; capitalul este virtual; premiile
+              sunt recompense pentru performanță, nu câștiguri din hazard. Pentru activitatea noastră NU este necesară
+              licență Cyprus Gaming Commission, nici autorizație ONJN.</P>
+
+            <H3>Scop: evaluare competențe analitice + recompensă pentru performanță</H3>
+            <P>Conținutul, instrumentele și programul oferite de TheSuperFunded sunt destinate <strong>evaluării abilităților
+              analitice sportive</strong> și recompensării performanței demonstrate. Nimic de pe Site nu garantează rezultate
+              în pariurile reale, nici câștiguri financiare.</P>
+          </section>
+
+          {/* 2.5 — CADRU LEGAL EXTINS ────────────────────────────────── */}
+          <section>
+            <H2>2.5. Cadru legal · de ce activitatea NU este joc de noroc</H2>
+
+            <H3>Cele 3 elemente ale jocului de noroc — niciunul nu este îndeplinit</H3>
+            <P>Atât sub Cyprus Betting Law N. 37(I)/2019, cât și sub OUG 77/2009 (România), jocul de noroc presupune întrunirea
+              cumulativă a trei elemente: (i) dependența rezultatului de hazard, (ii) existența unei mize și (iii) acordarea
+              unui câștig bazat pe hazard. <strong>Niciunul dintre cele trei elemente nu este îndeplinit în activitatea
+              TheSuperFunded:</strong></P>
+
+            <H3>(i) Rezultatul NU depinde de hazard</H3>
+            <P>Performanța utilizatorului este măsurată prin metrici cuantificabili de <strong>abilitate analitică deliberat
+              exercitată</strong>: ROI ponderat, Sharpe ratio, consistența pe orizont temporal, respectarea regulilor de
+              management al bankroll-ului virtual, conformitatea cu criteriile Kelly. Aceste metrici reflectă competențe
+              dobândibile prin studiu, antrenament și disciplină — nu evenimente aleatorii. Modelul este analog evaluării
+              traderilor în prop firms-uri financiare (FTMO, FundedNext etc.), care în jurisdicțiile europene NU sunt
+              calificate drept jocuri de noroc.</P>
+
+            <H3>(ii) Taxa de challenge NU este miză</H3>
+            <P>Taxa unică plătită la achiziționarea unui challenge reprezintă <strong>contraprestația pentru accesul la
+              programul de evaluare</strong>. Este o taxă fixă, predeterminată, achitată indiferent de rezultatul evaluării,
+              care NU este pusă în joc pe rezultatul unui eveniment sportiv. NU constituie miză.</P>
+
+            <H3>(iii) Premiile NU sunt câștiguri din hazard</H3>
+            <P>Sumele plătite utilizatorilor finanțați reprezintă <strong>recompense pentru performanța analitică
+              demonstrată</strong>, plătite în baza unui contract de prestări servicii. NU sunt câștiguri din jocuri de noroc.</P>
+
+            <H3>Cod NACE și statut fiscal</H3>
+            <P>TheSuperFunded Ltd. este înregistrată sub codul <strong>NACE 62.01 (Computer programming activities)</strong> și
+              NU sub vreun cod de activitate de jocuri de noroc. Toate încasările sunt facturate ca servicii software/evaluare;
+              toate plățile către pickeri finanțați sunt făcute pe contract de prestări servicii. Regimul fiscal aplicabil
+              utilizatorilor români asupra premiilor primite urmează legislația română aplicabilă veniturilor din alte surse,
+              NU regimul specific veniturilor din jocuri de noroc.</P>
+
+            <H3>Recunoaștere și acceptare</H3>
+            <P>Prin folosirea Serviciului, recunoști și ești de acord că TheSuperFunded NU oferă jocuri de noroc, NU
+              facilitează pariuri pe bani reali și NU operează sub regimul OUG 77/2009 (România) sau Cyprus Betting Law N.
+              37(I)/2019 (Cipru). Înțelegi că taxa pe care o plătești este pentru accesul la un serviciu de evaluare a
+              abilităților, NU o miză, și că orice premiu pe care l-ai putea primi este o recompensă pentru performanță, NU
+              un câștig din hazard.</P>
           </section>
 
           {/* 3 ─────────────────────────────────────────────────────── */}

@@ -13,8 +13,14 @@
  */
 import { useState, useEffect, useMemo } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
-import { ArrowLeft, BarChart3, Users, Clock, Loader2, Info, Star, Activity } from 'lucide-react';
+import { ArrowLeft, BarChart3, Users, Clock, Loader2, Info, Star, Activity, Lock } from 'lucide-react';
 import type { OddsEvent } from '@/lib/odds-api';
+import {
+  MARKET_CATALOG,
+  MARKET_CATEGORY_LABELS,
+  marketsForCategory,
+  type MarketCategory,
+} from '@/lib/odds-api';
 
 type Tab = 'cote' | 'h2h' | 'echipe' | 'analize';
 
@@ -31,12 +37,20 @@ export default function MatchDetailPage() {
 
   useEffect(() => {
     setLoading(true);
-    fetch(`/api/odds/live?sport=${sport}`, { cache: 'no-store' })
+    // Prefer the per-event endpoint (richer market depth: btts, DNB, half-time, etc.).
+    // Fall back to the listing endpoint if the per-event fetch fails.
+    fetch(`/api/odds/event/${eventId}?sport=${sport}`, { cache: 'no-store' })
       .then(r => r.json())
-      .then((d: { events: OddsEvent[] }) => {
-        const list = Array.isArray(d.events) ? d.events : [];
-        setEvent(list.find(e => e.id === eventId) ?? null);
+      .then(async (d: { event: OddsEvent | null; status: string }) => {
+        if (d.event) {
+          setEvent(d.event);
+          return;
+        }
+        const fallback = await fetch(`/api/odds/live?sport=${sport}`, { cache: 'no-store' }).then(r => r.json());
+        const list = Array.isArray(fallback.events) ? fallback.events : [];
+        setEvent(list.find((e: OddsEvent) => e.id === eventId) ?? null);
       })
+      .catch(() => setEvent(null))
       .finally(() => setLoading(false));
   }, [sport, eventId]);
 
@@ -145,51 +159,95 @@ export default function MatchDetailPage() {
   );
 }
 
-/* ── COTE — expanded markets (1X2 + totals + spreads) ── */
+/* ── COTE — Superbet-style category tabs + market depth ── */
+const CATEGORY_TABS: { key: MarketCategory; label: string }[] = [
+  { key: 'principale',      label: 'Principale' },
+  { key: 'goluri',          label: 'Goluri' },
+  { key: 'prima_repriza',   label: 'Prima repriză' },
+  { key: 'a_doua_repriza',  label: 'A doua repriză' },
+  { key: 'cornere',         label: 'Cornere' },
+  { key: 'cartonase',       label: 'Cartonașe' },
+  { key: 'jucator',         label: 'Jucător' },
+  { key: 'combo',           label: 'Combo' },
+  { key: 'speciale',        label: 'Speciale' },
+];
+
 function CoteTab({ event }: { event: OddsEvent }) {
+  const [category, setCategory] = useState<MarketCategory>('principale');
   const bk = event.bookmakers?.[0];
-  const h2h     = bk?.markets?.find(m => m.key === 'h2h');
-  const totals  = bk?.markets?.find(m => m.key === 'totals');
-  const spreads = bk?.markets?.find(m => m.key === 'spreads');
 
   if (!bk) {
     return <Empty msg="Niciun feed de cote disponibil pentru acest meci." />;
   }
 
+  /** Map: apiKey → the market object on this bookmaker (if present). */
+  const marketsByKey = useMemo(() => {
+    const m: Record<string, typeof bk.markets[number]> = {};
+    for (const mk of bk.markets ?? []) m[mk.key] = mk;
+    return m;
+  }, [bk]);
+
+  const visibleMarkets = marketsForCategory(category);
+
   return (
     <div className="space-y-4">
-      <MarketBlock title="Câștigător meci (1X2)">
-        <div className={`grid gap-2 ${h2h?.outcomes.find(o => o.name === 'Draw') ? 'grid-cols-3' : 'grid-cols-2'}`}>
-          {h2h?.outcomes.map(o => (
-            <OddBtn key={o.name} label={o.name === event.home_team ? '1' : o.name === event.away_team ? '2' : 'X'}
-              sub={o.name === 'Draw' ? 'Egal' : o.name} price={o.price} />
-          ))}
+      {/* Category pill row — horizontally scrollable on mobile */}
+      <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6"
+        style={{ scrollbarWidth: 'none' }}>
+        <div className="inline-flex gap-1.5 pb-2 min-w-max">
+          {CATEGORY_TABS.map(t => {
+            const on = category === t.key;
+            const count = MARKET_CATALOG.filter(m => m.category === t.key && m.available).length;
+            return (
+              <button key={t.key} type="button" onClick={() => setCategory(t.key)}
+                className="inline-flex items-center gap-1.5 px-3.5 h-9 rounded-full text-xs font-bold cursor-pointer transition-all whitespace-nowrap"
+                style={on
+                  ? { background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 4px 12px rgba(230,57,70,0.32)' }
+                  : { background: 'var(--dash-overlay-4)', color: 'var(--dash-text)', border: '1px solid var(--dash-border)' }
+                }>
+                {t.label}
+                {count > 0 && (
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full"
+                    style={{
+                      background: on ? 'rgba(255,255,255,0.22)' : 'rgba(0,0,0,0.18)',
+                      color: on ? '#fff' : 'var(--dash-text-muted)',
+                    }}>
+                    {count}
+                  </span>
+                )}
+              </button>
+            );
+          })}
         </div>
-      </MarketBlock>
+      </div>
 
-      {totals && (
-        <MarketBlock title="Peste / Sub goluri">
-          <div className="grid grid-cols-2 gap-2">
-            {totals.outcomes.map(o => (
-              <OddBtn key={`${o.name}-${o.point}`}
-                label={`${o.name === 'Over' ? 'Peste' : 'Sub'} ${o.point}`}
-                price={o.price} />
-            ))}
-          </div>
-        </MarketBlock>
-      )}
+      {/* Markets in selected category */}
+      {visibleMarkets.map(def => {
+        const market = def.apiKey ? marketsByKey[def.apiKey] : null;
 
-      {spreads && (
-        <MarketBlock title="Handicap asiatic">
-          <div className="grid grid-cols-2 gap-2">
-            {spreads.outcomes.map(o => (
-              <OddBtn key={`${o.name}-${o.point}`}
-                label={`${o.name === event.home_team ? 'Gazdă' : 'Deplasare'} ${o.point! > 0 ? '+' : ''}${o.point}`}
-                price={o.price} />
-            ))}
-          </div>
-        </MarketBlock>
-      )}
+        // Unavailable market — placeholder card
+        if (!def.available || !market) {
+          return (
+            <MarketBlock key={def.label} title={def.label}>
+              <div className="flex items-center justify-center gap-2 py-3"
+                style={{ color: 'var(--dash-text-subtle)' }}>
+                <Lock className="w-3.5 h-3.5" />
+                <span className="text-xs">
+                  {def.apiKey
+                    ? 'Cote indisponibile pentru acest meci'
+                    : 'În curând — integrăm cu un feed extins în Q3 2026'}
+                </span>
+              </div>
+            </MarketBlock>
+          );
+        }
+
+        return (
+          <MarketBlock key={def.label} title={def.label}>
+            <MarketOutcomes event={event} market={market} apiKey={def.apiKey!} />
+          </MarketBlock>
+        );
+      })}
 
       <div className="rounded-xl p-4 flex items-start gap-2"
         style={{ background: 'var(--dash-overlay-3)', border: '1px solid var(--dash-border)' }}>
@@ -199,6 +257,111 @@ function CoteTab({ event }: { event: OddsEvent }) {
           Plasarea unui pick se face din lista principală — apasă „Înapoi la meciuri".
         </p>
       </div>
+    </div>
+  );
+}
+
+/** Renders the outcome buttons for a market — layout switches by market type. */
+function MarketOutcomes({
+  event,
+  market,
+  apiKey,
+}: {
+  event: OddsEvent;
+  market: { key: string; outcomes: { name: string; price: number; point?: number }[] };
+  apiKey: string;
+}) {
+  // Helpers
+  const labelFor1X2 = (name: string) =>
+    name === event.home_team ? '1' : name === event.away_team ? '2' : 'X';
+  const subFor1X2 = (name: string) => (name === 'Draw' ? 'Egal' : name);
+
+  // 1X2 / moneyline-style
+  if (apiKey === 'h2h' || apiKey === 'h2h_h1') {
+    const has3 = market.outcomes.some(o => o.name === 'Draw');
+    return (
+      <div className={`grid gap-2 ${has3 ? 'grid-cols-3' : 'grid-cols-2'}`}>
+        {market.outcomes.map(o => (
+          <OddBtn key={o.name} label={labelFor1X2(o.name)} sub={subFor1X2(o.name)} price={o.price} />
+        ))}
+      </div>
+    );
+  }
+
+  // Totals (Over/Under): group by point line, show Over+Under side by side
+  if (apiKey === 'totals' || apiKey === 'totals_h1') {
+    const grouped = new Map<number, { over?: number; under?: number }>();
+    for (const o of market.outcomes) {
+      if (typeof o.point !== 'number') continue;
+      const g = grouped.get(o.point) ?? {};
+      if (o.name === 'Over') g.over = o.price;
+      else g.under = o.price;
+      grouped.set(o.point, g);
+    }
+    return (
+      <div className="space-y-1.5">
+        {Array.from(grouped.entries()).sort(([a], [b]) => a - b).map(([point, prices]) => (
+          <div key={point} className="grid grid-cols-[80px_1fr_1fr] gap-2 items-center">
+            <span className="text-[11px] font-bold" style={{ color: 'var(--dash-text-muted)' }}>
+              {point}
+            </span>
+            <OddBtn label="Peste" price={prices.over ?? 0} />
+            <OddBtn label="Sub" price={prices.under ?? 0} />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  // Spreads (Handicap): one row per point line
+  if (apiKey === 'spreads' || apiKey === 'spreads_h1') {
+    return (
+      <div className="grid grid-cols-2 gap-2">
+        {market.outcomes.map(o => {
+          const side = o.name === event.home_team ? 'Gazdă' : 'Deplasare';
+          const sign = (o.point ?? 0) > 0 ? '+' : '';
+          return (
+            <OddBtn key={`${o.name}-${o.point}`}
+              label={`${side} ${sign}${o.point}`}
+              price={o.price} />
+          );
+        })}
+      </div>
+    );
+  }
+
+  // BTTS (Both teams to score): Da / Nu
+  if (apiKey === 'btts') {
+    return (
+      <div className="grid grid-cols-2 gap-2">
+        {market.outcomes.map(o => (
+          <OddBtn key={o.name}
+            label={o.name === 'Yes' ? 'Da (GG)' : 'Nu (NG)'}
+            price={o.price} />
+        ))}
+      </div>
+    );
+  }
+
+  // Draw No Bet: just two outcomes
+  if (apiKey === 'draw_no_bet') {
+    return (
+      <div className="grid grid-cols-2 gap-2">
+        {market.outcomes.map(o => (
+          <OddBtn key={o.name} label={o.name} price={o.price} />
+        ))}
+      </div>
+    );
+  }
+
+  // Fallback — generic outcome list
+  return (
+    <div className="grid grid-cols-2 gap-2">
+      {market.outcomes.map(o => (
+        <OddBtn key={`${o.name}-${o.point ?? ''}`}
+          label={o.name + (o.point != null ? ` ${o.point}` : '')}
+          price={o.price} />
+      ))}
     </div>
   );
 }

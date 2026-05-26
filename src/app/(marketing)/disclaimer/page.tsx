@@ -1,4 +1,4 @@
-export const metadata = { title: 'Disclaimer – SuperFunded', description: 'Disclaimer și avertizări legale ale platformei SuperFunded.' };
+export const metadata = { title: 'Disclaimer – TheSuperFunded', description: 'Disclaimer și avertizări legale ale platformei TheSuperFunded pentru utilizatorii din România.' };
 
 export default function DisclaimerPage() {
   return (
@@ -12,20 +12,20 @@ export default function DisclaimerPage() {
           <h1 className="font-extrabold tracking-tight leading-none mb-4" style={{ fontSize: 'clamp(48px, 8vw, 96px)', letterSpacing: '0.03em' }}>
             DISCLAIMER
           </h1>
-          <p className="font-semibold text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>Ultima actualizare: 1 Ianuarie 2025</p>
+          <p className="font-semibold text-xs" style={{ color: 'var(--text-muted, #64748b)' }}>Adresat utilizatorilor din România. Ultima actualizare: mai 2026.</p>
         </div>
 
         <div className="space-y-10 text-sm leading-relaxed" style={{ color: 'var(--text-muted, #64748b)' }}>
 
           <div className="p-5" style={{ background: 'rgba(230,57,70,0.06)', border: '1px solid rgba(230,57,70,0.3)' }}>
             <p className="font-extrabold tracking-tight text-lg tracking-wider mb-2" style={{ color: 'var(--red)' }}>AVERTISMENT IMPORTANT</p>
-            <p>SuperFunded NU este un operator de pariuri sportive și NU deținem o licență de gambling. Platforma noastră este un sistem de evaluare a abilităților analitice sportive. Citiți cu atenție acest disclaimer înainte de a utiliza platforma.</p>
+            <p>TheSuperFunded Ltd. (entitate cipriotă) NU este operator de pariuri sportive, nu deține licență de jocuri de noroc Cyprus Gaming Commission și nu are autorizație ONJN. Platforma este un sistem de evaluare a abilităților analitice sportive. Citește cu atenție acest disclaimer înainte de a utiliza platforma.</p>
           </div>
 
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>1. NATURA PLATFORMEI</h2>
-            <p>SuperFunded este o platformă de evaluare a abilităților de prognosticare sportivă. Utilizăm un sistem de simulare cu puncte virtuale și solduri simulate pentru a evalua capacitatea utilizatorilor de a analiza și anticipa rezultatele sportive.</p>
-            <p className="mt-3"><strong style={{ color: 'var(--text, #0f172a)' }}>NU suntem:</strong> cazino, casă de pariuri, operator de jocuri de noroc sau intermediar de pariuri sportive.</p>
+            <p>TheSuperFunded este o platformă de evaluare a abilităților de prognosticare sportivă, operată de TheSuperFunded Ltd., societate înregistrată în Republica Cipru. Folosim un sistem de simulare cu capital virtual și solduri simulate pentru a evalua capacitatea utilizatorilor de a analiza evenimente sportive.</p>
+            <p className="mt-3"><strong style={{ color: 'var(--text, #0f172a)' }}>NU suntem:</strong> cazino, casă de pariuri, operator de jocuri de noroc sau intermediar de pariuri sportive — nici în România, nici în Cipru.</p>
             <p className="mt-3"><strong style={{ color: 'var(--text, #0f172a)' }}>NU plasăm, NU procesăm și NU acceptăm</strong> pariuri reale pe evenimente sportive sau de altă natură.</p>
           </section>
 
@@ -84,8 +84,9 @@ export default function DisclaimerPage() {
 
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>5. CONFORMITATE LEGALĂ</h2>
-            <p>SuperFunded operează în conformitate cu legislația română aplicabilă activităților de evaluare a performanței bazate pe skill. Nu deținem și nu avem nevoie de licență de operator de jocuri de noroc conform legislației române în vigoare, deoarece activitățile noastre nu se califică ca jocuri de noroc.</p>
-            <p className="mt-3">Cu toate acestea, utilizatorii din jurisdicții diferite sunt responsabili pentru verificarea conformității cu legislația locală aplicabilă înainte de a utiliza platforma noastră. SuperFunded restricționează accesul utilizatorilor din jurisdicțiile în care activitățile noastre ar putea fi considerate ilegale.</p>
+            <p>TheSuperFunded Ltd. este înregistrată în Republica Cipru sub NACE 62.01 (Computer programming activities) și operează ca furnizor de servicii de evaluare a abilităților. Activitatea NU se califică drept joc de noroc nici sub Cyprus Betting Law N. 37(I)/2019 (Cipru), nici sub OUG 77/2009 (România) — vezi Termeni și Condiții, Secțiunea 2.5 pentru analiza completă.</p>
+            <p className="mt-3">Acordul este guvernat de legislația cipriotă; instanțele competente pentru dispute sunt cele din Limassol, Cipru. Utilizatorii români păstrează însă protecțiile imperative ale legislației române (de ex. drepturile consumatorilor sub OG 21/1992 și Legea 363/2007).</p>
+            <p className="mt-3">Utilizatorii din alte jurisdicții decât România sau Cipru sunt responsabili să verifice conformitatea cu legislația locală înainte de a folosi platforma. TheSuperFunded poate restricționa accesul din jurisdicții incompatibile.</p>
           </section>
 
           <section>
@@ -109,9 +110,10 @@ export default function DisclaimerPage() {
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>7. CONTACT</h2>
             <div className="p-4 font-semibold text-xs space-y-1" style={{ background: '#ffffff', border: '1px solid var(--border, #e2e8f0)', color: 'var(--text-muted, #64748b)' }}>
-              <div>TheSuperFunded</div>
+              <div>TheSuperFunded Ltd.</div>
+              <div>Limassol, Republica Cipru</div>
               <div>Email: support@thesuperfunded.com</div>
-              <div>România</div>
+              <div>Suport în limba română 24/7 — răspundem în max. 24h.</div>
             </div>
           </section>
 

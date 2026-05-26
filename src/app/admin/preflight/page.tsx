@@ -28,13 +28,13 @@ function presentEnv(name: string, optional = false): Check {
 function legalCheck(): Check[] {
   const checks: Check[] = [];
   checks.push({
-    label: 'lib/legal.ts: ENTITY_CUI',
-    status: ENTITY_CUI === 'RO00000000' ? 'error' : 'ok',
+    label: 'lib/legal.ts: ENTITY_CUI / VAT',
+    status: ENTITY_CUI.includes('de completat') ? 'error' : 'ok',
     detail: ENTITY_CUI,
   });
   checks.push({
     label: 'lib/legal.ts: ENTITY_REG_NO',
-    status: ENTITY_REG_NO === 'J40/0/0000' ? 'error' : 'ok',
+    status: ENTITY_REG_NO.includes('de completat') ? 'error' : 'ok',
     detail: ENTITY_REG_NO,
   });
   checks.push({
