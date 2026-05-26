@@ -48,7 +48,7 @@ export default function Footer() {
               <BrandLogo size={32} text variant="dark" />
             </div>
             <p className="text-sm leading-relaxed max-w-xs mb-5" style={{ color: 'rgba(255,255,255,0.4)' }}>
-              Platformă de evaluare a predicțiilor sportive #1 din România. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
+              Platformă de evaluare a predicțiilor sportive cu adresare în limba română. Capitalul nostru, profitul tău. Capital disponibil: până la €50.000.
             </p>
             <div className="flex flex-col gap-1 text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>
               <span>support@thesuperfunded.com</span>
@@ -132,7 +132,7 @@ export default function Footer() {
         {/* Bottom */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-6 border-t" style={{ borderColor: 'rgba(255,255,255,0.07)' }}>
           <span className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
-            © 2025 TheSuperFunded · Înregistrat în România · Toate drepturile rezervate
+            © 2026 TheSuperFunded Ltd. · Înregistrat în Republica Cipru · Suport în limba română · Toate drepturile rezervate
           </span>
           <div className="flex items-center gap-4">
             {LINKS_LEGAL.slice(0, 3).map(({ label, href }) => (

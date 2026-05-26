@@ -123,22 +123,30 @@ export default function SectionsFinal() {
         <H2>15. Legea aplicabilă și jurisdicția</H2>
 
         <P>Acest Acord și orice litigiu sau pretenție (inclusiv litigii sau pretenții non-contractuale) rezultate din sau în
-          legătură cu acesta ori cu obiectul său vor fi reglementate și interpretate conform legilor României. SuperFunded
-          este operat în conformitate cu legislația din România și cu reglementările aplicabile ale Uniunii Europene.</P>
+          legătură cu acesta ori cu obiectul său vor fi reglementate și interpretate conform <strong>legilor Republicii
+          Cipru</strong>. TheSuperFunded Ltd. este operator înregistrat în Republica Cipru și operează în conformitate cu
+          legislația cipriotă și cu reglementările aplicabile ale Uniunii Europene.</P>
 
         <P>În cazul oricărei controverse sau pretenții rezultate din sau legate de acești Termeni, încurajăm părțile să caute
-          mai întâi o soluționare amiabilă contactând suportul SuperFunded. Dacă o rezoluție nu poate fi atinsă, orice acțiune
-          legală va fi adusă exclusiv în instanțele competente din România. Cu excepția cazurilor în care legea ta locală
-          impune un alt for, ești de acord cu jurisdicția acestor instanțe românești.</P>
+          mai întâi o soluționare amiabilă contactând suportul TheSuperFunded. Dacă o rezoluție nu poate fi atinsă, orice
+          acțiune legală va fi adusă exclusiv în instanțele competente din <strong>Limassol, Cipru</strong>.</P>
+
+        <H3>Utilizatori din România — drepturi imperative</H3>
+        <P>Pentru utilizatorii rezidenți în România, prevederile imperative ale legislației române (în special drepturile
+          consumatorilor sub OG nr. 21/1992 și Legea nr. 363/2007 privind combaterea practicilor incorecte) <strong>se aplică
+          în paralel</strong> și NU pot fi excluse contractual. Alegerea legii cipriote NU îți afectează aceste drepturi
+          imperative. Poți, la alegerea ta, introduce o acțiune și la instanțele de la domiciliul tău din România, dacă
+          legislația europeană privind protecția consumatorilor o permite.</P>
 
         <H3>Utilizare internațională</H3>
-        <P>Recunoaștem că SuperFunded poate fi accesat din jurisdicții din toată lumea, fiecare cu legi diferite. Alegând să
-          accesezi sau să folosești Serviciul, ești de acord că legile României vor reglementa acești Termeni și orice
-          litigiu, exceptând cazurile în care această alegere este înlocuită de cerințele obligatorii ale altei jurisdicții.</P>
+        <P>Recunoaștem că TheSuperFunded poate fi accesat din jurisdicții din toată lumea, fiecare cu legi diferite. Alegând să
+          accesezi sau să folosești Serviciul, ești de acord că legile cipriote vor reglementa acești Termeni și orice litigiu,
+          exceptând cazurile în care această alegere este înlocuită de cerințele obligatorii ale altei jurisdicții (vezi
+          paragraful anterior pentru utilizatorii români).</P>
 
-        <P>Nimic din această secțiune nu va limita dreptul SuperFunded de a solicita măsuri provizorii sau echitabile în orice
-          jurisdicție adecvată dacă este necesar pentru a-și apăra drepturile de proprietate intelectuală sau pentru a-și
-          proteja activele.</P>
+        <P>Nimic din această secțiune nu va limita dreptul TheSuperFunded de a solicita măsuri provizorii sau echitabile în
+          orice jurisdicție adecvată dacă este necesar pentru a-și apăra drepturile de proprietate intelectuală sau pentru
+          a-și proteja activele.</P>
       </section>
 
       {/* 16 ─────────────────────────────────────────────────────── */}
@@ -168,15 +176,18 @@ export default function SectionsFinal() {
       <section>
         <H2>17. Date de contact și informații despre companie</H2>
 
-        <P>SuperFunded este deținut și operat de TheSuperFunded, o companie înregistrată în România. Pentru orice întrebări,
-          îngrijorări sau feedback privind acești Termeni sau orice aspect al Serviciului, ne poți contacta folosind
-          informațiile de mai jos:</P>
+        <P>Platforma TheSuperFunded este deținută și operată de TheSuperFunded Ltd., societate înregistrată în Republica
+          Cipru. Pentru orice întrebări, îngrijorări sau feedback privind acești Termeni sau orice aspect al Serviciului, ne
+          poți contacta folosind informațiile de mai jos:</P>
 
         <ul className="space-y-2 mb-3">
-          <li><strong className="text-white">Denumire companie:</strong> TheSuperFunded (operator al SuperFunded)</li>
-          <li><strong className="text-white">Adresă înregistrată:</strong> [a se completa de către administrator]</li>
-          <li><strong className="text-white">CUI / Înregistrare comerțul:</strong> [a se completa de către administrator]</li>
+          <li><strong className="text-white">Denumire societate:</strong> TheSuperFunded Ltd.</li>
+          <li><strong className="text-white">Adresă înregistrată:</strong> Limassol, Republica Cipru [adresa exactă — de completat]</li>
+          <li><strong className="text-white">Nr. Registrul Companiilor Cipru (HE):</strong> [de completat după înregistrare]</li>
+          <li><strong className="text-white">VAT Cipru:</strong> [de completat după înregistrare]</li>
+          <li><strong className="text-white">Cod NACE:</strong> 62.01 — Computer programming activities</li>
           <li><strong className="text-white">Email:</strong> <Mail /></li>
+          <li><strong className="text-white">Suport în limba română:</strong> disponibil 24/7, răspuns în max. 24h.</li>
         </ul>
 
         <H3>Suport clienți</H3>

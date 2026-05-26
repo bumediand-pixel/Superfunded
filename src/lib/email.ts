@@ -282,7 +282,7 @@ function emailTemplate({ title, preheader, body, cta, footer }: {
         <tr><td style="padding:24px 32px;background:#fbf8f6;border-top:1px solid #e2e8f0;">
           <p style="margin:0 0 6px 0;font-size:12px;line-height:1.6;color:#64748b;">${footer}</p>
           <p style="margin:0 0 12px 0;font-size:11px;line-height:1.6;color:#94a3b8;font-style:italic;">${SKILL_EVAL_DISCLAIMER.email_footer}</p>
-          <p style="margin:0;font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} TheSuperFunded · România ·
+          <p style="margin:0;font-size:12px;color:#94a3b8;">© ${new Date().getFullYear()} TheSuperFunded Ltd. · Cipru · suport limba română ·
             <a href="${SITE}/confidentialitate" style="color:#e63946;text-decoration:none;font-weight:600;">Confidențialitate</a> ·
             <a href="${SITE}/contact" style="color:#e63946;text-decoration:none;font-weight:600;">Contact</a>
           </p>

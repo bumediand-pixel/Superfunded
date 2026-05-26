@@ -37,10 +37,12 @@ export default function TermeniSiConditiiPage() {
         <section>
           <h2>1. Părțile contractului</h2>
           <p>
-            Prezentele condiții reglementează raportul juridic dintre <strong>TheSuperFunded</strong>,
-            persoană juridică română cu sediul în [REPLACE], CUI [REPLACE], înregistrată la
-            Registrul Comerțului sub J[REPLACE] („SuperFunded”, „noi”) și utilizatorul persoană
-            fizică majoră („Utilizatorul”, „tu”) care accesează platforma <em>thesuperfunded.com</em>.
+            Prezentele condiții reglementează raportul juridic dintre <strong>TheSuperFunded Ltd.</strong>,
+            societate înregistrată în <strong>Republica Cipru</strong> (Cyprus Registrar of Companies,
+            HE [de completat], VAT CY [de completat], cod NACE 62.01), cu sediul în Limassol („TheSuperFunded”,
+            „noi”) și utilizatorul persoană fizică majoră („Utilizatorul”, „tu”) care accesează platforma
+            <em> thesuperfunded.com</em>. Acordul este guvernat de legislația cipriotă; vezi Termenii completi
+            pentru detalii privind drepturile imperative ale utilizatorilor din România.
           </p>
         </section>
 
@@ -208,8 +210,9 @@ export default function TermeniSiConditiiPage() {
         <section>
           <h2>13. Lege aplicabilă</h2>
           <p>
-            Contractul este guvernat de legea română. Pentru consumatorii UE, prevederile
-            imperative ale statului de reședință obișnuită prevalează.
+            Contractul este guvernat de legea cipriotă (Republica Cipru). Pentru consumatorii UE
+            — inclusiv cei rezidenți în România — prevederile imperative ale statului de reședință
+            obișnuită prevalează (Regulamentul Roma I, art. 6 — protecția consumatorilor).
           </p>
         </section>
 
@@ -217,7 +220,7 @@ export default function TermeniSiConditiiPage() {
           <h2>14. Contact</h2>
           <ul>
             <li>Suport general: <a href="mailto:support@thesuperfunded.com">support@thesuperfunded.com</a></li>
-            <li>Conformitate / GDPR: <a href="mailto:dpo@superfunded.ro">dpo@superfunded.ro</a></li>
+            <li>Conformitate / GDPR: <a href="mailto:gdpr@thesuperfunded.com">gdpr@thesuperfunded.com</a></li>
             <li>Afiliere: <a href="mailto:afiliere@thesuperfunded.com">afiliere@thesuperfunded.com</a></li>
           </ul>
         </section>
