@@ -2,10 +2,23 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+/**
+ * Only allow same-origin relative paths in ?redirect=… to prevent an
+ * open-redirect (e.g. `?redirect=https://evil.com` would otherwise let an
+ * attacker phish users after they log in).
+ */
+function safeRedirect(raw: string | null): string {
+  if (!raw) return '/dashboard';
+  if (!raw.startsWith('/') || raw.startsWith('//')) return '/dashboard';
+  return raw;
+}
 
 export default function LoginPage() {
   const router = useRouter();
+  const params = useSearchParams();
+  const redirectTo = safeRedirect(params.get('redirect'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -18,12 +31,15 @@ export default function LoginPage() {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) { setError(error.message); setLoading(false); return; }
-    router.push('/dashboard');
+    router.push(redirectTo);
   };
 
   const handleGoogle = async () => {
     const supabase = createClient();
-    await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/dashboard` } });
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}${redirectTo}` },
+    });
   };
 
   return (

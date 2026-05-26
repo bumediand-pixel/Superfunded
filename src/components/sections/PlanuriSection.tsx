@@ -123,7 +123,7 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
       });
       const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
-      else if (res.status === 401) window.location.href = '/autentificare?redirect=/planuri';
+      else if (res.status === 401) window.location.href = '/autentificare/login?redirect=/planuri';
       else toast.error(data.error || 'Nu am putut iniția plata. Încearcă din nou.');
     } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
   };
@@ -137,7 +137,7 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
       });
       const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
-      else if (res.status === 401) window.location.href = '/autentificare?redirect=/planuri';
+      else if (res.status === 401) window.location.href = '/autentificare/login?redirect=/planuri';
       else toast.error(data.error || 'Plata crypto nu e disponibilă momentan.');
     } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
   };

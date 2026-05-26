@@ -2,10 +2,19 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+/** Same-origin guard against open-redirect via ?redirect=… */
+function safeRedirect(raw: string | null): string {
+  if (!raw) return '/dashboard';
+  if (!raw.startsWith('/') || raw.startsWith('//')) return '/dashboard';
+  return raw;
+}
 
 export default function RegisterPage() {
   const router = useRouter();
+  const params = useSearchParams();
+  const redirectTo = safeRedirect(params.get('redirect'));
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [nume, setNume] = useState('');
@@ -29,7 +38,7 @@ export default function RegisterPage() {
       options: { data: { full_name: nume, skill_eval_consent_at: new Date().toISOString() } },
     });
     if (error) { setError(error.message); setLoading(false); return; }
-    router.push('/dashboard');
+    router.push(redirectTo);
   };
 
   const handleGoogle = async () => {
@@ -38,7 +47,10 @@ export default function RegisterPage() {
       return;
     }
     const supabase = createClient();
-    await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: `${window.location.origin}/dashboard` } });
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}${redirectTo}` },
+    });
   };
 
   return (
