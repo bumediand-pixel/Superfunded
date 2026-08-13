@@ -2,118 +2,109 @@
 import { useRef } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { ArrowUpRight, Play } from 'lucide-react';
 import { ScrubSequence } from '@/components/ScrubSequence';
 import { BlurText } from '@/components/BlurText';
 import { FRAMES_PATH, FRAME_COUNT, FRAME_EXT } from '@/lib/constants';
-
-const PARTNERS = ['Betfair', 'Pinnacle', '1xBet', 'Unibet', 'Bet365'];
 
 export default function HeroSection() {
   const scrollRef = useRef<HTMLElement>(null);
 
   return (
-    <section ref={scrollRef} className="relative h-[250vh] bg-[hsl(var(--ink))]">
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Frame sequence canvas */}
+    <section ref={scrollRef} className="relative h-[250vh]" aria-label="Hero">
+      {/* Sticky canvas viewport */}
+      <div className="sticky top-0 h-screen overflow-hidden">
+        {/* Scroll-scrubbed frame sequence */}
         <ScrubSequence
           framesPath={FRAMES_PATH}
           frameCount={FRAME_COUNT}
           ext={FRAME_EXT}
+          className="absolute inset-0 w-full h-full object-cover"
           scrollTargetRef={scrollRef}
-          className="absolute inset-0 w-full h-full z-0"
         />
 
-        {/* Cinematic vignette */}
-        <div className="absolute inset-0 z-[1] bg-[radial-gradient(120%_80%_at_50%_60%,transparent_40%,rgba(0,0,0,0.60)_100%)]" />
+        {/* Radial vignette */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at center, transparent 30%, rgba(10,11,20,0.85) 100%)' }}
+        />
 
-        {/* Dark overlay for readability when frames are absent */}
-        <div className="absolute inset-0 z-[1] bg-[hsl(var(--ink))/60]" />
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-[hsl(var(--ink)/0.45)] pointer-events-none" />
 
-        {/* Bottom fade into next section */}
-        <div className="absolute bottom-0 inset-x-0 h-[40vh] z-[2] gradient-fade-b" />
+        {/* Bottom fade */}
+        <div className="absolute bottom-0 inset-x-0 h-[40vh] gradient-fade-b pointer-events-none" />
 
-        {/* Hero content */}
-        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center text-center px-6">
-
+        {/* Content */}
+        <div className="relative z-10 flex flex-col justify-center h-full max-w-[var(--max)] mx-auto px-[var(--gutter)]">
           {/* Badge */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.6 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-6"
           >
-            <div className="liquid-glass rounded-full px-1 py-1 inline-flex items-center gap-2">
-              <span
-                className="rounded-full px-3 py-1 text-xs font-semibold"
-                style={{ background: 'hsl(var(--red))', color: 'white' }}
-              >
-                Nou
-              </span>
-              <span className="pr-3 text-sm text-[hsla(var(--cream)/0.85)]">
-                Platforma #1 Betting Prop Firm · România
-              </span>
-            </div>
+            <span className="liquid-glass rounded-full px-4 py-1.5 text-xs font-semibold text-[hsla(var(--cream)/0.90)] inline-flex items-center gap-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[hsl(var(--red))] animate-pulse" />
+              Platforma #1 Betting Prop Firm · România
+            </span>
           </motion.div>
 
           {/* Headline */}
           <BlurText
             text="Pariezi. Câștigăm. Împărțim."
             as="h1"
-            className="mt-6 font-display uppercase text-[clamp(48px,8vw,130px)] leading-[0.92] tracking-[-0.01em] text-[hsl(var(--cream))] max-w-[14ch]"
-            delay={0.09}
-            startDelay={0.15}
+            className="font-display uppercase leading-[0.88] tracking-tight text-[hsl(var(--cream))] mb-6 [font-size:clamp(48px,8vw,130px)]"
+            delay={0.07}
+            startDelay={0.3}
           />
 
           {/* Sub */}
           <motion.p
-            initial={{ filter: "blur(10px)", opacity: 0, y: 16 }}
-            animate={{ filter: "blur(0px)", opacity: 1, y: 0 }}
-            transition={{ delay: 0.9, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-6 font-body text-base md:text-lg text-[hsla(var(--cream)/0.70)] max-w-xl leading-relaxed"
+            className="font-body text-base md:text-xl text-[hsla(var(--cream)/0.70)] max-w-[44ch] mb-10 leading-relaxed"
+            initial={{ opacity: 0, filter: 'blur(8px)', y: 16 }}
+            animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
+            transition={{ duration: 0.8, delay: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Capital până la <strong className="text-[hsl(var(--cream))]">€50.000</strong>. Tu demonstrezi că știi să pariezi — noi asigurăm fondurile.
+            Capital până la <strong className="text-[hsl(var(--cream))]">€50.000</strong>. Tu pariezi cu banii noștri, păstrezi până la <strong className="text-[hsl(var(--cream))]">80%</strong> din profit. Retrageri în 24–48h.
           </motion.p>
 
-          {/* CTA buttons */}
+          {/* CTAs */}
           <motion.div
-            initial={{ opacity: 0, y: 12 }}
+            className="flex flex-wrap gap-4"
+            initial={{ opacity: 0, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.6 }}
-            className="mt-10 flex items-center gap-3 flex-wrap justify-center"
+            transition={{ duration: 0.6, delay: 1.1 }}
           >
             <Link
-              href="#planuri"
-              className="inline-flex items-center gap-1.5 font-semibold text-sm px-7 py-3.5 rounded-full text-white transition-all duration-200 focus-visible:ring-2 focus-visible:ring-[hsl(var(--red))] focus-visible:ring-offset-2 focus-visible:ring-offset-[hsl(var(--ink))]"
-              style={{ background: 'hsl(var(--red))' }}
+              href="/planuri"
+              className="rounded-full px-8 py-3.5 font-body font-semibold text-sm bg-[hsl(var(--red))] text-white hover:bg-[hsl(0,72%,44%)] transition-colors"
             >
               Evaluare Gratuită
-              <ArrowUpRight className="size-4" />
             </Link>
             <Link
-              href="/#cum-functioneaza"
-              className="liquid-glass-strong inline-flex items-center gap-1.5 text-sm font-normal text-[hsl(var(--cream))] rounded-full px-7 py-3.5 hover:bg-white/5 transition-colors focus-visible:ring-2 focus-visible:ring-[hsl(var(--cream)/0.40)]"
+              href="#cum-functioneaza"
+              className="liquid-glass-strong rounded-full px-8 py-3.5 font-body font-semibold text-sm text-[hsl(var(--cream))] hover:bg-[hsla(var(--cream)/0.08)] transition-colors"
             >
-              <Play className="size-4 fill-current" />
               Cum funcționează
             </Link>
           </motion.div>
 
           {/* Partners */}
-          <div className="absolute bottom-10 inset-x-0 flex flex-col items-center gap-4 px-6">
-            <span className="liquid-glass rounded-full px-4 py-1.5 text-xs font-body text-[hsla(var(--cream)/0.80)]">
-              Pariuri acceptate la
+          <motion.div
+            className="absolute bottom-10 left-[var(--gutter)] right-[var(--gutter)] flex items-center gap-6 flex-wrap"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1, delay: 1.5 }}
+          >
+            <span className="text-[10px] uppercase tracking-widest text-[hsla(var(--cream)/0.35)] font-body">
+              Parteneriate active cu
             </span>
-            <div className="flex items-center gap-8 md:gap-14 flex-wrap justify-center">
-              {PARTNERS.map(p => (
-                <span
-                  key={p}
-                  className="font-display italic text-xl md:text-2xl text-[hsla(var(--cream)/0.55)] tracking-tight"
-                >
-                  {p}
-                </span>
-              ))}
-            </div>
-          </div>
+            {['Betfair', 'Pinnacle', '1xBet', 'Unibet', 'Bet365'].map(name => (
+              <span key={name} className="font-display text-sm tracking-wide text-[hsla(var(--cream)/0.40)]">
+                {name}
+              </span>
+            ))}
+          </motion.div>
         </div>
       </div>
     </section>
