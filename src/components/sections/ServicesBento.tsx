@@ -4,36 +4,12 @@ import { ArrowUpRight, TrendingUp, Layers, Wallet, Globe, BarChart3, Zap } from 
 import { BlurText } from '@/components/BlurText';
 
 const SERVICES = [
-  {
-    Icon: TrendingUp,
-    title: 'Challenge 1-Step',
-    body: 'Demonstrezi abilitățile într-o singură fază. Target de 40% profit, limită de 30 de zile. Split 70% odată finanțat.',
-  },
-  {
-    Icon: Layers,
-    title: 'Challenge 2-Step',
-    body: 'Două faze consecutive (30% + 20%). Fără limită de timp. Split până la 80% — condiții mai blânde, câștig mai mare.',
-  },
-  {
-    Icon: Wallet,
-    title: 'Capital până la €50K',
-    body: 'Treci evaluarea, primești contul finanțat. Pariezi cu banii noștri, păstrezi profitul săptămânal.',
-  },
-  {
-    Icon: Globe,
-    title: 'Live & Combinate',
-    body: 'Pariaurile live și combinate sunt permise pe toate planurile. 9 sporturi disponibile, fără restricții de piață.',
-  },
-  {
-    Icon: BarChart3,
-    title: 'Dashboard Complet',
-    body: 'Win rate, ROI, profit pe sport, evoluție zilnică. Statistici complete și transparente în timp real.',
-  },
-  {
-    Icon: Zap,
-    title: 'Retrageri Săptămânale',
-    body: 'Procesăm plățile în fiecare săptămână. Transfer bancar sau crypto (USDT/BTC). Prima retragere include taxa rambursată.',
-  },
+  { Icon: TrendingUp, title: 'Challenge 1-Step', body: 'Demonstrezi abilitatile intr-o singura faza. Target de 40% profit, limita de 30 de zile. Split 70% odata finantat.' },
+  { Icon: Layers,     title: 'Challenge 2-Step', body: 'Doua faze consecutive (30% + 20%). Fara limita de timp. Split pana la 80% - conditii mai blande, castig mai mare.' },
+  { Icon: Wallet,     title: 'Capital pana la EUR 50K', body: 'Treci evaluarea, primesti contul finantat. Pariezi cu banii nostri, pastrezi profitul saptamanal.' },
+  { Icon: Globe,      title: 'Live & Combinate', body: 'Pariaurile live si combinate sunt permise pe toate planurile. 9 sporturi disponibile, fara restrictii de piata.' },
+  { Icon: BarChart3,  title: 'Dashboard Complet', body: 'Win rate, ROI, profit pe sport, evolutie zilnica. Statistici complete si transparente in timp real.' },
+  { Icon: Zap,        title: 'Retrageri Saptamanale', body: 'Procesam platile in fiecare saptamana. Transfer bancar sau crypto (USDT/BTC). Prima retragere include taxa rambursata.' },
 ];
 
 const cardSizes = [
@@ -49,7 +25,6 @@ export default function ServicesBento() {
   return (
     <section id="servicii" className="relative py-28 md:py-40 bg-[hsl(var(--ink))]">
       <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)]">
-        {/* Header */}
         <div className="mb-12 md:mb-16">
           <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
             Ce oferim
@@ -62,7 +37,6 @@ export default function ServicesBento() {
           />
         </div>
 
-        {/* Bento grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5">
           {SERVICES.map((s, i) => (
             <motion.div
