@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getStripe, PLANURI_STRIPE } from '@/lib/stripe';
+import { stripe, PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { z } from 'zod';
@@ -7,6 +7,7 @@ import { rateLimit } from '@/lib/rateLimiter';
 
 const CheckoutSchema = z.object({
   plan: z.enum(['STARTER_500', 'BASIC_1000', 'STANDARD_5000', 'ADVANCED_10000', 'PRO_25000', 'ELITE_50000']),
+  mode: z.enum(['1step', '2step']).default('2step'),
 });
 
 export async function POST(req: NextRequest) {
@@ -26,28 +27,38 @@ export async function POST(req: NextRequest) {
 
   const parsed = CheckoutSchema.safeParse(await req.json());
   if (!parsed.success) return NextResponse.json({ error: 'Plan invalid' }, { status: 400 });
-  const { plan } = parsed.data;
+  const { plan, mode } = parsed.data;
 
-  const planInfo = PLANURI_STRIPE[plan];
+  const planInfo = PLANURI_STRIPE[plan as PlanId];
   if (!planInfo) return NextResponse.json({ error: 'Plan invalid' }, { status: 400 });
 
-  const session = await getStripe().checkout.sessions.create({
+  const amount = priceFor(plan as PlanId, mode as ChallengeMode);
+  const split = splitFor(plan as PlanId, mode as ChallengeMode);
+
+  const session = await stripe.checkout.sessions.create({
     mode: 'payment',
     payment_method_types: ['card'],
     line_items: [{
       price_data: {
         currency: 'eur',
         product_data: {
-          name: `SuperFunded – ${planInfo.name}`,
-          description: `Capital de betting: €${planInfo.capital.toLocaleString('ro-RO')} | Split profit: ${planInfo.split}%`,
+          name: `SuperFunded — ${planInfo.name} (${mode === '1step' ? '1-Step' : '2-Step'})`,
+          description: `Capital: €${planInfo.capital.toLocaleString('ro-RO')} · Split: ${split}% · Target ${mode === '1step' ? '40%' : '30%+20%'}`,
         },
-        unit_amount: planInfo.price,
+        unit_amount: amount,
       },
       quantity: 1,
     }],
-    metadata: { userId: user.id, plan, capital: planInfo.capital.toString() },
+    metadata: {
+      userId: user.id,
+      plan,
+      mode,
+      capital: planInfo.capital.toString(),
+      split: split.toString(),
+      skillEvalConsentAt: new Date().toISOString(),
+    },
     customer_email: user.email,
-    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?plan_activat=true&plan=${plan}`,
+    success_url: `${process.env.NEXT_PUBLIC_SITE_URL}/dashboard?session_id={CHECKOUT_SESSION_ID}&plan_activat=true`,
     cancel_url: `${process.env.NEXT_PUBLIC_SITE_URL}/planuri?anulat=true`,
     allow_promotion_codes: true,
     billing_address_collection: 'required',
