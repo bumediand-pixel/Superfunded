@@ -28,7 +28,6 @@ export default function CumFunctioneazaSection() {
   return (
     <section id="cum-functioneaza" className="relative py-28 md:py-40 border-t border-[hsla(var(--cream)/0.08)] bg-[hsl(var(--ink))]">
       <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)]">
-        {/* Header */}
         <div className="mb-16">
           <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
             Cum funcționează
@@ -41,11 +40,9 @@ export default function CumFunctioneazaSection() {
           />
         </div>
 
-        {/* Steps grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-0 relative">
           {STEPS.map((s, i) => (
             <div key={i} className="relative px-0 md:px-10 py-10 md:py-14 flex flex-col gap-4 items-start border-t border-[hsla(var(--cream)/0.10)] md:border-t-0 md:border-l first:border-l-0">
-              {/* Big number */}
               <span className="font-display text-[96px] md:text-[120px] leading-none text-[hsl(var(--red)/0.18)] -mb-4 select-none">
                 {s.n}
               </span>
