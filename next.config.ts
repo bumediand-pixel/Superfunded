@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import path from "node:path";
 
 const securityHeaders = [
   { key: 'X-Content-Type-Options', value: 'nosniff' },
@@ -25,6 +26,19 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Pin Turbopack to this project so a sibling lockfile in the user's home
+  // directory does not get auto-detected as the workspace root.
+  turbopack: {
+    root: path.resolve(__dirname),
+  },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'images.unsplash.com' },
+      { protocol: 'https', hostname: 'plus.unsplash.com' },
+    ],
+    // 1y cache on Vercel image optimizer — saves bandwidth for repeat visitors.
+    minimumCacheTTL: 31_536_000,
+  },
   async headers() {
     return [
       {
