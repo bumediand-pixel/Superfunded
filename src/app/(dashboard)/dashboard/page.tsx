@@ -59,8 +59,8 @@ export default async function DashboardPage() {
   const totalProfit = utilizator?.conturi?.reduce((s: number, c: { profitTotal: number | null }) => s + (c.profitTotal ?? 0), 0) ?? 0;
   const firstName = utilizator?.numeComplet?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'picker';
   const greeting =
-    new Date().getHours() < 12 ? 'Buna dimineata' :
-    new Date().getHours() < 18 ? 'Buna ziua' : 'Buna seara';
+    new Date().getHours() < 12 ? 'Bună dimineața' :
+    new Date().getHours() < 18 ? 'Bună ziua' : 'Bună seara';
 
   return (
     <div className="p-4 sm:p-6 max-w-6xl">
@@ -74,7 +74,7 @@ export default async function DashboardPage() {
         </p>
       </div>
 
-      {/* No active account -> big call-to-action */}
+      {/* No active account → big call-to-action */}
       {!hasActiveAccount && (
         <div className="rounded-2xl p-6 sm:p-8 mb-6 relative overflow-hidden"
           style={{
@@ -90,10 +90,10 @@ export default async function DashboardPage() {
               Pasul 1
             </span>
             <h2 className="text-xl sm:text-2xl font-extrabold text-white mb-2">
-              Cumpara un challenge ca sa incepi sa primesti picks
+              Cumpără un challenge ca să începi să primești picks
             </h2>
             <p className="text-sm text-white/60 mb-5 max-w-lg">
-              Capitalul nostru, pick-urile tale. Alege marimea contului (€500 - €50.000) si incepe evaluarea in 30 zile.
+              Capitalul nostru, pick-urile tale. Alege mărimea contului (€500 - €50.000) și începe evaluarea în 30 zile.
             </p>
             <Link href="/planuri"
               className="inline-flex items-center gap-2 font-bold text-sm px-5 py-3 rounded-xl text-white transition-all hover:-translate-y-0.5"
@@ -111,8 +111,8 @@ export default async function DashboardPage() {
         <KpiCard
           icon={Target}
           label="Plan activ"
-          value={cont ? PLAN_LABEL[cont.plan] ?? cont.plan : 'Fara plan'}
-          sub={cont ? `Capital €${cont.capitalInceput.toLocaleString('ro-RO')}` : 'Cumpara unul'}
+          value={cont ? PLAN_LABEL[cont.plan] ?? cont.plan : 'Fără plan'}
+          sub={cont ? `Capital €${cont.capitalInceput.toLocaleString('ro-RO')}` : 'Cumpără unul'}
           muted={!cont}
         />
         <KpiCard
@@ -137,7 +137,7 @@ export default async function DashboardPage() {
           label="KYC"
           value={
             utilizator?.statusKYC === 'APROBAT' ? 'Aprobat' :
-            utilizator?.statusKYC === 'IN_ASTEPTARE' ? 'In asteptare' :
+            utilizator?.statusKYC === 'IN_ASTEPTARE' ? 'În așteptare' :
             utilizator?.statusKYC === 'RESPINS' ? 'Respins' :
             'Neverificat'
           }
@@ -146,7 +146,7 @@ export default async function DashboardPage() {
         />
       </div>
 
-      {/* Content row: Live Odds + Recent picks */}
+      {/* Content row */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <Card title="Live Odds" subtitle="Actualizat la 30s" pulse>
           <LiveOddsWidget />
@@ -175,8 +175,8 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div className="text-center py-10 text-white/30 text-sm">
-              Niciun pick inregistrat. {hasActiveAccount && (
-                <Link href="/dashboard/pariuri" className="text-red-400 font-semibold hover:underline">Plaseaza primul →</Link>
+              Niciun pick înregistrat. {hasActiveAccount && (
+                <Link href="/dashboard/pariuri" className="text-red-400 font-semibold hover:underline">Plasează primul →</Link>
               )}
             </div>
           )}
