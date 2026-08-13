@@ -27,6 +27,36 @@ export function ScrubSequence({
     window.matchMedia("(prefers-reduced-motion: reduce)").matches
   );
 
+  const drawImage = (img: HTMLImageElement) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+    const cw = canvas.width, ch = canvas.height;
+    const iw = img.naturalWidth, ih = img.naturalHeight;
+    const scale = Math.max(cw / iw, ch / ih);
+    const dw = iw * scale, dh = ih * scale;
+    const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
+    ctx.clearRect(0, 0, cw, ch);
+    ctx.drawImage(img, dx, dy, dw, dh);
+  };
+
+  const currentIndex = () => {
+    const el = scrollTargetRef.current;
+    if (!el) return 0;
+    const rect  = el.getBoundingClientRect();
+    const total = el.offsetHeight - window.innerHeight;
+    const progress = total > 0
+      ? Math.min(1, Math.max(0, -rect.top / total))
+      : 0;
+    return Math.min(frameCount - 1, Math.floor(progress * (frameCount - 1)));
+  };
+
+  const drawFrame = (idx: number) => {
+    const img = imagesRef.current[idx];
+    if (img && img.complete && img.naturalWidth > 0) drawImage(img);
+  };
+
   useEffect(() => {
     const urls = Array.from(
       { length: frameCount },
@@ -96,36 +126,6 @@ export function ScrubSequence({
     }
   }, [frameCount]);
 
-  const currentIndex = () => {
-    const el = scrollTargetRef.current;
-    if (!el) return 0;
-    const rect  = el.getBoundingClientRect();
-    const total = el.offsetHeight - window.innerHeight;
-    const progress = total > 0
-      ? Math.min(1, Math.max(0, -rect.top / total))
-      : 0;
-    return Math.min(frameCount - 1, Math.floor(progress * (frameCount - 1)));
-  };
-
-  const drawFrame = (idx: number) => {
-    const img = imagesRef.current[idx];
-    if (img && img.complete && img.naturalWidth > 0) drawImage(img);
-  };
-
-  const drawImage = (img: HTMLImageElement) => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
-    if (!ctx) return;
-    const cw = canvas.width, ch = canvas.height;
-    const iw = img.naturalWidth, ih = img.naturalHeight;
-    const scale = Math.max(cw / iw, ch / ih);
-    const dw = iw * scale, dh = ih * scale;
-    const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
-    ctx.clearRect(0, 0, cw, ch);
-    ctx.drawImage(img, dx, dy, dw, dh);
-  };
-
   return (
     <>
       <canvas
@@ -135,7 +135,7 @@ export function ScrubSequence({
         aria-hidden="true"
       />
       <p className="sr-only">
-        Secvență video animată ce prezintă platforma SuperFunded — demonstrând experiența de betting finanțat.
+        Secventa video animata ce prezinta platforma SuperFunded.
       </p>
     </>
   );

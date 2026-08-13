@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { Zap, Trophy, Info, Bitcoin, CreditCard } from 'lucide-react';
-import { PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
+import { priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
 import { toast } from '@/components/Toaster';
 import { BlurText } from '@/components/BlurText';
 

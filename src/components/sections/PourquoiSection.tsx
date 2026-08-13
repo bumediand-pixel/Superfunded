@@ -3,13 +3,47 @@ import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
 import { ShieldCheck, Clock, Eye, Award } from 'lucide-react';
 import { BlurText } from '@/components/BlurText';
+import type { LucideIcon } from 'lucide-react';
 
-const REASONS = [
+const REASONS: { Icon: LucideIcon; title: string; body: string }[] = [
   { Icon: ShieldCheck, title: 'Risc Zero',            body: 'Pariezi cu capitalul nostru. Daca pierzi, pierdem noi. Tu nu risci niciun euro din buzunar.' },
   { Icon: Clock,       title: 'KYC in 48h',           body: 'Verificare identitate rapida. Trimiti documentele, noi aprobam in maximum 48 de ore lucratoare.' },
   { Icon: Eye,         title: 'Transparenta Totala',  body: 'Dashboard complet cu istoricul pick-urilor, ROI, win rate si statistici pe sport in timp real.' },
   { Icon: Award,       title: 'Certificat Excelenta', body: 'Bettori cu performanta constanta primesc certificat si pot accesa planuri premium cu split mai mare.' },
 ];
+
+function ReasonCard({ Icon, title, body, index }: { Icon: LucideIcon; title: string; body: string; index: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const inView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.4 });
+
+  return (
+    <motion.div
+      ref={ref}
+      className="liquid-glass rounded-2xl p-7 flex flex-col gap-5 relative overflow-hidden"
+      initial={{ opacity: 0, y: 32 }}
+      animate={inView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.7, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+    >
+      <div className="liquid-glass-strong rounded-full w-11 h-11 flex items-center justify-center">
+        <Icon className="size-5 text-[hsl(var(--cream))]" />
+      </div>
+      <div>
+        <h3 className="font-display uppercase text-2xl tracking-tight text-[hsl(var(--cream))] mb-2">
+          {title}
+        </h3>
+        <p className="font-body text-sm text-[hsla(var(--cream)/0.60)] leading-relaxed">
+          {body}
+        </p>
+      </div>
+      <motion.div
+        className="h-px bg-gradient-to-r from-[hsl(var(--red))] to-transparent w-0 mt-auto"
+        whileInView={{ width: '48px' }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.8, delay: 0.3 + index * 0.1 }}
+      />
+    </motion.div>
+  );
+}
 
 export default function PourquoiSection() {
   return (
@@ -28,38 +62,9 @@ export default function PourquoiSection() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          {REASONS.map((r, i) => {
-            const ref = useRef<HTMLDivElement>(null);
-            const inView = useInView(ref as React.RefObject<Element>, { once: true, amount: 0.4 });
-            return (
-              <motion.div
-                key={i}
-                ref={ref}
-                className="liquid-glass rounded-2xl p-7 flex flex-col gap-5 relative overflow-hidden"
-                initial={{ opacity: 0, y: 32 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <div className="liquid-glass-strong rounded-full w-11 h-11 flex items-center justify-center">
-                  <r.Icon className="size-5 text-[hsl(var(--cream))]" />
-                </div>
-                <div>
-                  <h3 className="font-display uppercase text-2xl tracking-tight text-[hsl(var(--cream))] mb-2">
-                    {r.title}
-                  </h3>
-                  <p className="font-body text-sm text-[hsla(var(--cream)/0.60)] leading-relaxed">
-                    {r.body}
-                  </p>
-                </div>
-                <motion.div
-                  className="h-px bg-gradient-to-r from-[hsl(var(--red))] to-transparent w-0 mt-auto"
-                  whileInView={{ width: '48px' }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, delay: 0.3 + i * 0.1 }}
-                />
-              </motion.div>
-            );
-          })}
+          {REASONS.map((r, i) => (
+            <ReasonCard key={i} Icon={r.Icon} title={r.title} body={r.body} index={i} />
+          ))}
         </div>
       </div>
     </section>
