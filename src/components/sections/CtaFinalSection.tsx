@@ -1,57 +1,93 @@
 'use client';
 import Link from 'next/link';
 import { CheckCircle } from 'lucide-react';
+import { BlurText } from '@/components/BlurText';
 
-const TRUST = ['Taxă rambursată la prima retragere', 'KYC în 48h', 'Fără abonament', 'Retrageri în 24-48h'];
+const TRUST = [
+  'Taxă rambursată la prima retragere',
+  'KYC în 48h',
+  'Fără abonament',
+  'Retrageri în 24-48h',
+];
+
+const FOOTER_LINKS = [
+  ['/confidentialitate', 'Confidențialitate'],
+  ['/termeni', 'Termeni'],
+  ['/rambursare', 'Rambursare'],
+  ['/afiliere', 'Afiliere'],
+];
 
 export default function CtaFinalSection() {
   return (
-    <section className="py-24 relative overflow-hidden" style={{ background: 'var(--red)' }}>
-      {/* Subtle pattern */}
-      <div className="absolute inset-0 pointer-events-none opacity-[0.06]" style={{
-        backgroundImage: 'radial-gradient(circle, white 1px, transparent 1px)',
-        backgroundSize: '32px 32px',
-      }} />
+    <section className="relative min-h-[100vh] flex flex-col border-t border-[hsla(var(--cream)/0.08)] overflow-hidden bg-[hsl(var(--ink))]">
+      <video
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+        aria-hidden="true"
+        style={{ filter: 'brightness(0.40) saturate(0.6)' }}
+      >
+        <source src="/videos/cta-bg.mp4" type="video/mp4" />
+      </video>
 
-      <div className="relative max-w-4xl mx-auto px-4 sm:px-6 text-center">
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-8"
-          style={{ background: 'rgba(255,255,255,0.2)', color: 'white' }}>
-          Gata să Începi
-        </div>
+      <div className="absolute inset-0 bg-[hsl(var(--ink)/0.55)] pointer-events-none" />
+      <div className="absolute top-0 inset-x-0 h-[200px] gradient-fade-t pointer-events-none" />
 
-        <h2 className="text-4xl md:text-6xl font-extrabold text-white tracking-tight mb-6 leading-tight">
-          Faci pick-uri cu capitalul nostru.<br />Tu câștigi.
-        </h2>
+      <div className="relative z-10 flex-1 flex flex-col items-center justify-center text-center px-[var(--gutter)] py-32 max-w-[var(--max)] mx-auto w-full">
+        <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block mb-6">
+          Gata să începi?
+        </span>
 
-        <p className="text-lg mb-10 max-w-xl mx-auto" style={{ color: 'rgba(255,255,255,0.8)' }}>
-          Alătură-te celor <strong className="text-white">2.400+</strong> pickeri finanțați.
-          Capital până la <strong className="text-white">€50.000</strong>. Profit săptămânal.
+        <BlurText
+          text="Gata să pariezi cu noi?"
+          as="h2"
+          className="font-display italic uppercase text-5xl md:text-7xl lg:text-8xl leading-[0.88] tracking-tight text-[hsl(var(--cream))] mb-8 max-w-[16ch]"
+          delay={0.08}
+        />
+
+        <p className="font-body text-base md:text-lg text-[hsla(var(--cream)/0.65)] max-w-[42ch] mb-12 leading-relaxed">
+          Alege planul potrivit, treci evaluarea, și primești capital real. Fără riscuri pentru tine.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
-          <Link href="/planuri"
-            className="inline-flex items-center justify-center font-bold text-sm px-10 py-4 rounded-xl transition-all duration-200 cursor-pointer"
-            style={{ background: 'white', color: 'var(--red)', boxShadow: '0 4px 20px rgba(0,0,0,0.15)' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(-2px)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.transform = 'translateY(0)'; }}>
-            Alege Planul Tău →
+        <div className="flex flex-wrap gap-4 justify-center mb-14">
+          <Link
+            href="/planuri"
+            className="rounded-full px-10 py-4 font-body font-semibold text-sm bg-[hsl(var(--red))] text-white hover:bg-[hsl(0,72%,44%)] transition-colors"
+          >
+            Alege Planul Tău
           </Link>
-          <Link href="/#cum-functioneaza"
-            className="inline-flex items-center justify-center font-semibold text-sm px-10 py-4 rounded-xl border-2 transition-all duration-200 cursor-pointer"
-            style={{ borderColor: 'rgba(255,255,255,0.5)', color: 'white' }}
-            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = 'rgba(255,255,255,0.1)'; }}
-            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = 'transparent'; }}>
-            Cum Funcționează
+          <Link
+            href="#cum-functioneaza"
+            className="liquid-glass-strong rounded-full px-10 py-4 font-body font-semibold text-sm text-[hsl(var(--cream))] hover:bg-[hsla(var(--cream)/0.08)] transition-colors"
+          >
+            Cum funcționează
           </Link>
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-5">
+        <div className="flex flex-wrap gap-x-8 gap-y-3 justify-center">
           {TRUST.map(t => (
-            <div key={t} className="flex items-center gap-1.5 text-sm font-medium" style={{ color: 'rgba(255,255,255,0.85)' }}>
-              <CheckCircle className="w-4 h-4 text-white" />
+            <div key={t} className="flex items-center gap-2 text-xs text-[hsla(var(--cream)/0.55)]">
+              <CheckCircle className="size-3.5 text-[hsl(var(--red)/0.80)]" />
               {t}
             </div>
           ))}
+        </div>
+      </div>
+
+      <div className="relative z-10 border-t border-[hsla(var(--cream)/0.08)] py-6 px-[var(--gutter)]">
+        <div className="max-w-[var(--max)] mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="font-body text-xs text-[hsla(var(--cream)/0.35)]">
+            &copy; {new Date().getFullYear()} SuperFunded. Toate drepturile rezervate.
+          </p>
+          <div className="flex gap-6">
+            {FOOTER_LINKS.map(([href, label]) => (
+              <Link key={href} href={href} className="font-body text-xs text-[hsla(var(--cream)/0.40)] hover:text-[hsla(var(--cream)/0.80)] transition-colors">
+                {label}
+              </Link>
+            ))}
+          </div>
         </div>
       </div>
     </section>

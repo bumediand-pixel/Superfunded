@@ -62,7 +62,7 @@ export function useCounterAnimation(ref: React.RefObject<HTMLElement | null>) {
             gsap.fromTo({ val: 0 }, { val: target }, {
               duration: 1.8, ease: 'power2.out',
               onUpdate: function () {
-                el.textContent = Math.round((this.targets()[0] as any).val).toLocaleString('ro-RO');
+                el.textContent = Math.round((this.targets()[0] as { val: number }).val).toLocaleString('ro-RO');
               },
             });
           },

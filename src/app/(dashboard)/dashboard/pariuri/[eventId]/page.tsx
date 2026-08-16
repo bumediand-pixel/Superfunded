@@ -176,16 +176,16 @@ function CoteTab({ event }: { event: OddsEvent }) {
   const [category, setCategory] = useState<MarketCategory>('principale');
   const bk = event.bookmakers?.[0];
 
+  /** Map: apiKey → the market object on this bookmaker (if present). */
+  const marketsByKey = useMemo(() => {
+    const m: Record<string, OddsEvent['bookmakers'][number]['markets'][number]> = {};
+    for (const mk of bk?.markets ?? []) m[mk.key] = mk;
+    return m;
+  }, [bk]);
+
   if (!bk) {
     return <Empty msg="Niciun feed de cote disponibil pentru acest meci." />;
   }
-
-  /** Map: apiKey → the market object on this bookmaker (if present). */
-  const marketsByKey = useMemo(() => {
-    const m: Record<string, typeof bk.markets[number]> = {};
-    for (const mk of bk.markets ?? []) m[mk.key] = mk;
-    return m;
-  }, [bk]);
 
   const visibleMarkets = marketsForCategory(category);
 
@@ -254,7 +254,7 @@ function CoteTab({ event }: { event: OddsEvent }) {
         <Info className="w-4 h-4 mt-0.5 flex-shrink-0" style={{ color: 'var(--dash-text-muted)' }} />
         <p className="text-xs leading-relaxed" style={{ color: 'var(--dash-text-muted)' }}>
           Cotele sunt agregate din feed-ul nostru de date și folosite pentru evaluarea predicțiilor tale simulate.
-          Plasarea unui pick se face din lista principală — apasă „Înapoi la meciuri".
+          Plasarea unui pick se face din lista principală — apasă &quot;Înapoi la meciuri&quot;.
         </p>
       </div>
     </div>

@@ -43,8 +43,8 @@ export async function GET(req: NextRequest) {
 
   const userId = utilizator.id;
   const startedAt = Date.now();
-  let lastPickIds = new Set<string>();
-  let lastWithdrawalStatuses = new Map<string, string>();
+  const lastPickIds = new Set<string>();
+  const lastWithdrawalStatuses = new Map<string, string>();
   let lastKycStatus = utilizator.statusKYC;
 
   const stream = new ReadableStream({

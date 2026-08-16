@@ -1,14 +1,9 @@
 'use client';
-/**
- * /planuri — TFP-style: pill row pentru mărimea contului + comparație
- * 1-Step vs 2-Step side-by-side, în paleta noastră (light + roșu).
- *
- * Numerele de reguli mirror src/lib/stripe.ts rulesForMode().
- */
 import { useState } from 'react';
 import { Zap, Trophy, Info, Bitcoin, CreditCard } from 'lucide-react';
-import { PLANURI_STRIPE, priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
+import { priceFor, splitFor, type PlanId, type ChallengeMode } from '@/lib/stripe';
 import { toast } from '@/components/Toaster';
+import { BlurText } from '@/components/BlurText';
 
 const SIZES: { id: PlanId; label: string; popular?: boolean }[] = [
   { id: 'STARTER_500',    label: '€500' },
@@ -21,13 +16,13 @@ const SIZES: { id: PlanId; label: string; popular?: boolean }[] = [
 
 const RULES_1STEP = [
   { faza: 'Faza 1',   target: '40%', drawdown: '8%', daily: '5%', time: '30 zile' },
-  { faza: 'Finanțat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
+  { faza: 'Finantat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
 ];
 
 const RULES_2STEP = [
   { faza: 'Faza 1',   target: '30%', drawdown: '8%', daily: '5%', time: '30 zile' },
   { faza: 'Faza 2',   target: '20%', drawdown: '8%', daily: '5%', time: '60 zile' },
-  { faza: 'Finanțat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
+  { faza: 'Finantat', target: '—',   drawdown: '8%', daily: '5%', time: 'Nelimitat' },
 ];
 
 export default function PlanuriSection() {
@@ -35,40 +30,38 @@ export default function PlanuriSection() {
   const capitalLabel = SIZES.find(s => s.id === planId)?.label ?? '';
 
   return (
-    <section id="planuri" className="py-20 sm:py-24" style={{ background: 'var(--bg-alt, #fbf8f6)' }}>
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
-
-        <div className="text-center mb-10 max-w-2xl mx-auto">
-          <span className="inline-flex items-center gap-2 text-xs font-bold tracking-[0.18em] uppercase px-3 py-1 rounded-full mb-4"
-            style={{ background: '#fff1f2', color: 'var(--red, #e63946)', border: '1px solid #fecdd3' }}>
-            Planuri
+    <section id="planuri" className="relative py-28 md:py-40 border-t border-[hsla(var(--cream)/0.08)] bg-[hsl(var(--ink))]">
+      <div className="max-w-[var(--max)] mx-auto px-[var(--gutter)]">
+        <div className="mb-12">
+          <span className="liquid-glass rounded-full px-4 py-1.5 text-xs text-[hsla(var(--cream)/0.80)] inline-block">
+            Planuri & Preturi
           </span>
-          <h2 className="font-extrabold tracking-tight leading-[1.05] mb-3"
-            style={{ fontSize: 'clamp(32px, 5vw, 56px)', color: 'var(--text, #0f172a)' }}>
-            Alege-ți capitalul. <span style={{ color: 'var(--red, #e63946)' }}>Taxă unică.</span>
-          </h2>
-          <p className="text-base sm:text-lg" style={{ color: 'var(--text-muted, #64748b)' }}>
-            Selectează mărimea contului. Compari 1-Step vs 2-Step și alegi varianta care ți se potrivește.
+          <BlurText
+            text="Alege-ti capitalul. Taxa unica."
+            as="h2"
+            className="mt-4 font-display uppercase text-4xl md:text-6xl leading-[0.9] tracking-tight text-[hsl(var(--cream))] max-w-[20ch]"
+            delay={0.08}
+          />
+          <p className="mt-4 font-body text-sm text-[hsla(var(--cream)/0.55)] max-w-[48ch]">
+            Selecteaza marimea contului. Compari 1-Step vs 2-Step si alegi varianta care ti se potriveste.
           </p>
         </div>
 
         {/* Size pill row */}
-        <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 mb-10 flex justify-center">
-          <div className="inline-flex rounded-full p-1.5 shadow-sm gap-1.5"
-            style={{ background: '#ffffff', border: '1px solid var(--border, #e2e8f0)' }}>
+        <div className="overflow-x-auto -mx-4 sm:-mx-6 px-4 sm:px-6 mb-10 flex justify-start md:justify-center">
+          <div className="inline-flex liquid-glass rounded-full p-1.5 gap-1.5">
             {SIZES.map(s => {
               const on = s.id === planId;
               return (
                 <button key={s.id} type="button" onClick={() => setPlanId(s.id)}
-                  className="relative inline-flex items-center justify-center px-5 sm:px-6 h-11 rounded-full text-sm font-bold cursor-pointer transition-all whitespace-nowrap"
+                  className="relative inline-flex items-center justify-center px-5 sm:px-6 h-10 rounded-full font-body text-sm font-bold cursor-pointer transition-all whitespace-nowrap"
                   style={on
-                    ? { background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 6px 18px rgba(230,57,70,0.32)' }
-                    : { background: 'transparent', color: 'var(--text, #0f172a)' }
+                    ? { background: 'hsl(var(--red))', color: '#fff', boxShadow: '0 6px 18px rgba(230,57,70,0.32)' }
+                    : { background: 'transparent', color: `hsla(var(--cream) / 0.65)` }
                   }>
                   {s.label}
                   {s.popular && !on && (
-                    <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider"
-                      style={{ background: 'var(--red, #e63946)', color: '#fff' }}>
+                    <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full text-[9px] font-extrabold uppercase tracking-wider bg-[hsl(var(--red))] text-white">
                       Top
                     </span>
                   )}
@@ -86,9 +79,9 @@ export default function PlanuriSection() {
             price={priceFor(planId, '2step')} split={splitFor(planId, '2step')} rules={RULES_2STEP} recommended />
         </div>
 
-        <p className="text-center text-xs sm:text-sm mt-10" style={{ color: 'var(--text-muted, #64748b)' }}>
-          Toate planurile includ acces la dashboard, retrageri săptămânale și suport Discord.
-          Plata unică, fără reînnoiri.
+        <p className="text-center font-body text-xs mt-10 text-[hsla(var(--cream)/0.40)]">
+          Toate planurile includ acces la dashboard, retrageri saptamanale si suport Discord.
+          Plata unica, fara reinnoiri.
         </p>
       </div>
     </section>
@@ -124,8 +117,8 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
       const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
       else if (res.status === 401) window.location.href = '/autentificare/login?redirect=/planuri';
-      else toast.error(data.error || 'Nu am putut iniția plata. Încearcă din nou.');
-    } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
+      else toast.error(data.error || 'Nu am putut initia plata. Incearca din nou.');
+    } catch { toast.error('Eroare de retea. Verifica conexiunea.'); }
   };
 
   const handleCryptoBuy = async () => {
@@ -138,54 +131,45 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
       const data = await res.json().catch(() => ({}));
       if (data.url) window.location.href = data.url;
       else if (res.status === 401) window.location.href = '/autentificare/login?redirect=/planuri';
-      else toast.error(data.error || 'Plata crypto nu e disponibilă momentan.');
-    } catch { toast.error('Eroare de rețea. Verifică conexiunea.'); }
+      else toast.error(data.error || 'Plata crypto nu e disponibila momentan.');
+    } catch { toast.error('Eroare de retea. Verifica conexiunea.'); }
   };
 
   return (
-    <div className="relative rounded-2xl overflow-hidden transition-all"
-      style={{
-        background: '#ffffff',
-        border: `${recommended ? '2px' : '1px'} solid ${recommended ? 'var(--red, #e63946)' : 'var(--border, #e2e8f0)'}`,
-        boxShadow: recommended
-          ? '0 20px 50px rgba(230,57,70,0.12), 0 4px 12px rgba(15,23,42,0.06)'
-          : '0 4px 12px rgba(15,23,42,0.05)',
-      }}>
-
+    <div className={`liquid-glass rounded-2xl overflow-hidden transition-all ${recommended ? 'border-[hsl(var(--red))] border-2' : ''}`}>
       {recommended && (
-        <div className="absolute top-0 right-0 px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest"
-          style={{ background: 'var(--red, #e63946)', color: '#fff', borderBottomLeftRadius: 12 }}>
+        <div className="px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-widest text-white text-center"
+          style={{ background: 'hsl(var(--red))' }}>
           Cel mai popular
         </div>
       )}
 
       <div className="p-6 sm:p-8">
-        <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider mb-4"
-          style={{ background: '#fff1f2', color: 'var(--red, #e63946)', border: '1px solid #fecdd3' }}>
-          <Icon className="w-3.5 h-3.5" />
-          {isOneStep ? '1 Pas' : '2 Pași'}
+        <span className="inline-flex items-center gap-2 px-3 py-1 liquid-glass rounded-full text-xs font-bold uppercase tracking-wider mb-4 text-[hsl(var(--cream))]">
+          <Icon className="w-3.5 h-3.5 text-[hsl(var(--red))]" />
+          {isOneStep ? '1 Pas' : '2 Pasi'}
         </span>
 
-        <h3 className="font-extrabold text-2xl sm:text-3xl mb-2 leading-tight" style={{ color: 'var(--text, #0f172a)' }}>
-          Challenge {isOneStep ? '1-Pas' : '2-Pași'} · {capitalLabel}
+        <h3 className="font-display uppercase text-2xl sm:text-3xl mb-2 leading-tight text-[hsl(var(--cream))]">
+          Challenge {isOneStep ? '1-Pas' : '2-Pasi'} · {capitalLabel}
         </h3>
 
-        <p className="text-sm leading-relaxed mb-6" style={{ color: 'var(--text-muted, #64748b)' }}>
+        <p className="font-body text-sm leading-relaxed mb-6 text-[hsla(var(--cream)/0.60)]">
           {isOneStep
-            ? 'Cel mai rapid drum către finanțare. Atinge target-ul de 40% într-o singură fază, păstrezi 70% din profit.'
-            : 'Două faze realizabile, targeturi mai mici. Risc mai mic, split de profit mai mare — păstrezi 80% odată finanțat.'}
+            ? 'Cel mai rapid drum catre finantare. Atinge target-ul de 40% intr-o singura faza, pastrezi 70% din profit.'
+            : 'Doua faze realizabile, targeturi mai mici. Risc mai mic, split de profit mai mare — pastrezi 80% odata finantat.'}
         </p>
 
-        <div className="flex rounded-lg p-1 gap-1 mb-5"
-          style={{ background: 'var(--bg-alt, #fbf8f6)', border: '1px solid var(--border, #e2e8f0)' }}>
+        {/* Phase tabs */}
+        <div className="flex liquid-glass rounded-lg p-1 gap-1 mb-5">
           {phases.map(p => {
             const on = p === activePhase;
             return (
               <button key={p} type="button" onClick={() => setActivePhase(p)}
-                className="flex-1 py-2 text-xs font-bold rounded-md cursor-pointer transition-all"
+                className="flex-1 py-2 font-body text-xs font-bold rounded-md cursor-pointer transition-all"
                 style={on
-                  ? { background: '#ffffff', color: 'var(--text, #0f172a)', boxShadow: '0 1px 3px rgba(15,23,42,0.08)' }
-                  : { background: 'transparent', color: 'var(--text-muted, #64748b)' }
+                  ? { background: 'hsla(var(--cream) / 0.12)', color: 'hsl(var(--cream))' }
+                  : { background: 'transparent', color: 'hsla(var(--cream) / 0.50)' }
                 }>
                 {p}
               </button>
@@ -193,44 +177,39 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
           })}
         </div>
 
-        <ul className="divide-y mb-6" style={{ borderColor: 'var(--border, #e2e8f0)' }}>
-          <Row label="Țintă profit" value={phaseRule.target} />
+        <ul className="divide-y divide-[hsla(var(--cream)/0.08)] mb-6">
+          <Row label="Tinta profit" value={phaseRule.target} />
           <Row label="Drawdown maxim" value={phaseRule.drawdown} />
-          <Row label="Pierdere zilnică maximă" value={phaseRule.daily} />
-          <Row label="Limită de timp" value={phaseRule.time} />
+          <Row label="Pierdere zilnica maxima" value={phaseRule.daily} />
+          <Row label="Limita de timp" value={phaseRule.time} />
           <Row label="Split profit" value={`${split}%`} highlight />
         </ul>
 
         <div className="mb-5">
-          <div className="font-extrabold leading-none" style={{ fontSize: 'clamp(36px, 5vw, 48px)', color: 'var(--text, #0f172a)' }}>
+          <div className="font-display text-5xl leading-none text-[hsl(var(--cream))]">
             €{fee}
           </div>
-          <div className="text-xs font-semibold mt-1.5" style={{ color: 'var(--text-muted, #64748b)' }}>
-            Taxă unică · fără abonament
+          <div className="font-body text-xs font-semibold mt-1.5 text-[hsla(var(--cream)/0.50)]">
+            Taxa unica · fara abonament
           </div>
         </div>
 
         <button type="button" onClick={handleBuy}
-          className="w-full inline-flex items-center justify-center gap-2 font-extrabold text-sm py-3.5 rounded-xl cursor-pointer transition-all hover:-translate-y-0.5"
-          style={{ background: 'var(--red, #e63946)', color: '#fff', boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}>
+          className="w-full inline-flex items-center justify-center gap-2 font-body font-extrabold text-sm py-3.5 rounded-full cursor-pointer transition-all hover:-translate-y-0.5 bg-[hsl(var(--red))] text-white"
+          style={{ boxShadow: '0 8px 24px rgba(230,57,70,0.32)' }}>
           <CreditCard className="w-4 h-4" />
-          Plătește cu cardul
+          Plateste cu cardul
         </button>
 
         <button type="button" onClick={handleCryptoBuy}
-          className="w-full inline-flex items-center justify-center gap-2 font-bold text-xs py-2.5 mt-2 rounded-xl cursor-pointer transition-all"
-          style={{
-            background: 'transparent',
-            color: 'var(--text, #0f172a)',
-            border: '1px solid var(--border, #e2e8f0)',
-          }}>
-          <Bitcoin className="w-4 h-4" style={{ color: '#f7931a' }} />
-          Plătește cu crypto (USDT, BTC, ETH)
+          className="w-full inline-flex items-center justify-center gap-2 font-body font-bold text-xs py-2.5 mt-2 rounded-full cursor-pointer transition-all liquid-glass text-[hsl(var(--cream))]">
+          <Bitcoin className="w-4 h-4 text-[#f7931a]" />
+          Plateste cu crypto (USDT, BTC, ETH)
         </button>
 
-        <div className="flex items-start gap-1.5 mt-3 text-[11px]" style={{ color: 'var(--text-muted, #64748b)' }}>
+        <div className="flex items-start gap-1.5 mt-3 font-body text-[11px] text-[hsla(var(--cream)/0.45)]">
           <Info className="w-3 h-3 mt-0.5 flex-shrink-0" />
-          <span>După plată primești instant acces în dashboard și poți începe să plasezi pick-uri.</span>
+          <span>Dupa plata primesti instant acces in dashboard si poti incepe sa plasezi pick-uri.</span>
         </div>
       </div>
     </div>
@@ -240,8 +219,8 @@ function PlanCard({ mode, capitalLabel, price, split, rules, recommended, planId
 function Row({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <li className="flex items-center justify-between py-3">
-      <span className="text-sm" style={{ color: 'var(--text-muted, #64748b)' }}>{label}</span>
-      <span className="text-sm font-extrabold" style={{ color: highlight ? 'var(--red, #e63946)' : 'var(--text, #0f172a)' }}>
+      <span className="font-body text-sm text-[hsla(var(--cream)/0.55)]">{label}</span>
+      <span className={`font-body text-sm font-extrabold ${highlight ? 'text-[hsl(var(--red))]' : 'text-[hsl(var(--cream))]'}`}>
         {value}
       </span>
     </li>

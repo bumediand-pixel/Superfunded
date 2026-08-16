@@ -71,7 +71,7 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
       .finally(() => setLoadingEvents(false));
   }, [form.sport]);
 
-  const useLiveEvent = (ev: LiveEvent, side: 'home' | 'away' | 'draw') => {
+  const handleLiveEvent = (ev: LiveEvent, side: 'home' | 'away' | 'draw') => {
     const h2h = ev.bookmakers?.[0]?.markets?.find(m => m.key === 'h2h')?.outcomes ?? [];
     const teamName = side === 'home' ? ev.home_team : side === 'away' ? ev.away_team : 'Draw';
     const odd = h2h.find(o => o.name === teamName)?.price;
@@ -205,19 +205,19 @@ export default function PickBuilder({ onClose, onCreated }: { onClose: () => voi
                             {ev.home_team} <span className="text-white/40">vs</span> {ev.away_team}
                           </div>
                           {homeOdd && (
-                            <button type="button" onClick={() => useLiveEvent(ev, 'home')}
+                            <button type="button" onClick={() => handleLiveEvent(ev, 'home')}
                               className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
                               1 · {homeOdd.toFixed(2)}
                             </button>
                           )}
                           {drawOdd && (
-                            <button type="button" onClick={() => useLiveEvent(ev, 'draw')}
+                            <button type="button" onClick={() => handleLiveEvent(ev, 'draw')}
                               className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
                               X · {drawOdd.toFixed(2)}
                             </button>
                           )}
                           {awayOdd && (
-                            <button type="button" onClick={() => useLiveEvent(ev, 'away')}
+                            <button type="button" onClick={() => handleLiveEvent(ev, 'away')}
                               className="font-bold px-2 py-1 rounded bg-white/5 hover:bg-white/10 text-white cursor-pointer">
                               2 · {awayOdd.toFixed(2)}
                             </button>

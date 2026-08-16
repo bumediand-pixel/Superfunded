@@ -13,12 +13,14 @@ let _stripe: Stripe | null = null;
 export function getStripe(): Stripe {
   if (!_stripe) {
     _stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       apiVersion: '2026-04-22.dahlia' as any,
     });
   }
   return _stripe;
 }
 export const stripe = new Proxy({} as Stripe, {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   get(_t, prop) { return (getStripe() as any)[prop]; },
 });
 
