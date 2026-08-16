@@ -67,7 +67,7 @@ export default function DisclaimerPage() {
 
           <section>
             <h2 className="font-extrabold tracking-tight text-2xl tracking-wider mb-4" style={{ color: 'var(--text, #0f172a)', letterSpacing: '0.05em' }}>4. ACURATEȚEA INFORMAȚIILOR</h2>
-            <p>Informațiile furnizate pe platforma noastră sunt oferite "ca atare" și doar în scop informativ. SuperFunded nu garantează acuratețea, completitudinea sau actualitatea informațiilor referitoare la:</p>
+            <p>Informațiile furnizate pe platforma noastră sunt oferite &quot;ca atare&quot; și doar în scop informativ. SuperFunded nu garantează acuratețea, completitudinea sau actualitatea informațiilor referitoare la:</p>
             <ul className="list-none mt-3 space-y-2">
               {[
                 'Cotele sportive afișate (acestea sunt orientative)',

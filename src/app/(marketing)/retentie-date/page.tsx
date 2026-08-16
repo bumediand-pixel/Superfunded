@@ -54,7 +54,7 @@ export default function DataRetention() {
         <ul className="space-y-2 text-sm" style={{ color: 'var(--text-muted)' }}>
           <li>• <strong>Acces</strong> — primești o copie a datelor pe care le ținem despre tine în 30 zile (cerere prin <a href="/contact" className="text-[var(--red)] font-semibold">Contact</a>).</li>
           <li>• <strong>Rectificare</strong> — corectezi date inexacte din <a href="/dashboard/setari" className="text-[var(--red)] font-semibold">Setări</a>.</li>
-          <li>• <strong>Ștergere</strong> — buton "Șterge contul" în Setări. Anonimizăm imediat. Datele financiare păstrate conform legii nu te identifică.</li>
+          <li>• <strong>Ștergere</strong> — buton &quot;Șterge contul&quot; în Setări. Anonimizăm imediat. Datele financiare păstrate conform legii nu te identifică.</li>
           <li>• <strong>Portabilitate</strong> — export JSON al pariurilor și retragerilor tale, la cerere.</li>
           <li>• <strong>Opoziție</strong> — la procesarea pentru marketing, prin centrul de cookies.</li>
         </ul>

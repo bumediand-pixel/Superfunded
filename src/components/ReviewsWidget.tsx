@@ -51,7 +51,7 @@ export default function ReviewsWidget() {
                     <Star key={j} className="w-3.5 h-3.5 fill-current" style={{ color: j < r.rating ? '#00b67a' : '#e2e8f0' }} />
                   ))}
                 </div>
-                <p className="text-sm leading-relaxed mb-2" style={{ color: 'var(--text)' }}>"{r.text}"</p>
+                <p className="text-sm leading-relaxed mb-2" style={{ color: 'var(--text)' }}>&quot;{r.text}&quot;</p>
                 <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
                   <span aria-hidden>{r.flag}</span> {r.author} · review verificat
                 </p>
