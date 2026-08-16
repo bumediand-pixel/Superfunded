@@ -1,21 +1,15 @@
 import Nav from '@/components/Nav';
-import Footer from '@/components/Footer';
-import PayoutTicker from '@/components/PayoutTicker';
-import TrustBadges from '@/components/TrustBadges';
-import ReviewsWidget from '@/components/ReviewsWidget';
-import ScalingRoadmap from '@/components/ScalingRoadmap';
 import HeroSection from '@/components/sections/HeroSection';
-import MarqueeSection from '@/components/sections/MarqueeSection';
-import StatisticiSection from '@/components/sections/StatisticiSection';
+import ServicesBento from '@/components/sections/ServicesBento';
+import PourquoiSection from '@/components/sections/PourquoiSection';
 import CumFunctioneazaSection from '@/components/sections/CumFunctioneazaSection';
-import SportsCinematicSection from '@/components/sections/SportsCinematicSection';
-import DeCeSuperFundedSection from '@/components/sections/DeCeSuperFundedSection';
-import ChapterLabel from '@/components/sections/ChapterLabel';
-import PlanuriSection from '@/components/sections/PlanuriSection';
-import LeaderboardSection from '@/components/sections/LeaderboardSection';
+import StatisticiSection from '@/components/sections/StatisticiSection';
 import TestimonialeSection from '@/components/sections/TestimonialeSection';
+import PlanuriSection from '@/components/sections/PlanuriSection';
 import FAQSection from '@/components/sections/FAQSection';
 import CtaFinalSection from '@/components/sections/CtaFinalSection';
+import Footer from '@/components/Footer';
+import PayoutTicker from '@/components/PayoutTicker';
 
 const SITE = process.env.NEXT_PUBLIC_SITE_URL || 'https://thesuperfunded.com';
 
@@ -46,44 +40,22 @@ export default function Home() {
     <>
       <Nav />
       <main>
-        {/* ── PILON 1 — Ce-ți oferim ── */}
         <HeroSection />
-        <MarqueeSection />
-
-        {/* ── PILON 2 — De ce contează pentru tine ── */}
-        <ChapterLabel
-          number="02"
-          title="De ce să-ți pese"
-          sub="Pentru că nu mai pariezi cu banii tăi. Capitalul nostru elimină riscul, păstrezi controlul, iar profitul ajunge la tine în 24-48h."
-          variant="light"
-        />
-        <StatisticiSection />
-        <DeCeSuperFundedSection />
-        <SportsCinematicSection />
-
-        {/* ── PILON 3 — Ce urmează ── */}
-        <ChapterLabel
-          number="03"
-          title="Ce urmează după ce te înscrii"
-          sub="Trei pași clari: cumperi challenge-ul, treci evaluarea cu pick-uri câștigătoare, primești cont finanțat. Mai jos vezi exact cum decurge."
-          variant="light"
-        />
+        <ServicesBento />
+        <PourquoiSection />
         <CumFunctioneazaSection />
-        <PlanuriSection />
-        <ScalingRoadmap />
-        <CtaFinalSection />
-
-        {/* ── Detalii suplimentare (anti-obiecții) ── */}
-        <TrustBadges />
-        <LeaderboardSection />
-        <ReviewsWidget />
+        <StatisticiSection />
         <TestimonialeSection />
+        <PlanuriSection />
         <FAQSection />
+        <CtaFinalSection />
       </main>
       <Footer />
       <PayoutTicker />
-      <script type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
     </>
   );
 }

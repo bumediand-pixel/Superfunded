@@ -13,7 +13,7 @@ export default async function AdminRetrageri() {
       take: 100,
       include: { utilizator: { select: { email: true } } },
     });
-    retrageri = rows.map(r => ({
+    retrageri = rows.map((r: typeof rows[number]) => ({
       id: r.id,
       suma: r.suma,
       metodaPlata: r.metodaPlata,

@@ -56,7 +56,7 @@ export default async function DashboardPage() {
   const cont = utilizator?.conturi?.[0];
   const hasActiveAccount = !!cont && cont.statusEvaluare !== 'INACTIV';
 
-  const totalProfit = utilizator?.conturi?.reduce((s, c) => s + (c.profitTotal ?? 0), 0) ?? 0;
+  const totalProfit = utilizator?.conturi?.reduce((s: number, c: { profitTotal?: number | null }) => s + (c.profitTotal ?? 0), 0) ?? 0;
   const firstName = utilizator?.numeComplet?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'picker';
   const greeting =
     new Date().getHours() < 12 ? 'Bună dimineața' :
@@ -155,7 +155,7 @@ export default async function DashboardPage() {
         <Card title="Ultimele picks">
           {utilizator?.pariuri?.length ? (
             <div className="divide-y" style={{ borderColor: 'var(--dash-overlay-5)' }}>
-              {utilizator.pariuri.map(p => (
+              {utilizator.pariuri.map((p: { id: string; eveniment: string; sport: string; cota: number; statusPariu: string; castigSauPierdere?: number | null; suma: number }) => (
                 <div key={p.id} className="flex items-center justify-between py-2.5">
                   <div className="min-w-0 flex-1">
                     <div className="text-white text-sm font-semibold truncate">{p.eveniment}</div>

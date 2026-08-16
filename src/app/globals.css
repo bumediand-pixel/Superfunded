@@ -265,3 +265,103 @@ body {
 
 [data-theme='light'] .placeholder\:text-white\/30::placeholder,
 [data-theme='light'] .placeholder\:text-white\/40::placeholder { color: var(--dash-text-subtle) !important; }
+
+/* ══════════════════════════════════════════════════════════════════════
+   CINEMATIC LANDING — dark theme tokens & liquid-glass utilities
+   These power the scroll-scrub hero + all landing sections.
+   ══════════════════════════════════════════════════════════════════════ */
+
+:root {
+  /* HSL triplets — use as hsl(var(--ink)) or hsla(var(--ink)/0.5) */
+  --ink:   222 20% 6%;
+  --cream: 40 18% 87%;
+  --red:   0 72% 51%;
+  --terra: 0 45% 28%;
+
+  /* Layout */
+  --max:    1200px;
+  --gutter: clamp(1rem, 4vw, 3rem);
+}
+
+/* Font aliases for cinematic sections */
+.font-display { font-family: var(--font-bebas), 'Impact', sans-serif; }
+.font-body    { font-family: var(--font-jakarta), sans-serif; }
+
+/* ── Liquid-glass cards ─────────────────────────────────────────────────── */
+.liquid-glass {
+  position: relative;
+  background: hsla(var(--cream) / 0.04);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid hsla(var(--cream) / 0.10);
+}
+.liquid-glass::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    hsla(var(--cream) / 0.18) 0%,
+    hsla(var(--cream) / 0.04) 50%,
+    hsla(var(--cream) / 0.10) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.liquid-glass-strong {
+  position: relative;
+  background: hsla(var(--cream) / 0.10);
+  backdrop-filter: blur(32px) saturate(200%);
+  -webkit-backdrop-filter: blur(32px) saturate(200%);
+  border: 1px solid hsla(var(--cream) / 0.18);
+}
+.liquid-glass-strong::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    hsla(var(--cream) / 0.30) 0%,
+    hsla(var(--cream) / 0.06) 50%,
+    hsla(var(--cream) / 0.18) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Gradient fades (for section edges) ─────────────────────────────────── */
+.gradient-fade-t {
+  background: linear-gradient(to bottom, hsl(var(--ink)) 0%, transparent 100%);
+}
+.gradient-fade-b {
+  background: linear-gradient(to top, hsl(var(--ink)) 0%, transparent 100%);
+}
+
+/* ── Cinematic keyframes ──────────────────────────────────────────────────── */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes marquee-rev {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
